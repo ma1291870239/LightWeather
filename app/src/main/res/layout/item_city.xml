@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_weatherlist_round_grey">
+    <LinearLayout
+        android:id="@+id/item_weather"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/item_city"
+            android:paddingLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:gravity="center_vertical"/>
+        <TextView
+            android:id="@+id/item_tmp"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/item_txt"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:textSize="16sp"
+            android:gravity="center"/>
+    </LinearLayout>
+    <ImageView
+        android:id="@+id/item_delete"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@mipmap/delete"
+        android:scaleType="center"
+        />
+
+</LinearLayout>

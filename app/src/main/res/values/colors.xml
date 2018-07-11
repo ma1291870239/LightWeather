@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#757575</color>
+    <color name="colorPrimaryDark">#616161</color>
+    <color name="colorAccent">#757575</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gery">#2B2B2B</color>
+    <color name="xiantiao">#D9D9D9</color>
+    <color name="background">#757575</color>
+    <color name="temp_high">#EF6C00</color>
+    <color name="temp_low">#2196F3</color>
+    <color name="search_bg">#E0E0E0</color>
+    <color name="splash_back">#80000000</color>
+
+</resources>

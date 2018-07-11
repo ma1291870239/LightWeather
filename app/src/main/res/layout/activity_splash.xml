@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.ma.lightweather.activity.SplashActivity">
+    <ImageView
+        android:id="@+id/backIv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@mipmap/splash"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:id="@+id/skipTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        android:layout_alignParentRight="true"
+        android:text="跳过3秒"
+        android:textSize="12sp"
+        android:textColor="@color/white"
+        android:background="@drawable/bg_splash_textview_black"/>
+    <ImageView
+        android:id="@+id/downloadIv"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="15dp"
+        android:padding="5dp"
+        android:src="@mipmap/download"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/bg_splash_textview_black"/>
+
+</RelativeLayout>
