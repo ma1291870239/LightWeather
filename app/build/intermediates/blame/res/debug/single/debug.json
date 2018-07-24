@@ -520,6 +520,10 @@
         "source": "C:\\Users\\Aeolus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\eaedaa70832ed31c7b6ad658bbd39870\\res\\drawable-xhdpi-v4\\abc_ic_menu_copy_mtrl_am_alpha.png"
     },
     {
+        "merged": "C:\\Android\\Android Workspace\\LightWeather\\app\\build\\intermediates\\res\\merged\\debug\\layout_toast_view_actionsheet.xml.flat",
+        "source": "C:\\Android\\Android Workspace\\LightWeather\\app\\src\\main\\res\\layout\\toast_view_actionsheet.xml"
+    },
+    {
         "merged": "C:\\Android\\Android Workspace\\LightWeather\\app\\build\\intermediates\\res\\merged\\debug\\color_abc_primary_text_material_light.xml.flat",
         "source": "C:\\Users\\Aeolus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\eaedaa70832ed31c7b6ad658bbd39870\\res\\color\\abc_primary_text_material_light.xml"
     },
@@ -610,6 +614,10 @@
     {
         "merged": "C:\\Android\\Android Workspace\\LightWeather\\app\\build\\intermediates\\res\\merged\\debug\\drawable_tooltip_frame_light.xml.flat",
         "source": "C:\\Users\\Aeolus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\eaedaa70832ed31c7b6ad658bbd39870\\res\\drawable\\tooltip_frame_light.xml"
+    },
+    {
+        "merged": "C:\\Android\\Android Workspace\\LightWeather\\app\\build\\intermediates\\res\\merged\\debug\\layout_item_dialog.xml.flat",
+        "source": "C:\\Android\\Android Workspace\\LightWeather\\app\\src\\main\\res\\layout\\item_dialog.xml"
     },
     {
         "merged": "C:\\Users\\Aeolus\\Android Workspace\\TestProject\\LightWeather\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_popup_background_mtrl_mult.9.png.flat",
@@ -4906,6 +4914,10 @@
     {
         "merged": "C:\\Users\\Aeolus\\Android Workspace\\TestProject\\LightWeather\\build\\intermediates\\res\\merged\\debug\\drawable-xxhdpi-v4_abc_ic_star_half_black_48dp.png.flat",
         "source": "C:\\Users\\Aeolus\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\eaedaa70832ed31c7b6ad658bbd39870\\res\\drawable-xxhdpi-v4\\abc_ic_star_half_black_48dp.png"
+    },
+    {
+        "merged": "C:\\Android\\Android Workspace\\LightWeather\\app\\build\\intermediates\\res\\merged\\debug\\xml_provider_paths.xml.flat",
+        "source": "C:\\Android\\Android Workspace\\LightWeather\\app\\src\\main\\res\\xml\\provider_paths.xml"
     },
     {
         "merged": "C:\\Users\\Aeolus\\Android Workspace\\TestProject\\LightWeather\\build\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_abc_list_divider_mtrl_alpha.9.png.flat",

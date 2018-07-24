@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-29:12
+ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-39:12
 MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Aeolus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\eaedaa70832ed31c7b6ad658bbd39870\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Aeolus\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\68a15df82d5e4c9d3716939387009d90\AndroidManifest.xml:2:1-11:12
 MERGED from [com.android.support:animated-vector-drawable:26.1.0] C:\Users\Aeolus\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-26.1.0.aar\4bd3ec2071b6e2727b2cd6871e9dea34\AndroidManifest.xml:17:1-28:12
@@ -15,20 +15,20 @@ MERGED from [com.android.support:support-core-utils:26.1.0] C:\Users\Aeolus\.gra
 MERGED from [com.android.support:support-core-ui:26.1.0] C:\Users\Aeolus\.gradle\caches\transforms-1\files-1.1\support-core-ui-26.1.0.aar\33a4dcfff873634222f09b297541338a\AndroidManifest.xml:17:1-31:12
 MERGED from [com.android.support:support-compat:26.1.0] C:\Users\Aeolus\.gradle\caches\transforms-1\files-1.1\support-compat-26.1.0.aar\ef13e00074a8e86d0cde0f3e396f4913\AndroidManifest.xml:17:1-31:12
 MERGED from [android.arch.lifecycle:runtime:1.0.0] C:\Users\Aeolus\.gradle\caches\transforms-1\files-1.1\runtime-1.0.0.aar\312c446e7ce4ae09d8723b8b26f6b3c9\AndroidManifest.xml:17:1-30:12
-INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-29:12
-INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-29:12
+INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-39:12
+INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-39:12
 	package
 		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:3:5-34
 		INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml
 		INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml
 	android:versionName
 		INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml
-		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-29:12
+		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-39:12
 		INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml
 	android:versionCode
 		INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml
-		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-29:12
+		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:1-39:12
 		INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml
 	xmlns:android
 		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:2:11-69
@@ -45,7 +45,7 @@ ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifes
 	android:name
 		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:7:22-77
 application
-ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:9:5-27:19
+ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:9:5-37:19
 MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Aeolus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\eaedaa70832ed31c7b6ad658bbd39870\AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support:appcompat-v7:26.1.0] C:\Users\Aeolus\.gradle\caches\transforms-1\files-1.1\appcompat-v7-26.1.0.aar\eaedaa70832ed31c7b6ad658bbd39870\AndroidManifest.xml:25:5-29:19
 MERGED from [com.android.support.constraint:constraint-layout:1.0.2] C:\Users\Aeolus\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.0.2.aar\68a15df82d5e4c9d3716939387009d90\AndroidManifest.xml:9:5-20
@@ -106,6 +106,22 @@ category#android.intent.category.LAUNCHER
 ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:24:17-77
 	android:name
 		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:24:27-74
+provider#android.support.v4.content.FileProvider
+ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:28:9-36:20
+	android:grantUriPermissions
+		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:32:13-47
+	android:authorities
+		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:30:13-67
+	android:exported
+		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:31:13-37
+	android:name
+		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:29:13-67
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:33:13-35:58
+	android:resource
+		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:35:17-55
+	android:name
+		ADDED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml:34:17-67
 uses-sdk
 INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
 INJECTED from C:\Android\Android Workspace\LightWeather\app\src\main\AndroidManifest.xml

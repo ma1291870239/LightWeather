@@ -55,6 +55,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         photoFrag=new PhotoFragment();
         fragmentList.add(weatherFrag);
         fragmentList.add(searchFrag);
+        fragmentList.add(photoFrag);
         viewPager.setAdapter(new ViewAdapter(getSupportFragmentManager()));
     }
 
