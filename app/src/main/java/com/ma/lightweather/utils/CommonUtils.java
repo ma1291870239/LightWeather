@@ -7,6 +7,8 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.widget.Toast;
 
+import com.ma.lightweather.R;
+
 /**
  * Created by Aeolus on 2018/6/5.
  */
@@ -38,22 +40,17 @@ public class CommonUtils {
      * @param context
      * @param bitmap
      * @param text
-     * @param size
-     * @param color
-     * @param paddingLeft
-     * @param paddingBottom
      * @return
      */
-    public static Bitmap drawTextToLeftBottom(Context context, Bitmap bitmap, String text,
-                                              int size, int color, int paddingLeft, int paddingBottom) {
+    public static Bitmap drawTextToLeftBottom(Context context, Bitmap bitmap, String text) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(color);
-        paint.setTextSize(size);
+        paint.setColor(context.getResources().getColor(R.color.white));
+        paint.setTextSize(dp2px(context,20));
         Rect bounds = new Rect();
         paint.getTextBounds(text, 0, text.length(), bounds);
         return drawTextToBitmap(context, bitmap, text, paint, bounds,
-                dp2px(context, paddingLeft),
-                bitmap.getHeight() - dp2px(context, paddingBottom));
+                dp2px(context,20),
+                bitmap.getHeight() - dp2px(context,20));
     }
 
 
@@ -62,22 +59,17 @@ public class CommonUtils {
      * @param context
      * @param bitmap
      * @param text
-     * @param size
-     * @param color
-     * @param paddingRight
-     * @param paddingBottom
      * @return
      */
-    public static Bitmap drawTextToRightBottom(Context context, Bitmap bitmap, String text,
-                                               int size, int color, int paddingRight, int paddingBottom) {
+    public static Bitmap drawTextToRightBottom(Context context, Bitmap bitmap, String text) {
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        paint.setColor(color);
-        paint.setTextSize(size);
+        paint.setColor(context.getResources().getColor(R.color.white));
+        paint.setTextSize(dp2px(context,20));
         Rect bounds = new Rect();
         paint.getTextBounds(text, 0, text.length(), bounds);
         return drawTextToBitmap(context, bitmap, text, paint, bounds,
-                bitmap.getWidth() - bounds.width() - dp2px(context, paddingRight),
-                bitmap.getHeight() - dp2px(context, paddingBottom));
+                bitmap.getWidth() - bounds.width() - dp2px(context,20),
+                bitmap.getHeight() - dp2px(context,20));
     }
 
 
