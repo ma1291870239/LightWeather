@@ -1,5 +1,6 @@
 package com.ma.lightweather.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,8 +26,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.util.Util;
 import com.ma.lightweather.R;
+import com.ma.lightweather.model.Contants;
 import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.PhotoUtils;
+import com.ma.lightweather.utils.SharedPrefencesUtils;
 import com.ma.lightweather.widget.ActionSheetDialog;
 
 import java.io.File;
@@ -42,8 +45,8 @@ import java.util.Calendar;
 public class PhotoFragment extends BaseFragment implements View.OnClickListener{
 
     private View view;
-    private LinearLayout phoneLayout,weatherLayout,photoLayout,scoreLayout,shareLayout;
-    private TextView phoneTv,weatherTv;
+    private LinearLayout phoneLayout,loctionLayout,weatherLayout,photoLayout,scoreLayout,shareLayout;
+    private TextView defaultPhoneTv,defaultLoctionTv,defaultWeatherTv,phoneTv,loctionTv,weatherTv;
     private ImageView imgView;
 
     private String strImgPath, filename;
@@ -78,33 +81,64 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
 
     private void initView() {
         phoneLayout=view.findViewById(R.id.phoneLayout);
+        loctionLayout=view.findViewById(R.id.loctionLayout);
         weatherLayout=view.findViewById(R.id.weatherLayout);
         photoLayout=view.findViewById(R.id.photoLayout);
         scoreLayout=view.findViewById(R.id.scoreLayout);
         shareLayout=view.findViewById(R.id.shareLayout);
         phoneTv=view.findViewById(R.id.phoneTv);
+        loctionTv=view.findViewById(R.id.loctionTv);
         weatherTv=view.findViewById(R.id.weatherTv);
         imgView=view.findViewById(R.id.imgView);
-        phoneLayout.setOnClickListener(this);
-        weatherLayout.setOnClickListener(this);
+        defaultPhoneTv=view.findViewById(R.id.defaultPhoneTv);
+        defaultLoctionTv=view.findViewById(R.id.defaultLoctionTv);
+        defaultWeatherTv=view.findViewById(R.id.defaultWeatherTv);
+        phoneTv.setOnClickListener(this);
+        loctionTv.setOnClickListener(this);
+        weatherTv.setOnClickListener(this);
+        defaultPhoneTv.setOnClickListener(this);
+        defaultLoctionTv.setOnClickListener(this);
+        defaultWeatherTv.setOnClickListener(this);
         photoLayout.setOnClickListener(this);
         scoreLayout.setOnClickListener(this);
         shareLayout.setOnClickListener(this);
+
+
+        phoneTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.MODEL,"Surface Lumia"));
+        loctionTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.LOCTION,"M78星云"));
+        weatherTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.WEATHER,"100℃ 台风地震"));
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.phoneLayout:
+            case R.id.phoneTv:
                 showDialog(1);
                 break;
-            case R.id.weatherLayout:
+            case R.id.loctionTv:
                 showDialog(2);
+                break;
+            case R.id.weatherTv:
+                showDialog(3);
+                break;
+            case R.id.defaultPhoneTv:
+                phoneTv.setText(android.os.Build.BRAND+" "+android.os.Build.MODEL);
+                SharedPrefencesUtils.setParam(getActivity(),Contants.MODEL,phoneTv.getText().toString());
+                break;
+            case R.id.defaultLoctionTv:
+                loctionTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.CITY,""));
+                SharedPrefencesUtils.setParam(getActivity(),Contants.LOCTION,loctionTv.getText().toString());
+                break;
+            case R.id.defaultWeatherTv:
+                weatherTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.TMP,"")+"℃ "
+                        +(String) SharedPrefencesUtils.getParam(getActivity(),Contants.TXT,""));
+                SharedPrefencesUtils.setParam(getActivity(),Contants.WEATHER,weatherTv.getText().toString());
                 break;
             case R.id.photoLayout:
                 showActionSheet();
                 break;
             case R.id.scoreLayout:
+                goToMarket();
                 break;
             case R.id.shareLayout:
                 break;
@@ -112,6 +146,28 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         }
 
     }
+
+
+    public void goToMarket() {
+        Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
+        Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
+        try {
+            if(CommonUtils.isContains(getActivity(),"com.tencent.android.qqdownloader")){
+                goToMarket.setPackage("com.tencent.android.qqdownloader");
+            }
+            if(CommonUtils.isContains(getActivity(),"com.coolapk.market")) {
+                goToMarket.setPackage("com.coolapk.market");
+            }
+            getActivity().startActivity(goToMarket);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.ma.lightweather"));
+            startActivity(intent);
+        }
+    }
+
+
 
     private void showActionSheet() {
         new ActionSheetDialog(getActivity()).builder().setCancelable(true).setCanceledOnTouchOutside(true)
@@ -142,8 +198,13 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                         String s=edit.getText().toString();
                         if(tag==1){
                             phoneTv.setText(s);
+                            SharedPrefencesUtils.setParam(getActivity(),Contants.MODEL,phoneTv.getText().toString());
                         }if(tag==2){
+                            loctionTv.setText(s);
+                            SharedPrefencesUtils.setParam(getActivity(),Contants.LOCTION,loctionTv.getText().toString());
+                        }if(tag==3){
                             weatherTv.setText(s);
+                            SharedPrefencesUtils.setParam(getActivity(),Contants.WEATHER,weatherTv.getText().toString());
                         }
                     }
                 })
@@ -167,16 +228,19 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
     }
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        ContentResolver contentResolver = getActivity().getContentResolver();
             switch (requestCode) {
                 case RESULT_PHOTO://拍照
-
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imgUrl);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case RESULT_PICTURE://相册
-                    ContentResolver contentResolver = getActivity().getContentResolver();
                     try {
                         bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(data.getData()));
                     } catch (FileNotFoundException e) {
@@ -184,10 +248,8 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                     }
                     break;
             }
-            Log.e("abc", "onActivityResult: "+bitmap.getHeight()+"---"+bitmap.getWidth() );
-            bitmap=CommonUtils.drawTextToLeftBottom(getActivity(),bitmap,phoneTv.getText().toString());
-            bitmap=CommonUtils.drawTextToRightBottom(getActivity(),bitmap,weatherTv.getText().toString());
-            imgView.setImageBitmap(bitmap);
+            bitmap=CommonUtils.drawTextToRightBottom(getActivity(),bitmap,phoneTv.getText().toString(),loctionTv.getText().toString(),weatherTv.getText().toString());
+            //imgView.setImageBitmap(bitmap);
             new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -198,8 +260,5 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                 }
             }).start();
     }
-
-
-
 
 }

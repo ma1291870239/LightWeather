@@ -23,6 +23,7 @@ import com.ma.lightweather.model.Contants;
 import com.ma.lightweather.model.Weather;
 import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.Parse;
+import com.ma.lightweather.utils.SharedPrefencesUtils;
 import com.ma.lightweather.widget.WeatherView;
 
 import org.json.JSONException;
@@ -59,7 +60,10 @@ public class WeatherFragment extends BaseFragment{
                         pmtv.setText("　污染："+weatherList.get(i).pm);
                         prestv.setText("　气压："+weatherList.get(i).pres+"Pa");
                         vistv.setText("　能见："+weatherList.get(i).vis+"km");
-                        CommonUtils.showShortToast(getActivity(),"数据已更新");
+                        SharedPrefencesUtils.setParam(getActivity(),Contants.CITY,weatherList.get(i).city);
+                        SharedPrefencesUtils.setParam(getActivity(),Contants.TMP,weatherList.get(i).tmp);
+                        SharedPrefencesUtils.setParam(getActivity(),Contants.TXT,weatherList.get(i).txt);
+                        //CommonUtils.showShortToast(getActivity(),"数据已更新");
                         break;
                     }
             }
@@ -70,7 +74,7 @@ public class WeatherFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.frag_weather,null);
-        city=getContext().getSharedPreferences(getString(R.string.app_name),Context.MODE_PRIVATE).getString(Contants.CITY,"洛阳");
+        city= (String) SharedPrefencesUtils.getParam(getActivity(),Contants.CITY,"洛阳");
         initView();
         if(isAdded()){
             loadData(city);
@@ -81,7 +85,6 @@ public class WeatherFragment extends BaseFragment{
     //加载上部数据
     public void loadData(String city) {
         this.city=city;
-        getActivity().getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE).edit().putString(Contants.CITY,city).commit();
         RequestQueue requestQueue= Volley.newRequestQueue(getActivity());
         StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city + Contants.KEY,
                 new Response.Listener<String>() {

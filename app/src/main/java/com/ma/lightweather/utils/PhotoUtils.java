@@ -1,7 +1,9 @@
 package com.ma.lightweather.utils;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -46,6 +48,25 @@ public class PhotoUtils {
         } else {
             intent.setDataAndType(uri1, type);
         }
+    }
+
+
+    public static File getFileFromMediaUri(Context ac, Uri uri) {
+        if(uri.getScheme().toString().compareTo("content") == 0){
+            ContentResolver cr = ac.getContentResolver();
+            Cursor cursor = cr.query(uri, null, null, null, null);// 根据Uri从数据库中找
+            if (cursor != null) {
+                cursor.moveToFirst();
+                String filePath = cursor.getString(cursor.getColumnIndex("_data"));// 获取图片路径
+                cursor.close();
+                if (filePath != null) {
+                    return new File(filePath);
+                }
+            }
+        }else if(uri.getScheme().toString().compareTo("file") == 0){
+            return new File(uri.toString().replace("file://",""));
+        }
+        return null;
     }
 
     public static boolean saveImageToGallery(Context context, Bitmap bmp) {

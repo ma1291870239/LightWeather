@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp">
         <TextView
+            android:id="@+id/defaultPhoneTv"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -22,7 +23,31 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="分享软件"
+            android:text="Surface Lumia"
+            android:gravity="center_vertical|right"
+            android:textSize="14sp"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/loctionLayout"
+        android:background="@drawable/bg_weatherlist_round_grey"
+        android:paddingHorizontal="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <TextView
+            android:id="@+id/defaultLoctionTv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="地点位置"
+            android:gravity="center_vertical"
+            android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/loctionTv"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:text="M78星云"
             android:gravity="center_vertical|right"
             android:textSize="14sp"/>
     </LinearLayout>
@@ -34,6 +59,7 @@
         android:layout_width="match_parent"
         android:layout_height="45dp">
         <TextView
+            android:id="@+id/defaultWeatherTv"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
@@ -45,7 +71,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="分享软件"
+            android:text="100℃ 台风地震"
             android:gravity="center_vertical|right"
             android:textSize="14sp"/>
     </LinearLayout>
@@ -60,7 +86,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="良辰美景"
+            android:text="水印照片"
             android:gravity="center_vertical"
             android:textSize="16sp"/>
         <TextView
@@ -94,6 +120,7 @@
             android:textSize="14sp"/>
     </LinearLayout>
     <LinearLayout
+        android:visibility="gone"
         android:id="@+id/shareLayout"
         android:background="@drawable/bg_weatherlist_round_grey"
         android:paddingHorizontal="10dp"
@@ -116,6 +143,7 @@
             android:textSize="14sp"/>
     </LinearLayout>
     <ImageView
+        android:visibility="gone"
         android:id="@+id/imgView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

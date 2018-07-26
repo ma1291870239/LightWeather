@@ -21,7 +21,13 @@ public class Contants {
     public final static String WEATHER_ALERT=BASE_URL+"alarm?city=";
     //认证密钥
     public final static String KEY="&key=4ddad270cdb94639ae5f4cfe11aadf82";
-    public final static String CITY="city";
+    //bing图片
     public final static String BINGURL="http://area.sinaapp.com/bingImg/";
 
+    public final static String CITY="city";
+    public final static String TMP="tmp";
+    public final static String TXT="txt";
+    public final static String MODEL="model";
+    public final static String LOCTION="loction";
+    public final static String WEATHER="weather";
 }

@@ -33,13 +33,12 @@
             android:text="搜索"
             android:textColor="@color/white"/>
         <TextView
-            android:visibility="gone"
             android:id="@+id/main_photo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="实景"
+            android:text="拍照"
             android:textColor="@color/white"/>
     </LinearLayout>
 </LinearLayout>
