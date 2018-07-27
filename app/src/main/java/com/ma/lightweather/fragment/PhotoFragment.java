@@ -236,6 +236,8 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                 case RESULT_PHOTO://拍照
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imgUrl);
+                        int degree=PhotoUtils.readPictureDegree(strImgPath);
+                        bitmap=PhotoUtils.toTurn(bitmap,degree);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }

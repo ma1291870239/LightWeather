@@ -8,8 +8,8 @@ android {
         applicationId "com.ma.lightweather"
         minSdkVersion 15
         targetSdkVersion 22
-        versionCode 6
-        versionName "3.6.0"
+        versionCode 7
+        versionName "3.6.1"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
