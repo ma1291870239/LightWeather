@@ -244,23 +244,29 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                     break;
                 case RESULT_PICTURE://相册
                     try {
-                        bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(data.getData()));
+                        if(data!=null){
+                            bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(data.getData()));
+                        }
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     }
                     break;
             }
-            bitmap=CommonUtils.drawTextToRightBottom(getActivity(),bitmap,phoneTv.getText().toString(),loctionTv.getText().toString(),weatherTv.getText().toString());
-            //imgView.setImageBitmap(bitmap);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    boolean isSave=PhotoUtils.saveImageToGallery(getActivity(),bitmap);
-                    if(isSave){
-                        handler.sendEmptyMessage(SAVE_CODE);
+            if(bitmap!=null){
+                bitmap=CommonUtils.drawTextToRightBottom(getActivity(),bitmap,phoneTv.getText().toString(),loctionTv.getText().toString(),weatherTv.getText().toString());
+                //imgView.setImageBitmap(bitmap);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        boolean isSave=PhotoUtils.saveImageToGallery(getActivity(),bitmap);
+                        if(isSave){
+                            handler.sendEmptyMessage(SAVE_CODE);
+                        }
                     }
-                }
-            }).start();
+                }).start();
+            }
+
+
     }
 
 }
