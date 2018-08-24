@@ -1,5 +1,6 @@
 package com.ma.lightweather.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import com.ma.lightweather.R;
 import com.ma.lightweather.activity.MainActivity;
 import com.ma.lightweather.model.Weather;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,7 +47,7 @@ public class CityAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-        city=weatherList.get(i).city;
+        Log.e("abc", "getView: "+i+weatherList.get(i).city );
         ViewHolder vh=null;
         if(view==null){
             vh=new ViewHolder();
@@ -65,7 +67,7 @@ public class CityAdapter extends BaseAdapter {
         vh.weatherLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mainActivity.refresh(city);
+                mainActivity.refresh(weatherList.get(i).city);
             }
         });
         vh.iv.setOnClickListener(new View.OnClickListener() {

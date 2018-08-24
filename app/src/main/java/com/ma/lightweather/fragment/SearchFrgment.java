@@ -37,6 +37,8 @@ import com.ma.lightweather.model.Contants;
 import com.ma.lightweather.model.Weather;
 import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.Parse;
+import com.ma.lightweather.utils.SharedPrefencesUtils;
+import com.ma.lightweather.widget.HourWeatherView;
 import com.ma.lightweather.widget.WeatherView;
 
 import org.json.JSONException;
@@ -54,8 +56,9 @@ public class SearchFrgment extends BaseFragment{
     private SearchView sv;
     private ListView lv;
     private WeatherView weatherView;
+    private HourWeatherView hourWeatherView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private List<Weather> weatherList;
+    private List<Weather> weatherList=new ArrayList<>();
     private List<Weather> weatherData=new ArrayList<>();
     private CityAdapter cityAdapter;
     private MydataBaseHelper dbHelper;
@@ -97,7 +100,7 @@ public class SearchFrgment extends BaseFragment{
         if(!isAdded()){
             return view;
         }
-        city=getActivity().getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE).getString(Contants.CITY,"洛阳");
+        city=(String) SharedPrefencesUtils.getParam(getActivity(),Contants.CITY,"洛阳");
         initView();
         loadData(city);
         return view;
@@ -117,8 +120,9 @@ public class SearchFrgment extends BaseFragment{
                 weather.tmp=cursor.getString(cursor.getColumnIndex("tmp"));
                 weather.txt=cursor.getString(cursor.getColumnIndex("txt"));
                 weather.dir=cursor.getString(cursor.getColumnIndex("dir"));
-                if(weather.city!=null)
+                if(weather.city!=null) {
                     weatherData.add(weather);
+                }
             }while (cursor.moveToNext());
         }
         cursor.close();
@@ -194,7 +198,7 @@ public class SearchFrgment extends BaseFragment{
                     @Override
                     public void onResponse(String response) {
                         try {
-                            weatherList= Parse.parseWeather(response,weatherView,getActivity());
+                            weatherList= Parse.parseWeather(response,weatherView,hourWeatherView,getActivity());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

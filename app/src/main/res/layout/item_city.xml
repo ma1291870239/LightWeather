@@ -34,8 +34,8 @@
     </LinearLayout>
     <ImageView
         android:id="@+id/item_delete"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:src="@mipmap/delete"
         android:scaleType="center"
         />

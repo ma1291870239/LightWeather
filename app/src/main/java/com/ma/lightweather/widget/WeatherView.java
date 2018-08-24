@@ -6,11 +6,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.ma.lightweather.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -61,7 +63,7 @@ public class WeatherView extends View {
         minPaint.setStrokeWidth(lineWidth);
         minPaint.setStyle(Paint.Style.FILL);
 
-        textPaint.setColor(Color.parseColor("#979797"));
+        textPaint.setColor(getResources().getColor(R.color.text));
         textPaint.setAntiAlias(true);
         textPaint.setTextAlign(Paint.Align.CENTER);
 
@@ -71,48 +73,57 @@ public class WeatherView extends View {
     protected void onDraw(Canvas canvas) {
         int viewhigh=getMeasuredHeight();
         int viewwidth=getMeasuredWidth();
-        textPaint.setTextSize(viewwidth/35);
-        int x=viewwidth/14;
+        textPaint.setTextSize(viewwidth/30);
+        int xSpace=viewwidth/14;
         Paint.FontMetrics fm = textPaint.getFontMetrics();
         int texthigh=(int)Math.ceil(fm.bottom - fm.top);
-        int tmpspace=(viewhigh-4*texthigh-40)/100;
+        int offsetHigh=4*texthigh+10;
+        int ySpace=(viewhigh-6*texthigh-40) /50;
+        int max =0;
+        int min=0;
+        if(maxList.size()>0&&minList.size()>0) {
+            max = Collections.max(maxList);
+            min = Collections.min(minList);
+            ySpace = (viewhigh-8*texthigh-40) / (max - min);
+        }
 
         //最高温度折线
         for(int i=0;i<maxList.size();i++){
             pointPaint.setColor(getResources().getColor(R.color.temp_high));
             outPointPaint.setColor(getResources().getColor(R.color.temp_high));
             if(i<maxList.size()-1){
-                canvas.drawLine((2*i+1)*x,viewhigh/2-(maxList.get(i)*tmpspace),
-                        (2*i+3)*x,viewhigh/2-(maxList.get(i+1)*tmpspace),maxPaint);
+                canvas.drawLine((2*i+1)*xSpace,(max-maxList.get(i))*ySpace+offsetHigh,
+                        (2*i+3)*xSpace,(max-maxList.get(i+1))*ySpace+offsetHigh,maxPaint);
             }
-            canvas.drawCircle((2*i+1)*x,viewhigh/2-(maxList.get(i)*tmpspace),pointRadius,pointPaint);
-            canvas.drawCircle((2*i+1)*x,viewhigh/2-(maxList.get(i)*tmpspace),outPointRadius,outPointPaint);
-            canvas.drawText(maxList.get(i)+"°",(2*i+1)*x,viewhigh/2-(maxList.get(i)*tmpspace)-20,textPaint);
+            canvas.drawCircle((2*i+1)*xSpace,(max-maxList.get(i))*ySpace+offsetHigh,pointRadius,pointPaint);
+            canvas.drawCircle((2*i+1)*xSpace,(max-maxList.get(i))*ySpace+offsetHigh,outPointRadius,outPointPaint);
+            canvas.drawText(maxList.get(i)+"°",(2*i+1)*xSpace,(max-maxList.get(i))*ySpace+offsetHigh-20,textPaint);
         }
         //最低温度折线
         for(int i=0;i<minList.size();i++){
             pointPaint.setColor(getResources().getColor(R.color.temp_low));
             outPointPaint.setColor(getResources().getColor(R.color.temp_low));
             if(i<minList.size()-1){
-                canvas.drawLine((2*i+1)*x,viewhigh/2-(minList.get(i)*tmpspace),
-                        (2*i+3)*x,viewhigh/2-(minList.get(i+1)*tmpspace),minPaint);
+                canvas.drawLine((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,
+                        (2*i+3)*xSpace,(max-minList.get(i+1))*ySpace+offsetHigh,minPaint);
             }
-            canvas.drawCircle((2*i+1)*x,viewhigh/2-(minList.get(i)*tmpspace),pointRadius,pointPaint);
-            canvas.drawCircle((2*i+1)*x,viewhigh/2-(minList.get(i)*tmpspace),outPointRadius,outPointPaint);
-            canvas.drawText(minList.get(i)+"°",(2*i+1)*x,viewhigh/2-(minList.get(i)*tmpspace)+texthigh+5,textPaint);
+            canvas.drawCircle((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,pointRadius,pointPaint);
+            canvas.drawCircle((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,outPointRadius,outPointPaint);
+            canvas.drawText(minList.get(i)+"°",(2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh+texthigh+5,textPaint);
         }
         //日期
         for (int i=0;i<dateList.size();i++){
             String[] data1=dateList.get(i).split("-");
-            canvas.drawText(data1[1]+"/"+data1[2],(2*i+1)*x,texthigh,textPaint);
+            canvas.drawText(data1[1]+"/"+data1[2],(2*i+1)*xSpace,texthigh,textPaint);
         }
         //天气状况
         for (int i=0;i<txtList.size();i++){
-            canvas.drawText(txtList.get(i),(2*i+1)*x,viewhigh-(int)Math.ceil(fm.bottom - fm.leading),textPaint);
+            canvas.drawText(txtList.get(i),(2*i+1)*xSpace,viewhigh-(int)Math.ceil(fm.bottom - fm.leading),textPaint);
         }
         //分割线
         for (int i=1;i<dateList.size();i++){
-            canvas.drawLine(2*i*x,50,2*i*x,viewhigh-texthigh,textPaint);
+            Log.e("abc", "onDraw: "+i+dateList.size() );
+            canvas.drawLine(2*i*xSpace,50,2*i*xSpace,viewhigh-texthigh,textPaint);
         }
     }
 

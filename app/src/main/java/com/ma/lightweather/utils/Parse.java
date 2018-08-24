@@ -1,9 +1,11 @@
 package com.ma.lightweather.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.ma.lightweather.db.MydataBaseHelper;
 import com.ma.lightweather.model.Weather;
+import com.ma.lightweather.widget.HourWeatherView;
 import com.ma.lightweather.widget.WeatherView;
 
 import org.json.JSONArray;
@@ -20,7 +22,7 @@ public class Parse {
 
     private static List<Weather> weatherList;
 
-    public static List<Weather> parseWeather(String resource, WeatherView weatherView, Context context) throws JSONException {
+    public static List<Weather> parseWeather(String resource, WeatherView weatherView, HourWeatherView hourWeatherView, Context context) throws JSONException {
         weatherList=new ArrayList<>();
         Weather weather=new Weather();
         JSONObject jsonObject=new JSONObject(resource);
@@ -102,11 +104,108 @@ public class Parse {
                             }
                         }
                     }
+
+                    //实时天气
+                    if(!weatherObj.isNull("hourly_forecast")){
+                        JSONArray hourArray=weatherObj.getJSONArray("hourly_forecast");
+                        if(hourArray.length()>0){
+                            for (int j=0;j<hourArray.length();j++){
+                                JSONObject hourObj=hourArray.getJSONObject(j);
+                                if(!hourObj.isNull("date")) {
+                                    weather.hourDateList.add(hourObj.getString("date"));
+                                }
+                                if(!hourObj.isNull("cond")){
+                                    JSONObject hourCondObj=hourObj.getJSONObject("cond");
+                                    if(!hourCondObj.isNull("txt"))
+                                        weather.hourTxtList.add(hourCondObj.getString("txt"));
+                                }
+                                if(!hourObj.isNull("pop")){
+                                    weather.hourPopList.add(hourObj.getInt("pop"));
+                                }
+                                if(!hourObj.isNull("tmp")){
+                                    weather.hourTmpList.add(hourObj.getInt("tmp"));
+                                }
+                                if(!hourObj.isNull("wind")){
+                                    JSONObject hourWindObj=hourObj.getJSONObject("wind");
+                                    if(!hourWindObj.isNull("dir"))
+                                        weather.hourDirList.add(hourWindObj.getString("dir"));
+                                }
+                            }
+                        }
+                    }
+
+                    //生活指数
+                    if(!weatherObj.isNull("suggestion")){
+                        Log.e("abc",weatherObj.getString("suggestion"));
+                        JSONObject suggestObj=weatherObj.getJSONObject("suggestion");
+                        if(!suggestObj.isNull("air")){
+                            Log.e("abc",suggestObj.getString("air"));
+                            JSONObject airObj=suggestObj.getJSONObject("air");
+                            if(!airObj.isNull("brf"))
+                                Log.e("abc",airObj.getString("brf"));
+                                weather.airBrf=airObj.getString("brf");
+                            if(!airObj.isNull("txt"))
+                                weather.airTxt=airObj.getString("txt");
+                        }
+                        if(!suggestObj.isNull("comf")){
+                            JSONObject comfObj=suggestObj.getJSONObject("comf");
+                            if(!comfObj.isNull("brf"))
+                                weather.comfBrf=comfObj.getString("brf");
+                            if(!comfObj.isNull("txt"))
+                                weather.comfTxt=comfObj.getString("txt");
+                        }
+                        if(!suggestObj.isNull("cw")){
+                            JSONObject cwObj=suggestObj.getJSONObject("cw");
+                            if(!cwObj.isNull("brf"))
+                                weather.cwBrf=cwObj.getString("brf");
+                            if(!cwObj.isNull("txt"))
+                                weather.cwTxt=cwObj.getString("txt");
+                        }
+                        if(!suggestObj.isNull("drsg")){
+                            JSONObject drsgObj=suggestObj.getJSONObject("drsg");
+                            if(!drsgObj.isNull("brf"))
+                                weather.drsgBrf=drsgObj.getString("brf");
+                            if(!drsgObj.isNull("txt"))
+                                weather.drsgTxt=drsgObj.getString("txt");
+                        }
+                        if(!suggestObj.isNull("flu")){
+                            JSONObject fluObj=suggestObj.getJSONObject("flu");
+                            if(!fluObj.isNull("brf"))
+                                weather.fluBrf=fluObj.getString("brf");
+                            if(!fluObj.isNull("txt"))
+                                weather.fluTxt=fluObj.getString("txt");
+                        }
+                        if(!suggestObj.isNull("sport")){
+                            JSONObject sportObj=suggestObj.getJSONObject("sport");
+                            if(!sportObj.isNull("brf"))
+                                weather.sportBrf=sportObj.getString("brf");
+                            if(!sportObj.isNull("txt"))
+                                weather.sportTxt=sportObj.getString("txt");
+                        }
+                        if(!suggestObj.isNull("trav")){
+                            JSONObject travObj=suggestObj.getJSONObject("trav");
+                            if(!travObj.isNull("brf"))
+                                weather.travBrf=travObj.getString("brf");
+                            if(!travObj.isNull("txt"))
+                                weather.travTxt=travObj.getString("txt");
+                        }
+                        if(!suggestObj.isNull("uv")){
+                            JSONObject uvObj=suggestObj.getJSONObject("uv");
+                            if(!uvObj.isNull("brf"))
+                                weather.uvBrf=uvObj.getString("brf");
+                            if(!uvObj.isNull("txt"))
+                                weather.uvTxt=uvObj.getString("txt");
+                        }
+                    }
+
                 }
             }
         }
         if(weatherView!=null) {
             weatherView.loadViewData(weather.maxList, weather.minList, weather.dateList, weather.txtList, weather.dirList);
+        }
+        if(hourWeatherView!=null) {
+            hourWeatherView.loadViewData(weather.hourTmpList, weather.hourPopList, weather.hourDateList, weather.hourTxtList, weather.hourDirList);
         }
         if(weather.city!=null) {
             weatherList.add(weather);

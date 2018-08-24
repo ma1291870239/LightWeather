@@ -9,7 +9,7 @@
         android:paddingHorizontal="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="40dp">
         <TextView
             android:id="@+id/defaultPhoneTv"
             android:layout_width="0dp"
@@ -33,7 +33,7 @@
         android:paddingHorizontal="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="40dp">
         <TextView
             android:id="@+id/defaultLoctionTv"
             android:layout_width="0dp"
@@ -57,7 +57,7 @@
         android:paddingHorizontal="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="40dp">
         <TextView
             android:id="@+id/defaultWeatherTv"
             android:layout_width="0dp"
@@ -81,7 +81,7 @@
         android:paddingHorizontal="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="40dp">
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -103,7 +103,7 @@
         android:paddingHorizontal="10dp"
         android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="40dp">
         <TextView
             android:layout_width="0dp"
             android:layout_weight="1"

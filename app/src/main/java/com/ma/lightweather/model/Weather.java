@@ -26,4 +26,30 @@ public class Weather implements Serializable{
     public List<String> dateList=new ArrayList<>();
 
 
+    public List<Integer> hourTmpList=new ArrayList<>();
+    public List<Integer> hourPopList=new ArrayList<>();
+    public List<String> hourTxtList=new ArrayList<>();
+    public List<String> hourDirList=new ArrayList<>();
+    public List<String> hourDateList=new ArrayList<>();
+
+    public String airBrf;
+    public String airTxt;
+    public String comfBrf;
+    public String comfTxt;
+    public String cwBrf;
+    public String cwTxt;
+    public String drsgBrf;
+    public String drsgTxt;
+    public String fluBrf;
+    public String fluTxt;
+    public String sportBrf;
+    public String sportTxt;
+    public String travBrf;
+    public String travTxt;
+    public String uvBrf;
+    public String uvTxt;
+
+
+
+
 }

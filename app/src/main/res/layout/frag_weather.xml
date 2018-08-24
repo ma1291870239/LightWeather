@@ -16,8 +16,7 @@
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="2"
+                    android:layout_height="200dp"
                     android:layout_margin="10dp"
                     android:orientation="horizontal"
                     android:background="@drawable/bg_weather_round_grey">
@@ -116,14 +115,129 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="3"
-                    android:layout_margin="15dp">
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:text="实时天气"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_wather_textview_grey" />
+                    <com.ma.lightweather.widget.HourWeatherView
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="20dp"
+                        android:id="@+id/hourweather_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/xiantiao"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:text="未来七天"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_wather_textview_grey" />
                     <com.ma.lightweather.widget.WeatherView
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="20dp"
                         android:id="@+id/weather_view"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="200dp" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/xiantiao"/>
                 </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:text="生活指数"
+                        android:gravity="center_vertical"
+                        android:background="@drawable/bg_wather_textview_grey" />
+                    <TextView
+                        android:background="@drawable/bg_search_round_grey"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/airTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"/>
+                    <TextView
+                        android:background="@drawable/bg_search_round_grey"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/cwTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"/>
+                    <TextView
+                        android:background="@drawable/bg_search_round_grey"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/drsgTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"/>
+                    <TextView
+                        android:background="@drawable/bg_search_round_grey"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/fluTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"/>
+                    <TextView
+                        android:background="@drawable/bg_search_round_grey"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/sportTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"/>
+                    <TextView
+                        android:background="@drawable/bg_search_round_grey"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/travTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"/>
+                    <TextView
+                        android:background="@drawable/bg_search_round_grey"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/comfTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"/>
+                    <TextView
+                        android:background="@drawable/bg_search_round_grey"
+                        android:padding="5dp"
+                        android:layout_marginTop="10dp"
+                        android:id="@+id/uvTextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:lineSpacingExtra="5dp"/>
+
+                </LinearLayout>
+
             </LinearLayout>
 
         </ScrollView>
