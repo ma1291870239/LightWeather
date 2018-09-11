@@ -17,6 +17,7 @@ public class BaseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_base);
         sharedPreferences=getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE);
     }
+    
 
 
 }

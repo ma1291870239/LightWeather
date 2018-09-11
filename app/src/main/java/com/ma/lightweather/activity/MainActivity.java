@@ -27,6 +27,7 @@ import com.ma.lightweather.fragment.WeatherFragment;
 import com.ma.lightweather.model.Contants;
 import com.ma.lightweather.model.Weather;
 import com.ma.lightweather.utils.CommonUtils;
+import com.ma.lightweather.utils.SharedPrefencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -114,7 +115,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.actionbar_refresh:
-                String city=getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE).getString(Contants.CITY,"洛阳");
+                String city=(String) SharedPrefencesUtils.getParam(MainActivity.this,Contants.CITY,"Surface Lumia");
                 refresh(city);
                 break;
         }
