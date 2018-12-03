@@ -1,8 +1,10 @@
 package com.ma.lightweather.utils;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -10,7 +12,10 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+
+import com.ma.lightweather.activity.SplashActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;

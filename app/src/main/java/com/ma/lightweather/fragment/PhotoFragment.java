@@ -1,8 +1,10 @@
 package com.ma.lightweather.fragment;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -12,6 +14,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ma.lightweather.R;
+import com.ma.lightweather.activity.SplashActivity;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.PhotoUtils;
@@ -129,6 +133,11 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                 SharedPrefencesUtils.setParam(getActivity(),Contants.WEATHER,weatherTv.getText().toString());
                 break;
             case R.id.photoLayout:
+                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED){
+                    CommonUtils.showShortToast(getActivity(),"当前没有读写权限");
+                    return ;
+                }
                 showActionSheet();
                 break;
             case R.id.scoreLayout:
@@ -226,6 +235,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ContentResolver contentResolver = getActivity().getContentResolver();
+        bitmap=null;
             switch (requestCode) {
                 case RESULT_PHOTO://拍照
                     try {

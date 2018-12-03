@@ -16,7 +16,7 @@ public class Weather implements Serializable{
     public String cnty;
     public String dir;
     public String txt;
-    public String pm;
+    public String wind;
     public String pres;
     public String vis;
     public List<Integer> maxList=new ArrayList<>();

@@ -59,6 +59,8 @@ public class Parse {
                             weather.txt= nowObj.getString("cond_txt");
                         if(!nowObj.isNull("wind_dir"))
                             weather.dir=nowObj.getString("wind_dir");
+                        if(!nowObj.isNull("wind_spd"))
+                            weather.wind=nowObj.getString("wind_spd");
                     }
                     //未来七天
                     if(!weatherObj.isNull("daily_forecast")){

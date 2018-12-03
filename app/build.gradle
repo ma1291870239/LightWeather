@@ -7,9 +7,9 @@ android {
     defaultConfig {
         applicationId "com.ma.lightweather"
         minSdkVersion 15
-        targetSdkVersion 22
-        versionCode 8
-        versionName "3.6.2"
+        targetSdkVersion 26
+        versionCode 9
+        versionName "3.6.3"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
@@ -17,7 +17,11 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            // Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

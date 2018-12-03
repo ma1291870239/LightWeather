@@ -1,11 +1,16 @@
 package com.ma.lightweather.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -25,6 +30,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     private ImageView backIv,downloadIv;
     private TextView skipTv;
     private static final int DOWNLOAD_CODE=200;
+    private static final int PERMISSION_CODE_WRITE = 1;
     private CountDownTimer countDownTimer;
     private Handler handler=new Handler(){
         @Override
@@ -44,16 +50,20 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
-        init();
+        initView();
+        checkPermission();
     }
 
-    private void init() {
+    private void initView() {
         backIv=findViewById(R.id.backIv);
         downloadIv=findViewById(R.id.downloadIv);
         skipTv=findViewById(R.id.skipTv);
-        Glide.with(this).load(Contants.BINGURL).into(backIv);
         downloadIv.setOnClickListener(this);
         skipTv.setOnClickListener(this);
+    }
+
+    private void initData() {
+        Glide.with(this).load(Contants.BINGURL).into(backIv);
         countDownTimer=new CountDownTimer(4000,1000) {
             @Override
             public void onTick(long l) {
@@ -68,10 +78,27 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         countDownTimer.start();
     }
 
+
+    private void checkPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    PERMISSION_CODE_WRITE);
+        }else{
+            initData();
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.downloadIv:
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                        != PackageManager.PERMISSION_GRANTED){
+                    CommonUtils.showShortToast(this,"当前没有读写权限");
+                    return ;
+                }
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -111,5 +138,15 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     protected void onDestroy() {
         super.onDestroy();
         countDownTimer.cancel();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case PERMISSION_CODE_WRITE:
+                default:
+                initData();
+                return;
+        }
     }
 }

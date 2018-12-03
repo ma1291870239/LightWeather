@@ -53,14 +53,14 @@ public class WeatherFragment extends BaseFragment{
                     swipeRefreshLayout.setRefreshing(false);
                     for(int i=0;i<weatherList.size();i++) {
                         tmptv.setText(weatherList.get(i).tmp+"℃");
-                        feeltv.setText("　体感："+weatherList.get(i).feel+"℃");
-                        humtv.setText("　湿度："+weatherList.get(i).hum+"%");
-                        pcpntv.setText("　降雨："+weatherList.get(i).pcpn+"mm");
+                        feeltv.setText("　体感："+weatherList.get(i).feel+" ℃");
+                        humtv.setText("　湿度："+weatherList.get(i).hum+" %");
+                        pcpntv.setText("　降雨："+weatherList.get(i).pcpn+" mm");
                         citytv.setText(weatherList.get(i).city+"　"+weatherList.get(i).cnty);
                         windtv.setText(weatherList.get(i).txt+"　"+weatherList.get(i).dir);
-                        pmtv.setText("　污染："+weatherList.get(i).pm);
-                        prestv.setText("　气压："+weatherList.get(i).pres+"Pa");
-                        vistv.setText("　能见："+weatherList.get(i).vis+"km");
+                        pmtv.setText("　风速："+weatherList.get(i).wind+" km/h");
+                        prestv.setText("　气压："+weatherList.get(i).pres+" Pa");
+                        vistv.setText("　能见："+weatherList.get(i).vis+" km");
                         for (int j=0;j<weatherList.get(i).lifeTypeList.size();j++){
                             Weather weather=weatherList.get(i);
                             String type=weather.lifeTypeList.get(j);

@@ -89,9 +89,9 @@
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="1"
-                            android:drawableLeft="@mipmap/pm"
+                            android:drawableLeft="@mipmap/wind"
                             android:gravity="center_vertical"
-                            android:text=" 污染:"
+                            android:text=" 风速:"
                             android:textColor="@color/white"/>
                         <TextView
                             android:id="@+id/weather_pres"
