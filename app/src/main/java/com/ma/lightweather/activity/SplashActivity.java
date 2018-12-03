@@ -1,12 +1,9 @@
 package com.ma.lightweather.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
@@ -17,14 +14,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.ma.lightweather.R;
-import com.ma.lightweather.model.Contants;
+import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.PhotoUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Timer;
 import java.util.concurrent.ExecutionException;
 
 public class SplashActivity extends BaseActivity implements View.OnClickListener{

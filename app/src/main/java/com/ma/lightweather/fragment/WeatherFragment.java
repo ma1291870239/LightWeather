@@ -6,13 +6,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,9 +18,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ma.lightweather.R;
-import com.ma.lightweather.model.Contants;
+import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.model.Weather;
-import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.Parse;
 import com.ma.lightweather.utils.SharedPrefencesUtils;
 import com.ma.lightweather.widget.HourWeatherView;
@@ -64,14 +61,35 @@ public class WeatherFragment extends BaseFragment{
                         pmtv.setText("　污染："+weatherList.get(i).pm);
                         prestv.setText("　气压："+weatherList.get(i).pres+"Pa");
                         vistv.setText("　能见："+weatherList.get(i).vis+"km");
-                        airTv.setText("空气指数　　"+weatherList.get(i).airBrf+"\n"+weatherList.get(i).airTxt);
-                        cwTv.setText("洗车指数　　"+weatherList.get(i).cwBrf+"\n"+weatherList.get(i).cwTxt);
-                        drsgTv.setText("穿衣指数　　"+weatherList.get(i).drsgBrf+"\n"+weatherList.get(i).drsgTxt);
-                        fluTv.setText("感冒指数　　"+weatherList.get(i).fluBrf+"\n"+weatherList.get(i).fluTxt);
-                        sportTv.setText("运动指数　　"+weatherList.get(i).sportBrf+"\n"+weatherList.get(i).sportTxt);
-                        travTv.setText("旅游指数　　"+weatherList.get(i).travBrf+"\n"+weatherList.get(i).travTxt);
-                        comfTv.setText("舒适度指数　"+weatherList.get(i).comfBrf+"\n"+weatherList.get(i).comfTxt);
-                        uvTv.setText("紫外线指数　"+weatherList.get(i).uvBrf+"\n"+weatherList.get(i).uvTxt);
+                        for (int j=0;j<weatherList.get(i).lifeTypeList.size();j++){
+                            Weather weather=weatherList.get(i);
+                            String type=weather.lifeTypeList.get(j);
+                            String s=weather.lifeBrfList.get(j)+"\n"+weather.lifeTxtList.get(j);
+                            if(type.equals("air")){
+                                airTv.setText("空气指数　　"+s);
+                            }
+                            if(type.equals("cw")){
+                                cwTv.setText("洗车指数　　"+s);
+                            }
+                            if(type.equals("drsg")){
+                                drsgTv.setText("穿衣指数　　"+s);
+                            }
+                            if(type.equals("flu")){
+                                fluTv.setText("感冒指数　　"+s);
+                            }
+                            if(type.equals("sport")){
+                                sportTv.setText("运动指数　　"+s);
+                            }
+                            if(type.equals("trav")){
+                                travTv.setText("旅游指数　　"+s);
+                            }
+                            if(type.equals("comf")){
+                                comfTv.setText("舒适度指数　"+s);
+                            }
+                            if(type.equals("uv")){
+                                uvTv.setText("紫外线指数　"+s);
+                            }
+                        }
                         SharedPrefencesUtils.setParam(getActivity(),Contants.CITY,weatherList.get(i).city);
                         SharedPrefencesUtils.setParam(getActivity(),Contants.TMP,weatherList.get(i).tmp);
                         SharedPrefencesUtils.setParam(getActivity(),Contants.TXT,weatherList.get(i).txt);
@@ -98,7 +116,7 @@ public class WeatherFragment extends BaseFragment{
     public void loadData(String city) {
         this.city=city;
         RequestQueue requestQueue= Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city + Contants.KEY,
+        StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

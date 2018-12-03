@@ -1,28 +1,20 @@
 package com.ma.lightweather.fragment;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,7 +25,7 @@ import com.ma.lightweather.R;
 import com.ma.lightweather.activity.MainActivity;
 import com.ma.lightweather.adapter.CityAdapter;
 import com.ma.lightweather.db.MydataBaseHelper;
-import com.ma.lightweather.model.Contants;
+import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.model.Weather;
 import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.Parse;
@@ -193,7 +185,7 @@ public class SearchFrgment extends BaseFragment{
 
     private void loadData(final String city) {
         RequestQueue requestQueue=Volley.newRequestQueue(getActivity());
-        StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city + Contants.KEY,
+        StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

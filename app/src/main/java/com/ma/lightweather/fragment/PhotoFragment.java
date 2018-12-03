@@ -1,8 +1,6 @@
 package com.ma.lightweather.fragment;
 
-import android.content.ActivityNotFoundException;
 import android.content.ContentResolver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,7 +13,6 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +21,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.util.Util;
 import com.ma.lightweather.R;
-import com.ma.lightweather.model.Contants;
+import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.PhotoUtils;
 import com.ma.lightweather.utils.SharedPrefencesUtils;
@@ -34,9 +30,7 @@ import com.ma.lightweather.widget.ActionSheetDialog;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Calendar;
 
 /**
