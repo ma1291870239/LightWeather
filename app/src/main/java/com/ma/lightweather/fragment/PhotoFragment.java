@@ -128,8 +128,8 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                 SharedPrefencesUtils.setParam(getActivity(),Contants.LOCTION,loctionTv.getText().toString());
                 break;
             case R.id.defaultWeatherTv:
-                weatherTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.TMP,"")+"℃ "
-                        +(String) SharedPrefencesUtils.getParam(getActivity(),Contants.TXT,""));
+                weatherTv.setText(SharedPrefencesUtils.getParam(getActivity(),Contants.TMP,"")+"℃ "
+                        +SharedPrefencesUtils.getParam(getActivity(),Contants.TXT,""));
                 SharedPrefencesUtils.setParam(getActivity(),Contants.WEATHER,weatherTv.getText().toString());
                 break;
             case R.id.photoLayout:

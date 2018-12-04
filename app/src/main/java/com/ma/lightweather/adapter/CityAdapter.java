@@ -47,15 +47,14 @@ public class CityAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int i, View view, ViewGroup viewGroup) {
-        Log.e("abc", "getView: "+i+weatherList.get(i).city );
         ViewHolder vh=null;
         if(view==null){
             vh=new ViewHolder();
             view= LayoutInflater.from(mainActivity).inflate(R.layout.item_city,null);
             vh.weatherLayout=view.findViewById(R.id.item_weather);
-            vh.citytv= (TextView) view.findViewById(R.id.item_city);
-            vh.tmptv= (TextView) view.findViewById(R.id.item_tmp);
-            vh.txttv= (TextView) view.findViewById(R.id.item_txt);
+            vh.citytv= view.findViewById(R.id.item_city);
+            vh.tmptv= view.findViewById(R.id.item_tmp);
+            vh.txttv= view.findViewById(R.id.item_txt);
             vh.iv=view.findViewById(R.id.item_delete);
             view.setTag(vh);
         }else{

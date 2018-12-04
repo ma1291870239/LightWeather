@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -38,6 +39,7 @@ public class WeatherFragment extends BaseFragment{
     private View view;
     private TextView tmptv,feeltv,humtv,pcpntv,citytv,windtv,pmtv,prestv,vistv;
     private TextView airTv,comfTv,cwTv,drsgTv,fluTv,sportTv,travTv,uvTv;
+    private ScrollView scrollView;
     private WeatherView weatherView;
     private HourWeatherView hourWeatherView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -51,6 +53,7 @@ public class WeatherFragment extends BaseFragment{
             switch (msg.what){
                 case WEATHER_CODE:
                     swipeRefreshLayout.setRefreshing(false);
+                    scrollView.scrollTo(0,0);
                     for(int i=0;i<weatherList.size();i++) {
                         tmptv.setText(weatherList.get(i).tmp+"℃");
                         feeltv.setText("　体感："+weatherList.get(i).feel+" ℃");
@@ -147,6 +150,7 @@ public class WeatherFragment extends BaseFragment{
         pmtv=view.findViewById(R.id.weather_pm);//PM2.5
         prestv=view.findViewById(R.id.weather_pres);//气压
         vistv=view.findViewById(R.id.weather_vis);//能见度
+        scrollView=view.findViewById(R.id.weather_scroll);
         weatherView=view.findViewById(R.id.weather_view);
         hourWeatherView=view.findViewById(R.id.hourweather_view);
         airTv=view.findViewById(R.id.airTextView);
