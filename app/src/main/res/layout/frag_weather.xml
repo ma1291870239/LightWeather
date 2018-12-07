@@ -6,7 +6,7 @@
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <ScrollView
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/weather_scroll"
             android:fillViewport="true"
             android:layout_width="match_parent"
@@ -122,8 +122,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
+                        android:paddingLeft="10dp"
                         android:text="实时天气"
+                        android:textColor="@color/text"
                         android:gravity="center_vertical"
                         android:background="@drawable/bg_wather_textview_grey" />
                     <com.ma.lightweather.widget.HourWeatherView
@@ -145,8 +146,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
+                        android:paddingLeft="10dp"
                         android:text="未来七天"
+                        android:textColor="@color/text"
                         android:gravity="center_vertical"
                         android:background="@drawable/bg_wather_textview_grey" />
                     <com.ma.lightweather.widget.WeatherView
@@ -168,8 +170,9 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingLeft="5dp"
+                        android:paddingLeft="10dp"
                         android:text="生活指数"
+                        android:textColor="@color/text"
                         android:gravity="center_vertical"
                         android:background="@drawable/bg_wather_textview_grey" />
                     <TextView
@@ -177,6 +180,7 @@
                         android:padding="5dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/airTextView"
+                        android:textColor="@color/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="5dp"/>
@@ -185,6 +189,7 @@
                         android:padding="5dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/cwTextView"
+                        android:textColor="@color/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="5dp"/>
@@ -193,6 +198,7 @@
                         android:padding="5dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/drsgTextView"
+                        android:textColor="@color/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="5dp"/>
@@ -201,6 +207,7 @@
                         android:padding="5dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/fluTextView"
+                        android:textColor="@color/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="5dp"/>
@@ -209,6 +216,7 @@
                         android:padding="5dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/sportTextView"
+                        android:textColor="@color/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="5dp"/>
@@ -217,6 +225,7 @@
                         android:padding="5dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/travTextView"
+                        android:textColor="@color/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="5dp"/>
@@ -225,6 +234,7 @@
                         android:padding="5dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/comfTextView"
+                        android:textColor="@color/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="5dp"/>
@@ -233,6 +243,7 @@
                         android:padding="5dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/uvTextView"
+                        android:textColor="@color/text"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:lineSpacingExtra="5dp"/>
@@ -241,7 +252,7 @@
 
             </LinearLayout>
 
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
 
 </LinearLayout>

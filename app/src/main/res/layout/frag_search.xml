@@ -7,21 +7,21 @@
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:layout_height="match_parent">
-    <SearchView
-        android:id="@+id/search_sv"
-        android:layout_margin="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:queryHint="请输入要查询的城市名字"
-        android:background="@drawable/bg_search_round_grey"
-        android:iconifiedByDefault="false"
-        android:searchIcon="@mipmap/search"/>
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <SearchView
+            android:id="@+id/search_sv"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:queryHint="请输入要查询的城市名字"
+            android:background="@drawable/bg_search_round_grey"
+            android:iconifiedByDefault="false"
+            android:searchIcon="@mipmap/search"/>
         <ListView
             android:id="@+id/search_lv"
             android:layout_width="match_parent"

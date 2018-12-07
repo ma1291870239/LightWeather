@@ -102,9 +102,9 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         shareLayout.setOnClickListener(this);
 
 
-        phoneTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.MODEL,"Surface Lumia"));
-        loctionTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.LOCTION,"M78星云"));
-        weatherTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.WEATHER,"100℃ 台风地震"));
+        phoneTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.MODEL,"点击左侧设置当前机型"));
+        loctionTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.LOCTION,"点击左侧设置当前城市"));
+        weatherTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.WEATHER,"点击左侧设置当前天气"));
     }
 
     @Override

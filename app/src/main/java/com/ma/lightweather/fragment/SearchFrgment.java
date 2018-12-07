@@ -141,8 +141,8 @@ public class SearchFrgment extends BaseFragment{
     }
 
     private void initView() {
-        sv= (SearchView) view.findViewById(R.id.search_sv);
-        lv= (ListView) view.findViewById(R.id.search_lv);
+        sv=  view.findViewById(R.id.search_sv);
+        lv=  view.findViewById(R.id.search_lv);
         rootView=view.findViewById(R.id.rootView);
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.background));
@@ -162,9 +162,9 @@ public class SearchFrgment extends BaseFragment{
             //设置字体大小为14sp
             textView.setTextSize(14);
             //设置字体颜色
-            textView.setTextColor(getActivity().getResources().getColor(R.color.background));
+            textView.setTextColor(getActivity().getResources().getColor(R.color.text));
             //设置提示文字颜色
-            textView.setHintTextColor(getActivity().getResources().getColor(R.color.background));
+            textView.setHintTextColor(getActivity().getResources().getColor(R.color.text));
         }
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

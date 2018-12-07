@@ -80,7 +80,7 @@ public class ActionSheetDialog {
 		showTitle = true;
 		txt_title.setVisibility(View.VISIBLE);
 		txt_title.setText(title);
-		txt_title.setTextColor(Color.parseColor("#8F8F8F"));
+		txt_title.setTextColor(context.getResources().getColor(R.color.text));
 		return this;
 	}
 
@@ -217,7 +217,7 @@ public class ActionSheetDialog {
 	}
 
 	public enum SheetItemColor {
-		GREY("#8A000000");
+		GREY("#78909C");
 
 		private String name;
 

@@ -16,7 +16,7 @@
         android:paddingBottom="10dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:textSize="13sp"
+        android:textSize="14sp"
         android:visibility="gone" />
     <View
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
         android:layout_marginTop="8dp"
         android:gravity="center"
         android:text="取消"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textColor="@color/text"
+        android:textSize="14sp" />
 
 </LinearLayout>

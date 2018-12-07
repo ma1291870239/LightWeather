@@ -2,11 +2,16 @@ package com.ma.lightweather.activity;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.AppCompatImageView;
+import android.support.v7.widget.SearchView;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,6 +21,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.ma.lightweather.R;
 import com.ma.lightweather.db.MydataBaseHelper;
@@ -32,12 +38,14 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener{
 
-    private TextView weathertv,searchtv,phototv;
     private WeatherFragment weatherFrag;
     private SearchFrgment searchFrag;
     private PhotoFragment photoFrag;
     private ViewPager viewPager;
+    private android.support.v7.widget.Toolbar toolBar;
+    private TabLayout tabLayout;
     private List<Fragment> fragmentList=new ArrayList<>();
+    private List<String> titleList=new ArrayList<>();
     private MydataBaseHelper dbHelper;
     private long clickTime = 0;
 
@@ -56,37 +64,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         fragmentList.add(weatherFrag);
         fragmentList.add(searchFrag);
         fragmentList.add(photoFrag);
+        titleList.add("天气");
+        titleList.add("城市");
+        titleList.add("拍照");
         viewPager.setAdapter(new ViewAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(viewPager);
     }
 
     private void initView() {
-        weathertv=findViewById(R.id.main_weather);
-        searchtv= findViewById(R.id.main_search);
-        phototv= findViewById(R.id.main_photo);
-        viewPager=findViewById(R.id.main_frag);
-        weathertv.setOnClickListener(this);
-        searchtv.setOnClickListener(this);
-        phototv.setOnClickListener(this);
+        toolBar=findViewById(R.id.toolBar);
+        toolBar.inflateMenu(R.menu.toolbar_menu);
+        tabLayout=findViewById(R.id.tabLayout);
+        viewPager=findViewById(R.id.viewPager);
         viewPager.setOffscreenPageLimit(2);
         viewPager.setCurrentItem(0);
+        setSupportActionBar(toolBar);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.main_weather:
-                viewPager.setCurrentItem(0);
-                break;
-            case R.id.main_search:
-                viewPager.setCurrentItem(1);
-                break;
-            case R.id.main_photo:
-                viewPager.setCurrentItem(2);
-                break;
         }
     }
-
-
 
 
     public void refresh(String city){
@@ -104,17 +103,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.actionbar_menu,menu);
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.toolbar_menu,menu);
+        MenuItem item = menu.findItem(R.id.toolBarSearch);
+        SearchView searchView = (SearchView) item.getActionView();
+        SearchView.SearchAutoComplete et = searchView.findViewById(R.id.search_src_text);
+        et.setHint("111");
+        et.setHintTextColor(getResources().getColor(R.color.grey));
+        et.setTextColor(getResources().getColor(R.color.white));
+        et.setBackgroundColor(getResources().getColor(R.color.text));
+        return super.onCreateOptionsMenu(menu) ;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.actionbar_refresh:
-                String city=(String) SharedPrefencesUtils.getParam(MainActivity.this,Contants.CITY,"Surface Lumia");
-                refresh(city);
+            case R.id.toolBarSearch:
+                //String city=(String) SharedPrefencesUtils.getParam(MainActivity.this,Contants.CITY,"Surface Lumia");
+                //refresh(city);
                 break;
         }
         return super.onContextItemSelected(item);
@@ -133,6 +138,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         @Override
         public int getCount() {
             return fragmentList.size();
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titleList.get(position);
         }
     }
 

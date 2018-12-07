@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#757575</color>
-    <color name="colorPrimaryDark">#616161</color>
-    <color name="colorAccent">#757575</color>
+    <color name="colorPrimary">#00BCD4</color>
+    <color name="colorPrimaryDark">#00ACC1</color>
+    <color name="colorAccent">#006064</color>
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="gery">#2B2B2B</color>
+    <color name="grey">#EEEEEE</color>
     <color name="xiantiao">#D9D9D9</color>
-    <color name="background">#757575</color>
+    <color name="background">#00BCD4</color>
     <color name="temp_high">#F4511E</color>
     <color name="temp_low">#039BE5</color>
-    <color name="temp">#757575</color>
-    <color name="search_bg">#E0E0E0</color>
+    <color name="temp">#607D8B</color>
+    <color name="search_bg">#ECEFF1</color>
     <color name="splash_back">#80000000</color>
-    <color name="text">#757575</color>
+    <color name="text">#78909C</color>
 
 </resources>

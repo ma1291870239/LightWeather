@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,7 @@ public class WeatherFragment extends BaseFragment{
     private View view;
     private TextView tmptv,feeltv,humtv,pcpntv,citytv,windtv,pmtv,prestv,vistv;
     private TextView airTv,comfTv,cwTv,drsgTv,fluTv,sportTv,travTv,uvTv;
-    private ScrollView scrollView;
+    private NestedScrollView scrollView;
     private WeatherView weatherView;
     private HourWeatherView hourWeatherView;
     private SwipeRefreshLayout swipeRefreshLayout;
