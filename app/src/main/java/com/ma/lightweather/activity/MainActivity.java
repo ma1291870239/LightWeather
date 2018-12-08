@@ -1,45 +1,35 @@
 package com.ma.lightweather.activity;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.SearchView;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toolbar;
 
 import com.ma.lightweather.R;
 import com.ma.lightweather.db.MydataBaseHelper;
 import com.ma.lightweather.fragment.PhotoFragment;
-import com.ma.lightweather.fragment.SearchFrgment;
+import com.ma.lightweather.fragment.CityFrgment;
 import com.ma.lightweather.fragment.WeatherFragment;
-import com.ma.lightweather.app.Contants;
-import com.ma.lightweather.model.Weather;
 import com.ma.lightweather.utils.CommonUtils;
-import com.ma.lightweather.utils.SharedPrefencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends BaseActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity {
 
     private WeatherFragment weatherFrag;
-    private SearchFrgment searchFrag;
+    private CityFrgment cityFrag;
     private PhotoFragment photoFrag;
     private ViewPager viewPager;
     private android.support.v7.widget.Toolbar toolBar;
@@ -59,10 +49,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
 
     private void initData() {
         weatherFrag=new WeatherFragment();
-        searchFrag=new SearchFrgment();
+        cityFrag=new CityFrgment();
         photoFrag=new PhotoFragment();
         fragmentList.add(weatherFrag);
-        fragmentList.add(searchFrag);
+        fragmentList.add(cityFrag);
         fragmentList.add(photoFrag);
         titleList.add("天气");
         titleList.add("城市");
@@ -81,48 +71,44 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         setSupportActionBar(toolBar);
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()){
+
+    public void refresh(String city,boolean isSkip){
+        if(isSkip) {
+            viewPager.setCurrentItem(0);
         }
-    }
-
-
-    public void refresh(String city){
-        viewPager.setCurrentItem(0);
         weatherFrag.loadData(city);
     }
 
-    public void deleteCity(String city,List<Weather> weatherList,int position){
-        dbHelper=new MydataBaseHelper(this,"Weather.db",null,1);
-        SQLiteDatabase db=dbHelper.getWritableDatabase();
-        db.delete("weather","city = ?",new String[]{weatherList.get(position).city});
-        weatherList.remove(position);
-        searchFrag.selectdb(true);
+    public void refreshCity(){
+        cityFrag.initData();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu,menu);
         MenuItem item = menu.findItem(R.id.toolBarSearch);
-        SearchView searchView = (SearchView) item.getActionView();
+        final SearchView searchView = (SearchView) item.getActionView();
         SearchView.SearchAutoComplete et = searchView.findViewById(R.id.search_src_text);
-        et.setHint("111");
-        et.setHintTextColor(getResources().getColor(R.color.grey));
-        et.setTextColor(getResources().getColor(R.color.white));
-        et.setBackgroundColor(getResources().getColor(R.color.text));
-        return super.onCreateOptionsMenu(menu) ;
-    }
+        et.setTextSize(14);
+        et.setHint("请输入要查询的城市名字");
+        et.setHintTextColor(getResources().getColor(R.color.text));
+        et.setTextColor(getResources().getColor(R.color.text));
+        et.setBackgroundResource(R.drawable.bg_search_round_grey);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                refresh(query,true);
+                searchView.clearFocus();
+                searchView.setQuery("",false);
+                return false;
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.toolBarSearch:
-                //String city=(String) SharedPrefencesUtils.getParam(MainActivity.this,Contants.CITY,"Surface Lumia");
-                //refresh(city);
-                break;
-        }
-        return super.onContextItemSelected(item);
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu) ;
     }
 
     class ViewAdapter extends FragmentPagerAdapter{

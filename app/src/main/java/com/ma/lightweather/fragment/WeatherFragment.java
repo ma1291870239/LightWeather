@@ -20,8 +20,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ma.lightweather.R;
+import com.ma.lightweather.activity.MainActivity;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.model.Weather;
+import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.Parse;
 import com.ma.lightweather.utils.SharedPrefencesUtils;
 import com.ma.lightweather.widget.HourWeatherView;
@@ -47,6 +49,7 @@ public class WeatherFragment extends BaseFragment{
     private List<Weather> weatherList;
     private String city;
     private static final int WEATHER_CODE=200;
+    private static final int NOCITY_CODE=100;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -98,8 +101,11 @@ public class WeatherFragment extends BaseFragment{
                         SharedPrefencesUtils.setParam(getActivity(),Contants.TMP,weatherList.get(i).tmp);
                         SharedPrefencesUtils.setParam(getActivity(),Contants.TXT,weatherList.get(i).txt);
                         //CommonUtils.showShortToast(getActivity(),"数据已更新");
-                        break;
                     }
+                    break;
+                case NOCITY_CODE:
+                    CommonUtils.showShortToast(getActivity(),"未找到该城市");
+                    break;
             }
         }
     };
@@ -108,7 +114,7 @@ public class WeatherFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.frag_weather,null);
-        city= (String) SharedPrefencesUtils.getParam(getActivity(),Contants.CITY,"洛阳");
+        city= (String) SharedPrefencesUtils.getParam(getActivity(),Contants.CITY,Contants.CITYNAME);
         initView();
         if(isAdded()){
             loadData(city);
@@ -126,16 +132,21 @@ public class WeatherFragment extends BaseFragment{
                     public void onResponse(String response) {
                         try {
                             weatherList= Parse.parseWeather(response,weatherView,hourWeatherView,getActivity());
-                            handler.sendEmptyMessage(WEATHER_CODE);
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        }
+                        if(weatherList.size()>0) {
+                            handler.sendEmptyMessage(WEATHER_CODE);
+                            ((MainActivity)getActivity()).refreshCity();
+                        }else {
+                            handler.sendEmptyMessage(NOCITY_CODE);
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        swipeRefreshLayout.setRefreshing(false);
                     }
                 });
         requestQueue.add(stringRequest);
@@ -177,14 +188,7 @@ public class WeatherFragment extends BaseFragment{
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser&&isResumed()){
-            softInputHide();
         }
     }
 
-    public void softInputHide() {
-        InputMethodManager imm = ( InputMethodManager ) view.getContext( ).getSystemService( Context.INPUT_METHOD_SERVICE );
-        if ( imm.isActive( ) ) {
-            imm.hideSoftInputFromWindow(view.getApplicationWindowToken( ) , 0 );
-        }
-    }
 }

@@ -1,5 +1,7 @@
 package com.ma.lightweather.adapter;
 
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +11,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.ma.lightweather.R;
+
 import com.ma.lightweather.activity.MainActivity;
+import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.model.Weather;
+import com.ma.lightweather.utils.CommonUtils;
+import com.ma.lightweather.utils.DbUtils;
+import com.ma.lightweather.utils.SharedPrefencesUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,25 +25,53 @@ import java.util.List;
 /**
  * Created by Ma-PC on 2016/12/14.
  */
-public class CityAdapter extends BaseAdapter {
+public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> {
 
-    private MainActivity mainActivity;
+    private Context context;
     private List<Weather> weatherList;
-    private String city;
 
-    public CityAdapter(MainActivity mainActivity,List<Weather> weatherList){
-        this.mainActivity=mainActivity;
+    public CityAdapter(Context context,List<Weather> weatherList){
+        this.context=context;
         this.weatherList=weatherList;
     }
 
     @Override
-    public int getCount() {
-        return weatherList.size();
+    public CityHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view= LayoutInflater.from(context).inflate(R.layout.item_city,parent,false);
+        return new CityHolder(view);
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public void onBindViewHolder(CityHolder holder, final int i) {
+        holder.citytv.setText(weatherList.get(i).city);
+        holder.tmptv.setText(weatherList.get(i).tmp+"℃");
+        holder.txttv.setText(weatherList.get(i).txt+" "+weatherList.get(i).dir);
+        holder.weatherLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(context instanceof MainActivity){
+                    ((MainActivity) context).refresh(weatherList.get(i).city,true);
+                }
+            }
+        });
+        holder.iv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String city1= (String) SharedPrefencesUtils.getParam(context,Contants.CITY,Contants.CITYNAME);
+                String city2=weatherList.get(i).city;
+                if(weatherList.size()>1) {
+                    DbUtils.deleteCity(context, weatherList.get(i).city);
+                    if (context instanceof MainActivity) {
+                        ((MainActivity) context).refreshCity();
+                        if(city1.equals(city2)){
+                            ((MainActivity) context).refresh(weatherList.get(0).city,false);
+                        }
+                    }
+                }else {
+                    CommonUtils.showShortToast(context,"至少保留一个城市");
+                }
+            }
+        });
     }
 
     @Override
@@ -46,42 +80,25 @@ public class CityAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int i, View view, ViewGroup viewGroup) {
-        ViewHolder vh=null;
-        if(view==null){
-            vh=new ViewHolder();
-            view= LayoutInflater.from(mainActivity).inflate(R.layout.item_city,null);
-            vh.weatherLayout=view.findViewById(R.id.item_weather);
-            vh.citytv= view.findViewById(R.id.item_city);
-            vh.tmptv= view.findViewById(R.id.item_tmp);
-            vh.txttv= view.findViewById(R.id.item_txt);
-            vh.iv=view.findViewById(R.id.item_delete);
-            view.setTag(vh);
-        }else{
-            vh= (ViewHolder) view.getTag();
+    public int getItemCount() {
+        if(weatherList==null){
+            return 0;
         }
-        vh.citytv.setText(weatherList.get(i).city);
-        vh.tmptv.setText(weatherList.get(i).tmp+"℃");
-        vh.txttv.setText(weatherList.get(i).txt+" "+weatherList.get(i).dir);
-        vh.weatherLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainActivity.refresh(weatherList.get(i).city);
-            }
-        });
-        vh.iv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mainActivity.deleteCity(city,weatherList,i);
-            }
-        });
-
-        return view;
+        return weatherList.size();
     }
 
-    class ViewHolder{
+    class CityHolder extends RecyclerView.ViewHolder {
         private TextView citytv,tmptv,txttv;
         private LinearLayout weatherLayout;
         private ImageView iv;
+
+        public CityHolder(View itemView) {
+            super(itemView);
+            weatherLayout=itemView.findViewById(R.id.item_weather);
+            citytv= itemView.findViewById(R.id.item_city);
+            tmptv= itemView.findViewById(R.id.item_tmp);
+            txttv= itemView.findViewById(R.id.item_txt);
+            iv=itemView.findViewById(R.id.item_delete);
+        }
     }
 }

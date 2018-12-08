@@ -1,9 +1,7 @@
 package com.ma.lightweather.utils;
 
 import android.content.Context;
-import android.util.Log;
 
-import com.ma.lightweather.db.MydataBaseHelper;
 import com.ma.lightweather.model.Weather;
 import com.ma.lightweather.widget.HourWeatherView;
 import com.ma.lightweather.widget.WeatherView;
@@ -120,14 +118,16 @@ public class Parse {
                 }
             }
         }
-        if(weatherView!=null) {
-            weatherView.loadViewData(weather.maxList, weather.minList, weather.dateList, weather.txtList, weather.dirList);
-        }
-        if(hourWeatherView!=null) {
-            hourWeatherView.loadViewData(weather.hourTmpList, weather.hourPopList, weather.hourDateList, weather.hourTxtList, weather.hourDirList);
-        }
+
         if(weather.city!=null) {
             weatherList.add(weather);
+            DbUtils.createdb(context,weatherList);
+            if(weatherView!=null) {
+                weatherView.loadViewData(weather.maxList, weather.minList, weather.dateList, weather.txtList, weather.dirList);
+            }
+            if(hourWeatherView!=null) {
+                hourWeatherView.loadViewData(weather.hourTmpList, weather.hourPopList, weather.hourDateList, weather.hourTxtList, weather.hourDirList);
+            }
         }
         return weatherList;
     }
