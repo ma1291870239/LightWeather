@@ -1,11 +1,29 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="CyanAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorPrimary">@color/cyanColorPrimary</item>
+        <item name="colorPrimaryDark">@color/cyanColorPrimaryDark</item>
+        <item name="colorAccent">@color/cyanColorPrimary</item>
+        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="PuroleAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/purpleColorPrimary</item>
+        <item name="colorPrimaryDark">@color/purpleColorPrimaryDark</item>
+        <item name="colorAccent">@color/purpleColorPrimary</item>
+        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="RedAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/redColorPrimary</item>
+        <item name="colorPrimaryDark">@color/redColorPrimaryDark</item>
+        <item name="colorAccent">@color/redColorPrimary</item>
         <item name="android:windowBackground">@color/grey</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>

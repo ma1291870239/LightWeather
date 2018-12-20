@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
+import com.ma.lightweather.R;
 import com.ma.lightweather.activity.MainActivity;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.model.Weather;

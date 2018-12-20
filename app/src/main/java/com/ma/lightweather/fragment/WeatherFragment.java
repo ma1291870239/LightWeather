@@ -175,7 +175,7 @@ public class WeatherFragment extends BaseFragment{
         uvTv=view.findViewById(R.id.uvTextView);
 
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.background));
+        swipeRefreshLayout.setColorSchemeResources(R.color.background);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
