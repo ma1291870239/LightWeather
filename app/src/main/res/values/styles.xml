@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/cyanColorPrimary</item>
         <item name="colorPrimaryDark">@color/cyanColorPrimaryDark</item>
-        <item name="colorAccent">@color/cyanColorPrimary</item>
+        <item name="colorAccent">@color/cyanColorAccent</item>
         <item name="android:windowBackground">@color/grey</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
@@ -28,13 +28,58 @@
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
+    <style name="PinkAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/pinkColorPrimary</item>
+        <item name="colorPrimaryDark">@color/pinkColorPrimaryDark</item>
+        <item name="colorAccent">@color/pinkColorPrimary</item>
+        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="GreenAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/greenColorPrimary</item>
+        <item name="colorPrimaryDark">@color/greenColorPrimaryDark</item>
+        <item name="colorAccent">@color/greenColorPrimary</item>
+        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="OrangeAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/orangeColorPrimary</item>
+        <item name="colorPrimaryDark">@color/orangeColorPrimaryDark</item>
+        <item name="colorAccent">@color/orangeColorPrimary</item>
+        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="BlueAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/blueColorPrimary</item>
+        <item name="colorPrimaryDark">@color/blueColorPrimaryDark</item>
+        <item name="colorAccent">@color/blueColorPrimary</item>
+        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
+    <style name="GreyAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/greyColorPrimary</item>
+        <item name="colorPrimaryDark">@color/greyColorPrimaryDark</item>
+        <item name="colorAccent">@color/greyColorPrimary</item>
+        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
+    </style>
+
     <style name="ActionSheetDialogStyle" parent="@android:style/Theme.Dialog">
 
         <!-- 背景透明 -->
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <!-- 浮于Activity之上 -->
-        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowIsFloating">true</item>b
         <!-- 边框 -->
         <item name="android:windowFrame">@null</item>
         <!-- Dialog以外的区域模糊效果 -->
@@ -43,6 +88,25 @@
         <item name="android:windowNoTitle">true</item>
         <!-- 半透明 -->
         <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+    <style name="WeatherFragTitleText" >
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:background">@drawable/bg_wather_textview_grey</item>
+    </style>
+
+    <style name="WeatherFragText" >
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:lineSpacingExtra">5dp</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:background">@drawable/bg_search_round_grey</item>
     </style>
 
 </resources>

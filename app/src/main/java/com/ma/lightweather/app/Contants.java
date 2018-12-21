@@ -21,4 +21,5 @@ public class Contants {
     public final static String LOCTION="loction";
     public final static String WEATHER="weather";
     public final static String CITYNAME="洛阳";
+    public static int THEMETAG=0;
 }

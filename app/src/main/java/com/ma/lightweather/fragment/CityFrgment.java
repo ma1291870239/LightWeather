@@ -74,7 +74,15 @@ public class CityFrgment extends BaseFragment{
     private void initView() {
         recyclerView = view.findViewById(R.id.recyclerView);
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(R.color.background);
+        if(Contants.THEMETAG==0){
+            swipeRefreshLayout.setColorSchemeResources(R.color.cyanColorAccent);
+        }else if(Contants.THEMETAG==1){
+            swipeRefreshLayout.setColorSchemeResources(R.color.purpleColorAccent);
+        }else if(Contants.THEMETAG==2){
+            swipeRefreshLayout.setColorSchemeResources(R.color.redColorAccent);
+        }else if(Contants.THEMETAG==3){
+            swipeRefreshLayout.setColorSchemeResources(R.color.white);
+        }
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

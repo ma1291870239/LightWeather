@@ -120,13 +120,8 @@
                     android:layout_margin="10dp"
                     android:orientation="vertical">
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:text="实时天气"
-                        android:textColor="@color/text"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/bg_wather_textview_grey" />
+                        style="@style/WeatherFragTitleText"
+                        android:text="实时天气" />
                     <com.ma.lightweather.widget.HourWeatherView
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="20dp"
@@ -144,13 +139,8 @@
                     android:layout_margin="10dp"
                     android:orientation="vertical">
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:text="未来七天"
-                        android:textColor="@color/text"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/bg_wather_textview_grey" />
+                        style="@style/WeatherFragTitleText"
+                        android:text="未来七天" />
                     <com.ma.lightweather.widget.WeatherView
                         android:layout_marginTop="15dp"
                         android:layout_marginBottom="20dp"
@@ -168,85 +158,33 @@
                     android:layout_margin="10dp"
                     android:orientation="vertical">
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingLeft="10dp"
-                        android:text="生活指数"
-                        android:textColor="@color/text"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/bg_wather_textview_grey" />
+                        style="@style/WeatherFragTitleText"
+                        android:text="生活指数" />
                     <TextView
-                        android:background="@drawable/bg_search_round_grey"
-                        android:padding="5dp"
-                        android:layout_marginTop="10dp"
                         android:id="@+id/airTextView"
-                        android:textColor="@color/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="5dp"/>
+                        style="@style/WeatherFragText"/>
                     <TextView
-                        android:background="@drawable/bg_search_round_grey"
-                        android:padding="5dp"
-                        android:layout_marginTop="10dp"
                         android:id="@+id/cwTextView"
-                        android:textColor="@color/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="5dp"/>
+                        style="@style/WeatherFragText"/>
                     <TextView
-                        android:background="@drawable/bg_search_round_grey"
-                        android:padding="5dp"
-                        android:layout_marginTop="10dp"
                         android:id="@+id/drsgTextView"
-                        android:textColor="@color/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="5dp"/>
+                        style="@style/WeatherFragText"/>
                     <TextView
-                        android:background="@drawable/bg_search_round_grey"
-                        android:padding="5dp"
                         android:layout_marginTop="10dp"
                         android:id="@+id/fluTextView"
-                        android:textColor="@color/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="5dp"/>
+                        style="@style/WeatherFragText"/>
                     <TextView
-                        android:background="@drawable/bg_search_round_grey"
-                        android:padding="5dp"
-                        android:layout_marginTop="10dp"
                         android:id="@+id/sportTextView"
-                        android:textColor="@color/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="5dp"/>
+                        style="@style/WeatherFragText"/>
                     <TextView
-                        android:background="@drawable/bg_search_round_grey"
-                        android:padding="5dp"
-                        android:layout_marginTop="10dp"
                         android:id="@+id/travTextView"
-                        android:textColor="@color/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="5dp"/>
+                        style="@style/WeatherFragText"/>
                     <TextView
-                        android:background="@drawable/bg_search_round_grey"
-                        android:padding="5dp"
-                        android:layout_marginTop="10dp"
                         android:id="@+id/comfTextView"
-                        android:textColor="@color/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="5dp"/>
+                        style="@style/WeatherFragText"/>
                     <TextView
-                        android:background="@drawable/bg_search_round_grey"
-                        android:padding="5dp"
-                        android:layout_marginTop="10dp"
                         android:id="@+id/uvTextView"
-                        android:textColor="@color/text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:lineSpacingExtra="5dp"/>
+                        style="@style/WeatherFragText"/>
 
                 </LinearLayout>
 
