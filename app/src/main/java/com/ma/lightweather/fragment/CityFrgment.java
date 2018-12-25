@@ -1,5 +1,6 @@
 package com.ma.lightweather.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -7,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import com.ma.lightweather.activity.MainActivity;
 import com.ma.lightweather.adapter.CityAdapter;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.model.Weather;
+import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.DbUtils;
 import com.ma.lightweather.utils.Parse;
 import com.ma.lightweather.widget.HourWeatherView;
@@ -50,19 +53,20 @@ public class CityFrgment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.frag_city,null);
-        if(!isAdded()){
-            return view;
+        if(isAdded()){
+            initView();
+            initData();
         }
-        initView();
-        initData();
         return view;
     }
 
     public void initData() {
         city="";
         weatherData.clear();
-        weatherData.addAll(DbUtils.selectdb(getActivity()));
-        swipeRefreshLayout.setRefreshing(false);
+        weatherData.addAll(DbUtils.selectdb(context));
+        if(swipeRefreshLayout!=null){
+            swipeRefreshLayout.setRefreshing(false);
+        }
         if(cityAdapter==null) {
             cityAdapter = new CityAdapter(getActivity(), weatherData);
             recyclerView.setAdapter(cityAdapter);
@@ -74,15 +78,7 @@ public class CityFrgment extends BaseFragment{
     private void initView() {
         recyclerView = view.findViewById(R.id.recyclerView);
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        if(Contants.THEMETAG==0){
-            swipeRefreshLayout.setColorSchemeResources(R.color.cyanColorAccent);
-        }else if(Contants.THEMETAG==1){
-            swipeRefreshLayout.setColorSchemeResources(R.color.purpleColorAccent);
-        }else if(Contants.THEMETAG==2){
-            swipeRefreshLayout.setColorSchemeResources(R.color.redColorAccent);
-        }else if(Contants.THEMETAG==3){
-            swipeRefreshLayout.setColorSchemeResources(R.color.white);
-        }
+        swipeRefreshLayout.setColorSchemeResources(CommonUtils.getColor());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -90,23 +86,23 @@ public class CityFrgment extends BaseFragment{
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        DividerItemDecoration divider = new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(getActivity(),R.drawable.bg_divider));
+        DividerItemDecoration divider = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(context,R.drawable.bg_divider));
         recyclerView.addItemDecoration(divider);
     }
 
     private void loadData(final String city) {
-        RequestQueue requestQueue=Volley.newRequestQueue(getActivity());
+        RequestQueue requestQueue=Volley.newRequestQueue(context);
         StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         swipeRefreshLayout.setRefreshing(false);
                         try {
-                            weatherList= Parse.parseWeather(response,weatherView,hourWeatherView,getActivity());
+                            weatherList= Parse.parseWeather(response,weatherView,hourWeatherView,context);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

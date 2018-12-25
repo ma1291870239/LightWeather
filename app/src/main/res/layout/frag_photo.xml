@@ -113,6 +113,30 @@
                     android:textSize="14sp"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/themeLayout"
+                android:background="@drawable/bg_weatherlist_round_grey"
+                android:paddingHorizontal="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="切换主题"
+                    android:textColor="@color/text"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    android:textColor="@color/text"
+                    android:gravity="center_vertical|right"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/scoreLayout"
                 android:background="@drawable/bg_weatherlist_round_grey"
                 android:paddingHorizontal="10dp"

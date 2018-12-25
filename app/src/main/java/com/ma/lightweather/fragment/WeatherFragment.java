@@ -7,6 +7,7 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,14 +98,14 @@ public class WeatherFragment extends BaseFragment{
                                 uvTv.setText("紫外线指数　"+s);
                             }
                         }
-                        SharedPrefencesUtils.setParam(getActivity(),Contants.CITY,weatherList.get(i).city);
-                        SharedPrefencesUtils.setParam(getActivity(),Contants.TMP,weatherList.get(i).tmp);
-                        SharedPrefencesUtils.setParam(getActivity(),Contants.TXT,weatherList.get(i).txt);
-                        //CommonUtils.showShortToast(getActivity(),"数据已更新");
+                        SharedPrefencesUtils.setParam(context,Contants.CITY,weatherList.get(i).city);
+                        SharedPrefencesUtils.setParam(context,Contants.TMP,weatherList.get(i).tmp);
+                        SharedPrefencesUtils.setParam(context,Contants.TXT,weatherList.get(i).txt);
+                        //CommonUtils.showShortToast(getC,"数据已更新");
                     }
                     break;
                 case NOCITY_CODE:
-                    CommonUtils.showShortToast(getActivity(),"未找到该城市");
+                    CommonUtils.showShortToast(context,"未找到该城市");
                     break;
             }
         }
@@ -114,9 +115,9 @@ public class WeatherFragment extends BaseFragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.frag_weather,null);
-        city= (String) SharedPrefencesUtils.getParam(getActivity(),Contants.CITY,Contants.CITYNAME);
-        initView();
+        city= (String) SharedPrefencesUtils.getParam(context,Contants.CITY,Contants.CITYNAME);
         if(isAdded()){
+            initView();
             loadData(city);
         }
         return view;
@@ -125,13 +126,13 @@ public class WeatherFragment extends BaseFragment{
     //加载上部数据
     public void loadData(String city) {
         this.city=city;
-        RequestQueue requestQueue= Volley.newRequestQueue(getActivity());
+        RequestQueue requestQueue= Volley.newRequestQueue(context);
         StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            weatherList= Parse.parseWeather(response,weatherView,hourWeatherView,getActivity());
+                            weatherList= Parse.parseWeather(response,weatherView,hourWeatherView,context);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -175,15 +176,7 @@ public class WeatherFragment extends BaseFragment{
         uvTv=view.findViewById(R.id.uvTextView);
 
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        if(Contants.THEMETAG==0){
-            swipeRefreshLayout.setColorSchemeResources(R.color.cyanColorAccent);
-        }else if(Contants.THEMETAG==1){
-            swipeRefreshLayout.setColorSchemeResources(R.color.purpleColorAccent);
-        }else if(Contants.THEMETAG==2){
-            swipeRefreshLayout.setColorSchemeResources(R.color.redColorAccent);
-        }else if(Contants.THEMETAG==3){
-            swipeRefreshLayout.setColorSchemeResources(R.color.white);
-        }
+        swipeRefreshLayout.setColorSchemeResources(CommonUtils.getColor());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

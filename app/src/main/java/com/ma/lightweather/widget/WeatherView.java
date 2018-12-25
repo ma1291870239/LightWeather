@@ -122,7 +122,6 @@ public class WeatherView extends View {
         }
         //分割线
         for (int i=1;i<dateList.size();i++){
-            Log.e("abc", "onDraw: "+i+dateList.size() );
             canvas.drawLine(2*i*xSpace,50,2*i*xSpace,viewhigh-texthigh,textPaint);
         }
     }

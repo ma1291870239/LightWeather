@@ -6,8 +6,10 @@ import android.os.IBinder;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,8 +45,22 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.e("abc","mian activity");
         initView();
         initData();
+    }
+
+    @Override
+    public void recreate() {
+        try {//避免重启太快 恢复
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            for (Fragment fragment : fragmentList) {
+                fragmentTransaction.remove(fragment);
+            }
+            fragmentTransaction.commitAllowingStateLoss();
+        } catch (Exception e) {
+        }
+        super.recreate();
     }
 
     private void initData() {
@@ -59,6 +75,7 @@ public class MainActivity extends BaseActivity {
         titleList.add("拍照");
         viewPager.setAdapter(new ViewAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
+        Log.e("abc","mian activity 111111"+cityFrag);
     }
 
     private void initView() {

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.ma.lightweather.R;
+import com.ma.lightweather.app.Contants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,8 +139,56 @@ public class CommonUtils {
         return false;
     }
 
+    public static int getColor(){
+        if(Contants.THEMETAG==0){
+           return  R.color.cyanColorAccent;
+        }else if(Contants.THEMETAG==1){
+            return  R.color.purpleColorAccent;
+        }else if(Contants.THEMETAG==2){
+            return  R.color.redColorAccent;
+        }else if(Contants.THEMETAG==3){
+            return  R.color.pinkColorAccent;
+        }else if(Contants.THEMETAG==4){
+            return  R.color.greenColorAccent;
+        }else if(Contants.THEMETAG==5){
+            return  R.color.blueColorAccent;
+        }else if(Contants.THEMETAG==6){
+            return  R.color.orangeColorAccent;
+        }else if(Contants.THEMETAG==7){
+            return  R.color.greyColorAccent;
+        }
+        return  R.color.text;
+    }
 
+    /**
+     * dp转换成px
+     */
+    public static int dp2px(Context context,float dpValue){
+        float scale=context.getResources().getDisplayMetrics().density;
+        return (int)(dpValue*scale+0.5f);
+    }
 
+    /**
+     * px转换成dp
+     */
+    public static int px2dp(Context context,float pxValue){
+        float scale=context.getResources().getDisplayMetrics().density;
+        return (int)(pxValue/scale+0.5f);
+    }
+    /**
+     * sp转换成px
+     */
+    public static int sp2px(Context context,float spValue){
+        float fontScale=context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (spValue*fontScale+0.5f);
+    }
+    /**
+     * px转换成sp
+     */
+    public static int px2sp(Context context,float pxValue){
+        float fontScale=context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (pxValue/fontScale+0.5f);
+    }
 
 
 }

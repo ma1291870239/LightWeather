@@ -16,16 +16,20 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ma.lightweather.R;
-import com.ma.lightweather.activity.SplashActivity;
+import com.ma.lightweather.activity.MainActivity;
+import com.ma.lightweather.adapter.SelectColorAdapter;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.PhotoUtils;
@@ -35,7 +39,9 @@ import com.ma.lightweather.widget.ActionSheetDialog;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Created by Ma-PC on 2016/12/5.
@@ -43,7 +49,7 @@ import java.util.Calendar;
 public class PhotoFragment extends BaseFragment implements View.OnClickListener{
 
     private View view;
-    private LinearLayout phoneLayout,loctionLayout,weatherLayout,photoLayout,scoreLayout,shareLayout;
+    private LinearLayout phoneLayout,loctionLayout,weatherLayout,photoLayout,scoreLayout,themeLayout,shareLayout;
     private TextView defaultPhoneTv,defaultLoctionTv,defaultWeatherTv,phoneTv,loctionTv,weatherTv;
     private ImageView imgView;
 
@@ -62,7 +68,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
             super.handleMessage(msg);
             switch (msg.what){
                 case SAVE_CODE:
-                    CommonUtils.showShortToast(getActivity(),"水印照片保存成功");
+                    CommonUtils.showShortToast(context,"水印照片保存成功");
                     break;
             }
         }
@@ -83,6 +89,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         weatherLayout=view.findViewById(R.id.weatherLayout);
         photoLayout=view.findViewById(R.id.photoLayout);
         scoreLayout=view.findViewById(R.id.scoreLayout);
+        themeLayout=view.findViewById(R.id.themeLayout);
         shareLayout=view.findViewById(R.id.shareLayout);
         phoneTv=view.findViewById(R.id.phoneTv);
         loctionTv=view.findViewById(R.id.loctionTv);
@@ -99,12 +106,13 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         defaultWeatherTv.setOnClickListener(this);
         photoLayout.setOnClickListener(this);
         scoreLayout.setOnClickListener(this);
+        themeLayout.setOnClickListener(this);
         shareLayout.setOnClickListener(this);
 
 
-        phoneTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.MODEL,"点击左侧设置当前机型"));
-        loctionTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.LOCTION,"点击左侧设置当前城市"));
-        weatherTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.WEATHER,"点击左侧设置当前天气"));
+        phoneTv.setText((String) SharedPrefencesUtils.getParam(context,Contants.MODEL,"点击左侧设置当前机型"));
+        loctionTv.setText((String) SharedPrefencesUtils.getParam(context,Contants.LOCTION,"点击左侧设置当前城市"));
+        weatherTv.setText((String) SharedPrefencesUtils.getParam(context,Contants.WEATHER,"点击左侧设置当前天气"));
     }
 
     @Override
@@ -121,27 +129,30 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                 break;
             case R.id.defaultPhoneTv:
                 phoneTv.setText(android.os.Build.BRAND+" "+android.os.Build.MODEL);
-                SharedPrefencesUtils.setParam(getActivity(),Contants.MODEL,phoneTv.getText().toString());
+                SharedPrefencesUtils.setParam(context,Contants.MODEL,phoneTv.getText().toString());
                 break;
             case R.id.defaultLoctionTv:
-                loctionTv.setText((String) SharedPrefencesUtils.getParam(getActivity(),Contants.CITY,""));
-                SharedPrefencesUtils.setParam(getActivity(),Contants.LOCTION,loctionTv.getText().toString());
+                loctionTv.setText((String) SharedPrefencesUtils.getParam(context,Contants.CITY,""));
+                SharedPrefencesUtils.setParam(context,Contants.LOCTION,loctionTv.getText().toString());
                 break;
             case R.id.defaultWeatherTv:
-                weatherTv.setText(SharedPrefencesUtils.getParam(getActivity(),Contants.TMP,"")+"℃ "
-                        +SharedPrefencesUtils.getParam(getActivity(),Contants.TXT,""));
-                SharedPrefencesUtils.setParam(getActivity(),Contants.WEATHER,weatherTv.getText().toString());
+                weatherTv.setText(SharedPrefencesUtils.getParam(context,Contants.TMP,"")+"℃ "
+                        +SharedPrefencesUtils.getParam(context,Contants.TXT,""));
+                SharedPrefencesUtils.setParam(context,Contants.WEATHER,weatherTv.getText().toString());
                 break;
             case R.id.photoLayout:
-                if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED){
-                    CommonUtils.showShortToast(getActivity(),"当前没有读写权限");
+                    CommonUtils.showShortToast(context,"当前没有读写权限");
                     return ;
                 }
                 showActionSheet();
                 break;
             case R.id.scoreLayout:
                 goToMarket();
+                break;
+            case R.id.themeLayout:
+                selectColor();
                 break;
             case R.id.shareLayout:
                 break;
@@ -150,18 +161,48 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
 
     }
 
+    private void selectColor(){
+        List<String> txtList = new ArrayList();
+        txtList.add("青");txtList.add("紫");txtList.add("红");txtList.add("粉");
+        txtList.add("绿");txtList.add("蓝");txtList.add("橙");txtList.add("灰");
 
-    public void goToMarket() {
-        Uri uri = Uri.parse("market://details?id=" + getActivity().getPackageName());
+        List<Integer> colorList = new ArrayList();
+        colorList.add(R.color.cyanColorAccent);colorList.add(R.color.purpleColorAccent);
+        colorList.add(R.color.redColorAccent);colorList.add(R.color.pinkColorAccent);
+        colorList.add(R.color.greenColorAccent);colorList.add(R.color.blueColorAccent);
+        colorList.add(R.color.orangeColorAccent);colorList.add(R.color.greyColorAccent);
+
+        SelectColorAdapter adapter = new SelectColorAdapter(getActivity(),txtList,colorList );
+        AlertDialog dialog=new AlertDialog.Builder(getActivity())
+                .setSingleChoiceItems(adapter, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        SharedPrefencesUtils.setParam(context,Contants.THEME,which);
+                        getActivity().recreate();
+                    }
+                }).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+        lp.gravity = Gravity.CENTER;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.width  =  CommonUtils.dp2px(context,200);
+        dialog.getWindow().setAttributes(lp);
+
+    }
+
+    private void goToMarket() {
+        Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         try {
-            if(CommonUtils.isContains(getActivity(),"com.tencent.android.qqdownloader")){
+            if(CommonUtils.isContains(context,"com.tencent.android.qqdownloader")){
                 goToMarket.setPackage("com.tencent.android.qqdownloader");
             }
-            if(CommonUtils.isContains(getActivity(),"com.coolapk.market")) {
+            if(CommonUtils.isContains(context,"com.coolapk.market")) {
                 goToMarket.setPackage("com.coolapk.market");
             }
-            getActivity().startActivity(goToMarket);
+            context.startActivity(goToMarket);
         } catch (Exception e) {
             e.printStackTrace();
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -191,7 +232,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
     }
 
     private void showDialog(final int tag){
-        final View view =LayoutInflater.from(getActivity()).inflate(R.layout.item_dialog, null);
+        final View view =LayoutInflater.from(context).inflate(R.layout.item_edit_dialog, null);
         final EditText edit=view.findViewById(R.id.editText);//获得输入框对象
         new AlertDialog.Builder(getActivity()).setTitle("请输入")
                 .setView(view)
@@ -201,13 +242,13 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                         String s=edit.getText().toString();
                         if(tag==1){
                             phoneTv.setText(s);
-                            SharedPrefencesUtils.setParam(getActivity(),Contants.MODEL,phoneTv.getText().toString());
+                            SharedPrefencesUtils.setParam(context,Contants.MODEL,phoneTv.getText().toString());
                         }if(tag==2){
                             loctionTv.setText(s);
-                            SharedPrefencesUtils.setParam(getActivity(),Contants.LOCTION,loctionTv.getText().toString());
+                            SharedPrefencesUtils.setParam(context,Contants.LOCTION,loctionTv.getText().toString());
                         }if(tag==3){
                             weatherTv.setText(s);
-                            SharedPrefencesUtils.setParam(getActivity(),Contants.WEATHER,weatherTv.getText().toString());
+                            SharedPrefencesUtils.setParam(context,Contants.WEATHER,weatherTv.getText().toString());
                         }
                     }
                 })
@@ -224,7 +265,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         }
         out = new File(strImgPath, filename);
         strImgPath = strImgPath + filename;
-        imgUrl = PhotoUtils.getUriForFile(getActivity(),out);
+        imgUrl = PhotoUtils.getUriForFile(context,out);
         imageCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUrl);
         imageCaptureIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(imageCaptureIntent, RESULT_PHOTO);
@@ -234,7 +275,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ContentResolver contentResolver = getActivity().getContentResolver();
+        ContentResolver contentResolver = context.getContentResolver();
         bitmap=null;
             switch (requestCode) {
                 case RESULT_PHOTO://拍照
@@ -257,12 +298,12 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                     break;
             }
             if(bitmap!=null){
-                bitmap=CommonUtils.drawTextToRightBottom(getActivity(),bitmap,phoneTv.getText().toString(),loctionTv.getText().toString(),weatherTv.getText().toString());
+                bitmap=CommonUtils.drawTextToRightBottom(context,bitmap,phoneTv.getText().toString(),loctionTv.getText().toString(),weatherTv.getText().toString());
                 //imgView.setImageBitmap(bitmap);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        boolean isSave=PhotoUtils.saveImageToGallery(getActivity(),bitmap);
+                        boolean isSave=PhotoUtils.saveImageToGallery(context,bitmap);
                         if(isSave){
                             handler.sendEmptyMessage(SAVE_CODE);
                         }
