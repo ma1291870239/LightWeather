@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 
 import com.ma.lightweather.R;
+import com.ma.lightweather.utils.CommonUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -169,8 +170,7 @@ public class ActionSheetDialog {
 
 			// 字体颜色
 			if (color == null) {
-				textView.setTextColor(Color.parseColor(SheetItemColor.GREY
-						.getName()));
+				textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor()));
 			} else {
 				textView.setTextColor(Color.parseColor(color.getName()));
 			}
@@ -217,7 +217,7 @@ public class ActionSheetDialog {
 	}
 
 	public enum SheetItemColor {
-		GREY("#78909C");
+		GREY("#607D8B");
 
 		private String name;
 

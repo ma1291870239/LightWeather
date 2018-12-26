@@ -1,6 +1,5 @@
 package com.ma.lightweather.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -8,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.ma.lightweather.R;
-import com.ma.lightweather.activity.MainActivity;
 import com.ma.lightweather.adapter.CityAdapter;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.model.Weather;
@@ -78,7 +75,7 @@ public class CityFrgment extends BaseFragment{
     private void initView() {
         recyclerView = view.findViewById(R.id.recyclerView);
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(CommonUtils.getColor());
+        swipeRefreshLayout.setColorSchemeResources(CommonUtils.getBackColor());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

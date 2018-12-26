@@ -45,7 +45,6 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.e("abc","mian activity");
         initView();
         initData();
     }
@@ -75,7 +74,6 @@ public class MainActivity extends BaseActivity {
         titleList.add("拍照");
         viewPager.setAdapter(new ViewAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
-        Log.e("abc","mian activity 111111"+cityFrag);
     }
 
     private void initView() {

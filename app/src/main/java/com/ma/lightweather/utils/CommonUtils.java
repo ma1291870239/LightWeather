@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.ma.lightweather.R;
 import com.ma.lightweather.app.Contants;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class CommonUtils {
 
         int w = bitmap.getWidth();
         int h = bitmap.getHeight();
-        int offset=h/60;
+        int offset=h/50;
         int phoneSpace=0;
         int loctionSpace=0;
         int paddingLeft=w -offset;
@@ -63,7 +65,6 @@ public class CommonUtils {
         //间隔大小
         if(!phoneText.isEmpty()){
             //绘制机型
-            phoneText="拍摄自"+phoneText;
             Paint phonePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             phonePaint.setColor(context.getResources().getColor(R.color.white));
             phonePaint.setTextSize(textSize/4);
@@ -92,7 +93,7 @@ public class CommonUtils {
             //绘制天气
             Paint weatherPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
             weatherPaint.setColor(context.getResources().getColor(R.color.white));
-            weatherPaint.setTextSize(textSize/2);
+            weatherPaint.setTextSize(textSize/3);
             Rect weatherBounds = new Rect();
             weatherPaint.getTextBounds(weatherText, 0, weatherText.length(), weatherBounds);
 
@@ -139,9 +140,31 @@ public class CommonUtils {
         return false;
     }
 
-    public static int getColor(){
+    public static int getBackColor(){
         if(Contants.THEMETAG==0){
            return  R.color.cyanColorAccent;
+        }else if(Contants.THEMETAG==1){
+            return  R.color.purpleColorAccent;
+        }else if(Contants.THEMETAG==2){
+            return  R.color.redColorAccent;
+        }else if(Contants.THEMETAG==3){
+            return  R.color.pinkColorAccent;
+        }else if(Contants.THEMETAG==4){
+            return  R.color.greenColorAccent;
+        }else if(Contants.THEMETAG==5){
+            return  R.color.blueColorAccent;
+        }else if(Contants.THEMETAG==6){
+            return  R.color.orangeColorAccent;
+        }else if(Contants.THEMETAG==7){
+            return  R.color.greyColorAccent;
+        }
+        return  R.color.text;
+    }
+
+
+    public static int getTextColor(){
+        if(Contants.THEMETAG==0){
+            return  R.color.cyanColorAccent;
         }else if(Contants.THEMETAG==1){
             return  R.color.purpleColorAccent;
         }else if(Contants.THEMETAG==2){
@@ -190,5 +213,13 @@ public class CommonUtils {
         return (int) (pxValue/fontScale+0.5f);
     }
 
+    public static Bitmap compressBitmap(Bitmap bitmap){
+        int ratio=3;
+        if(bitmap.getHeight()>=1000||bitmap.getWidth()>=1000) {
+            Bitmap result = Bitmap.createBitmap(bitmap.getWidth() / ratio, bitmap.getHeight() / ratio, Bitmap.Config.ARGB_8888);
+            return result;
+        }
+        return bitmap;
+    }
 
 }

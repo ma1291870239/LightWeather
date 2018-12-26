@@ -59,7 +59,6 @@ public class SelectColorAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
         holder.txtTextView.setText(textList.get(position));
-        //holder.colorTextView.setBackgroundResource(R.drawable.bg_weather_round_grey);
         GradientDrawable gradientDrawable = (GradientDrawable) holder.colorTextView.getBackground();
         gradientDrawable.setColor(context.getResources().getColor(colorList.get(position)));
         return convertView;

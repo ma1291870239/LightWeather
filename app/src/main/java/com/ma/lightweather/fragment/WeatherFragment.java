@@ -1,18 +1,14 @@
 package com.ma.lightweather.fragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
@@ -176,7 +172,7 @@ public class WeatherFragment extends BaseFragment{
         uvTv=view.findViewById(R.id.uvTextView);
 
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(CommonUtils.getColor());
+        swipeRefreshLayout.setColorSchemeResources(CommonUtils.getBackColor());
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

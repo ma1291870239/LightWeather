@@ -1,12 +1,15 @@
 package com.ma.lightweather.fragment;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,10 +28,11 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ma.lightweather.R;
-import com.ma.lightweather.activity.MainActivity;
 import com.ma.lightweather.adapter.SelectColorAdapter;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.utils.CommonUtils;
@@ -36,6 +40,7 @@ import com.ma.lightweather.utils.PhotoUtils;
 import com.ma.lightweather.utils.SharedPrefencesUtils;
 import com.ma.lightweather.widget.ActionSheetDialog;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -57,10 +62,13 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
     private Uri imgUrl;
     private File out;
     private Bitmap bitmap;
+    private byte[] bytes;
+    private ProgressDialog progressDialog;
 
     private static final int RESULT_PHOTO=1;
     private static final int RESULT_PICTURE=2;
     private static final int SAVE_CODE=200;
+    private static final int TOBYTE_CODE=300;
 
     private Handler handler=new Handler(){
         @Override
@@ -68,7 +76,11 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
             super.handleMessage(msg);
             switch (msg.what){
                 case SAVE_CODE:
-                    CommonUtils.showShortToast(context,"水印照片保存成功");
+                    String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "lightweather";
+                    CommonUtils.showShortToast(context,"水印照片已成功保存至\n"+storePath);
+                    break;
+                case TOBYTE_CODE:
+                    showImgDialog();
                     break;
             }
         }
@@ -188,7 +200,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         lp.gravity = Gravity.CENTER;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
         lp.width  =  CommonUtils.dp2px(context,200);
-        dialog.getWindow().setAttributes(lp);
+        //dialog.getWindow().setAttributes(lp);
 
     }
 
@@ -216,12 +228,12 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
     private void showActionSheet() {
         new ActionSheetDialog(getActivity()).builder().setCancelable(true).setCanceledOnTouchOutside(true)
                 .setTitle("选择照片")
-                .addSheetItem("拍照", ActionSheetDialog.SheetItemColor.GREY, new ActionSheetDialog.OnSheetItemClickListener() {
+                .addSheetItem("拍照", null, new ActionSheetDialog.OnSheetItemClickListener() {
                     @Override
                     public void onClick(int which) {
                         cameraMethod();
                     }
-                }).addSheetItem("相册", ActionSheetDialog.SheetItemColor.GREY, new ActionSheetDialog.OnSheetItemClickListener() {
+                }).addSheetItem("相册", null, new ActionSheetDialog.OnSheetItemClickListener() {
             @Override
             public void onClick(int which) {
                 Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -232,14 +244,23 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
     }
 
     private void showDialog(final int tag){
-        final View view =LayoutInflater.from(context).inflate(R.layout.item_edit_dialog, null);
-        final EditText edit=view.findViewById(R.id.editText);//获得输入框对象
-        new AlertDialog.Builder(getActivity()).setTitle("请输入")
-                .setView(view)
+        final View titleView =LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null);
+        final TextView textView=titleView.findViewById(R.id.dialogTitle);
+        textView.setText("请输入");
+        textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor()));
+
+        final View contentView =LayoutInflater.from(context).inflate(R.layout.item_edit_dialog, null);
+        final EditText editText=contentView.findViewById(R.id.editText);
+        GradientDrawable gradientDrawable = (GradientDrawable) editText.getBackground();
+        gradientDrawable.setStroke(CommonUtils.dp2px(context, 1),context.getResources().getColor(CommonUtils.getBackColor()));
+
+        new AlertDialog.Builder(getActivity())
+                .setCustomTitle(titleView)
+                .setView(contentView)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        String s=edit.getText().toString();
+                        String s=editText.getText().toString();
                         if(tag==1){
                             phoneTv.setText(s);
                             SharedPrefencesUtils.setParam(context,Contants.MODEL,phoneTv.getText().toString());
@@ -253,6 +274,45 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                     }
                 })
                 .setNegativeButton("取消",null).show();
+    }
+
+
+    private void showImgDialog(){
+
+        final View titleView =LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null);
+        final TextView textView=titleView.findViewById(R.id.dialogTitle);
+        textView.setText("是否保存水印照片");
+        textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor()));
+
+        final View contentView =LayoutInflater.from(context).inflate(R.layout.item_img_dialog, null);
+        final ImageView imageView=contentView.findViewById(R.id.imgView);
+        Glide.with(context).load(bytes).into(imageView);
+
+        if(progressDialog!=null) {
+            progressDialog.cancel();
+            progressDialog.dismiss();
+        }
+        new AlertDialog.Builder(getActivity()).setTitle("是否保存")
+                .setCustomTitle(titleView)
+                .setView(contentView)
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                boolean isSave=PhotoUtils.saveImageToGallery(context,bitmap);
+                                bitmap.recycle();
+                                if(isSave){
+                                    handler.sendEmptyMessage(SAVE_CODE);
+                                }
+                            }
+                        }).start();
+
+                    }
+                })
+                .setNegativeButton("取消",null).show();
+
     }
 
     private void cameraMethod() {
@@ -299,14 +359,18 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
             }
             if(bitmap!=null){
                 bitmap=CommonUtils.drawTextToRightBottom(context,bitmap,phoneTv.getText().toString(),loctionTv.getText().toString(),weatherTv.getText().toString());
-                //imgView.setImageBitmap(bitmap);
+                progressDialog=ProgressDialog.show(getActivity(), null, "正在生成水印照片");
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        boolean isSave=PhotoUtils.saveImageToGallery(context,bitmap);
-                        if(isSave){
-                            handler.sendEmptyMessage(SAVE_CODE);
-                        }
+                        Matrix matrix = new Matrix();
+                        matrix.setScale(0.5f, 0.5f);
+                        Bitmap small = Bitmap.createBitmap(bitmap, 0, 0,bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+                        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                        small.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                        bytes=baos.toByteArray();
+                        small.recycle();
+                        handler.sendEmptyMessage(TOBYTE_CODE);
                     }
                 }).start();
             }
