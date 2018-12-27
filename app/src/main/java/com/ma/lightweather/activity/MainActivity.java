@@ -1,6 +1,7 @@
 package com.ma.lightweather.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.TabLayout;
@@ -19,6 +20,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import com.ma.lightweather.R;
+import com.ma.lightweather.app.WeatherService;
 import com.ma.lightweather.db.MydataBaseHelper;
 import com.ma.lightweather.fragment.PhotoFragment;
 import com.ma.lightweather.fragment.CityFrgment;
@@ -74,6 +76,9 @@ public class MainActivity extends BaseActivity {
         titleList.add("拍照");
         viewPager.setAdapter(new ViewAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
+
+        Intent it=new Intent(this, WeatherService.class);
+        startService(it);
     }
 
     private void initView() {

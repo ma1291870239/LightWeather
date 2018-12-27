@@ -99,7 +99,7 @@ public class CityFrgment extends BaseFragment{
                     public void onResponse(String response) {
                         swipeRefreshLayout.setRefreshing(false);
                         try {
-                            weatherList= Parse.parseWeather(response,weatherView,hourWeatherView,context);
+                            weatherList= Parse.parseWeather(response,null,null,context);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

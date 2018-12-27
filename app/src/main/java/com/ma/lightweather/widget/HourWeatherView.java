@@ -82,15 +82,27 @@ public class HourWeatherView extends View {
             min = Collections.min(tmpList);
             ySpace = (viewhigh-8*texthigh-40) / (max - min);
         }
-
-        //最高温度折线
+        //实时温度折线
         for(int i=0;i<tmpList.size();i++){
             pointPaint.setColor(getResources().getColor(R.color.temp));
             outPointPaint.setColor(getResources().getColor(R.color.temp));
-            if(i<tmpList.size()-1){
-                canvas.drawLine((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh,
-                        (2*i+3)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh, tmpPaint);
+            if(i==0){
+//                canvas.drawLine((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh,
+//                        (2*i+3)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh, tmpPaint);
+                path.moveTo((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh);
+                path.quadTo((2*i+2)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh,
+                        (2*i+3)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh);
+            }else if(i<tmpList.size()-2){
+                path.moveTo((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh);
+                path.cubicTo((2*i+2)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh,
+                        (2*i+2)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh,
+                        (2*i+3)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh);
+            }else if(i==tmpList.size()-2){
+                path.moveTo((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh);
+                path.quadTo((2*i+2)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh,
+                        (2*i+3)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh);
             }
+            canvas.drawPath(path,tmpPaint);
             canvas.drawCircle((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh,pointRadius,pointPaint);
             canvas.drawCircle((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh,outPointRadius,outPointPaint);
             canvas.drawText(tmpList.get(i)+"°",(2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh-20,textPaint);
