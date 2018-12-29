@@ -75,7 +75,7 @@ public class CityFrgment extends BaseFragment{
     private void initView() {
         recyclerView = view.findViewById(R.id.recyclerView);
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(CommonUtils.getBackColor());
+        swipeRefreshLayout.setColorSchemeResources(CommonUtils.getBackColor(context));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

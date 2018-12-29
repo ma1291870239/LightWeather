@@ -12,11 +12,7 @@
             android:orientation="vertical">
             <LinearLayout
                 android:id="@+id/phoneLayout"
-                android:background="@drawable/bg_weatherlist_round_grey"
-                android:paddingHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
+                style="@style/PhotoFragLayout">
                 <TextView
                     android:id="@+id/defaultPhoneTv"
                     android:layout_width="0dp"
@@ -38,11 +34,7 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/loctionLayout"
-                android:background="@drawable/bg_weatherlist_round_grey"
-                android:paddingHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
+                style="@style/PhotoFragLayout">
                 <TextView
                     android:id="@+id/defaultLoctionTv"
                     android:layout_width="0dp"
@@ -64,11 +56,7 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/weatherLayout"
-                android:background="@drawable/bg_weatherlist_round_grey"
-                android:paddingHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
+                style="@style/PhotoFragLayout">
                 <TextView
                     android:id="@+id/defaultWeatherTv"
                     android:layout_width="0dp"
@@ -90,11 +78,7 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/photoLayout"
-                android:background="@drawable/bg_weatherlist_round_grey"
-                android:paddingHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
+                style="@style/PhotoFragLayout">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -114,11 +98,7 @@
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/themeLayout"
-                android:background="@drawable/bg_weatherlist_round_grey"
-                android:paddingHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
+                style="@style/PhotoFragLayout">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -137,12 +117,28 @@
                     android:textSize="14sp"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/settingLayout"
+                style="@style/PhotoFragLayout">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text="软件设置"
+                    android:textColor="@color/text"
+                    android:gravity="center_vertical"
+                    android:textSize="16sp"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:text=""
+                    android:textColor="@color/text"
+                    android:gravity="center_vertical|right"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+            <LinearLayout
                 android:id="@+id/scoreLayout"
-                android:background="@drawable/bg_weatherlist_round_grey"
-                android:paddingHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="40dp">
+                style="@style/PhotoFragLayout">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -163,11 +159,7 @@
             <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/shareLayout"
-                android:background="@drawable/bg_weatherlist_round_grey"
-                android:paddingHorizontal="10dp"
-                android:layout_marginTop="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="45dp">
+                style="@style/PhotoFragLayout">
                 <TextView
                     android:layout_width="0dp"
                     android:layout_weight="1"

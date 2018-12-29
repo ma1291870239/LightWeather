@@ -27,16 +27,23 @@ public class HourWeatherView extends View {
     private Path path=new Path();
 
     private List<Integer> tmpList=new ArrayList<>();
+    private List<Float> midelTmpList=new ArrayList<>();
     private List<Integer> popList=new ArrayList<>();
     private List<String> dateList=new ArrayList<>();
     private List<String> txtList=new ArrayList<>();
     private List<String> dirList=new ArrayList<>();
 
-    private static int lineWidth=3;
+    private static int lineWidth=5;
     private static int pointWidth=3;
     private static int outPointWidth=3;
     private static int pointRadius=5;
     private static int outPointRadius=10;
+
+    private int xSpace;
+    private int offsetHigh;
+    private int ySpace;
+    private int max;
+    private int min;
 
     public HourWeatherView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -56,7 +63,7 @@ public class HourWeatherView extends View {
         tmpPaint.setColor(getResources().getColor(R.color.temp));
         tmpPaint.setAntiAlias(true);
         tmpPaint.setStrokeWidth(lineWidth);
-        tmpPaint.setStyle(Paint.Style.FILL);
+        tmpPaint.setStyle(Paint.Style.STROKE);
 
         textPaint.setColor(getResources().getColor(R.color.text));
         textPaint.setAntiAlias(true);
@@ -69,60 +76,71 @@ public class HourWeatherView extends View {
         int viewhigh=getMeasuredHeight();
         int viewwidth=getMeasuredWidth();
         textPaint.setTextSize(viewwidth/30);
-        int xSpace=viewwidth/16;
         Paint.FontMetrics fm = textPaint.getFontMetrics();
         int texthigh=(int)Math.ceil(fm.bottom - fm.top);
-
-        int ySpace=(viewhigh-4*texthigh-40)/50;
-        int offsetHigh=4*texthigh+10;
-        int max =0;
-        int min=0;
+        offsetHigh=4*texthigh+10;
+        xSpace=viewwidth/16;
+        ySpace=(viewhigh-4*texthigh-40)/50;
         if(tmpList.size()>0) {
             max = Collections.max(tmpList);
             min = Collections.min(tmpList);
             ySpace = (viewhigh-8*texthigh-40) / (max - min);
         }
+        path.reset();
         //实时温度折线
         for(int i=0;i<tmpList.size();i++){
             pointPaint.setColor(getResources().getColor(R.color.temp));
             outPointPaint.setColor(getResources().getColor(R.color.temp));
+//            if(i<minList.size()-1){
+//                canvas.drawLine((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,
+//                        (2*i+3)*xSpace,(max-minList.get(i+1))*ySpace+offsetHigh,minPaint);
+//            }
+            float x=getX(2*i+2);
+            float k1=0;
+            float k2=0;
+            float y1=0;
+            float y2=0;
             if(i==0){
-//                canvas.drawLine((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh,
-//                        (2*i+3)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh, tmpPaint);
-                path.moveTo((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh);
-                path.quadTo((2*i+2)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh,
-                        (2*i+3)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh);
-            }else if(i<tmpList.size()-2){
-                path.moveTo((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh);
-                path.cubicTo((2*i+2)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh,
-                        (2*i+2)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh,
-                        (2*i+3)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh);
+                k2=(getY(i+2,tmpList)-getY(i,tmpList))/getX(4);
+                y1=(x-getX(2*i+1))*k1+getY(i,tmpList);
+                y2=(x-getX(2*i+3))*k2+getY(i+1,tmpList);
+                path.moveTo(getX(2*i+1),getY(i,tmpList));
+                path.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,tmpList));
+            } else if(i<tmpList.size()-2){
+                k1=(getY(i+1,tmpList)-getY(i-1,tmpList))/getX(4);
+                k2=(getY(i+2,tmpList)-getY(i,tmpList))/getX(4);
+                y1=(x-getX(2*i+1))*k1+getY(i,tmpList);
+                y2=(x-getX(2*i+3))*k2+getY(i+1,tmpList);
+                path.moveTo(getX(2*i+1),getY(i,tmpList));
+                path.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,tmpList));
             }else if(i==tmpList.size()-2){
-                path.moveTo((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh);
-                path.quadTo((2*i+2)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh,
-                        (2*i+3)*xSpace,(max-tmpList.get(i+1))*ySpace+offsetHigh);
+                k1=(getY(i+1,tmpList)-getY(i-1,tmpList))/getX(4);
+                y1=(x-getX(2*i+1))*k1+getY(i,tmpList);
+                y2=(x-getX(2*i+3))*k2+getY(i+1,tmpList);
+                path.moveTo(getX(2*i+1),getY(i,tmpList));
+                path.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,tmpList));
             }
             canvas.drawPath(path,tmpPaint);
-            canvas.drawCircle((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh,pointRadius,pointPaint);
-            canvas.drawCircle((2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh,outPointRadius,outPointPaint);
-            canvas.drawText(tmpList.get(i)+"°",(2*i+1)*xSpace,(max-tmpList.get(i))*ySpace+offsetHigh-20,textPaint);
+//            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),pointRadius,pointPaint);
+//            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),outPointRadius,outPointPaint);
+            canvas.drawText(tmpList.get(i)+"°",getX(2*i+1),getY(i,tmpList)-20,textPaint);
         }
         //日期
         for (int i=0;i<dateList.size();i++){
             String[] data1=dateList.get(i).split(" ");
-            canvas.drawText(data1[1],(2*i+1)*xSpace,texthigh,textPaint);
+            canvas.drawText(data1[1],getX(2*i+1),texthigh,textPaint);
         }
         //天气状况
         for (int i=0;i<txtList.size();i++){
-            canvas.drawText(txtList.get(i),(2*i+1)*xSpace,viewhigh-(int)Math.ceil(fm.bottom - fm.leading),textPaint);
+            canvas.drawText(txtList.get(i),getX(2*i+1),viewhigh-(int)Math.ceil(fm.bottom - fm.leading),textPaint);
         }
         //降水概率
         for (int i=0;i<popList.size();i++){
-            canvas.drawText(popList.get(i)+"%",(2*i+1)*xSpace,viewhigh-(int)Math.ceil(fm.bottom - fm.leading)-texthigh,textPaint);
+            canvas.drawText(popList.get(i)+"%",getX(2*i+1),viewhigh-(int)Math.ceil(fm.bottom - fm.leading)-texthigh,textPaint);
         }
         //分割线
         for (int i=1;i<dateList.size();i++){
-            canvas.drawLine(2*i*xSpace,50,2*i*xSpace,viewhigh-texthigh,textPaint);
+            canvas.drawLine(getX(2*i),50,getX(2*i),viewhigh-texthigh,textPaint);
         }
     }
 
@@ -133,6 +151,14 @@ public class HourWeatherView extends View {
         this.txtList=txtList;
         this.dirList=dirList;
         postInvalidate();
+    }
+
+    private float getX(int i){
+        return i*xSpace;
+    }
+
+    private float getY(int i,List<Integer> list){
+        return (max-list.get(i))*ySpace+offsetHigh;
     }
 
 }

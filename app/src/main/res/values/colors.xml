@@ -41,6 +41,7 @@
     <color name="search_bg">#ECEFF1</color>
     <color name="splash_back">#80000000</color>
     <color name="text">#607D8B</color>
+    <color name="blacktext">#212121</color>
     <color name="temp">#757575</color>
 
 </resources>

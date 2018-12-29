@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ma.lightweather.R;
+import com.ma.lightweather.activity.SettingActivity;
 import com.ma.lightweather.adapter.SelectColorAdapter;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.utils.CommonUtils;
@@ -54,7 +55,7 @@ import java.util.List;
 public class PhotoFragment extends BaseFragment implements View.OnClickListener{
 
     private View view;
-    private LinearLayout phoneLayout,loctionLayout,weatherLayout,photoLayout,scoreLayout,themeLayout,shareLayout;
+    private LinearLayout phoneLayout,loctionLayout,weatherLayout,photoLayout,scoreLayout,themeLayout,settingLayout,shareLayout;
     private TextView defaultPhoneTv,defaultLoctionTv,defaultWeatherTv,phoneTv,loctionTv,weatherTv;
     private ImageView imgView;
 
@@ -102,6 +103,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         photoLayout=view.findViewById(R.id.photoLayout);
         scoreLayout=view.findViewById(R.id.scoreLayout);
         themeLayout=view.findViewById(R.id.themeLayout);
+        settingLayout=view.findViewById(R.id.settingLayout);
         shareLayout=view.findViewById(R.id.shareLayout);
         phoneTv=view.findViewById(R.id.phoneTv);
         loctionTv=view.findViewById(R.id.loctionTv);
@@ -119,6 +121,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         photoLayout.setOnClickListener(this);
         scoreLayout.setOnClickListener(this);
         themeLayout.setOnClickListener(this);
+        settingLayout.setOnClickListener(this);
         shareLayout.setOnClickListener(this);
 
 
@@ -165,6 +168,10 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                 break;
             case R.id.themeLayout:
                 selectColor();
+                break;
+            case R.id.settingLayout:
+                Intent it=new Intent(context, SettingActivity.class);
+                startActivity(it);
                 break;
             case R.id.shareLayout:
                 break;
@@ -247,12 +254,12 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         final View titleView =LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null);
         final TextView textView=titleView.findViewById(R.id.dialogTitle);
         textView.setText("请输入");
-        textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor()));
+        textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor(context)));
 
         final View contentView =LayoutInflater.from(context).inflate(R.layout.item_edit_dialog, null);
         final EditText editText=contentView.findViewById(R.id.editText);
         GradientDrawable gradientDrawable = (GradientDrawable) editText.getBackground();
-        gradientDrawable.setStroke(CommonUtils.dp2px(context, 1),context.getResources().getColor(CommonUtils.getBackColor()));
+        gradientDrawable.setStroke(CommonUtils.dp2px(context, 1),context.getResources().getColor(CommonUtils.getBackColor(context)));
 
         new AlertDialog.Builder(getActivity())
                 .setCustomTitle(titleView)
@@ -282,7 +289,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         final View titleView =LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null);
         final TextView textView=titleView.findViewById(R.id.dialogTitle);
         textView.setText("是否保存水印照片");
-        textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor()));
+        textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor(context)));
 
         final View contentView =LayoutInflater.from(context).inflate(R.layout.item_img_dialog, null);
         final ImageView imageView=contentView.findViewById(R.id.imgView);

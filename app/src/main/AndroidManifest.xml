@@ -18,8 +18,9 @@
             android:name="android.max_aspect"
             android:value="2.1" />
 
-        <activity android:name=".activity.MainActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".activity.GuideActivity" />
         <activity android:name=".activity.BaseActivity" />
         <activity
@@ -55,7 +56,9 @@
         <service
             android:name=".app.WeatherService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".activity.SettingActivity"></activity>
     </application>
 
 </manifest>

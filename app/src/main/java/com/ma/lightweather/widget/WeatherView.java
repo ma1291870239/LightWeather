@@ -25,15 +25,17 @@ public class WeatherView extends View {
     private Paint textPaint=new Paint();
     private Paint maxPaint=new Paint();
     private Paint minPaint=new Paint();
-    private Path path=new Path();
+    private Path maxPath=new Path();
+    private Path minPath=new Path();
 
     private List<Integer> maxList=new ArrayList<>();
     private List<Integer> minList=new ArrayList<>();
+    private List<Float> midelMinList=new ArrayList<>();
     private List<String> dateList=new ArrayList<>();
     private List<String> txtList=new ArrayList<>();
     private List<String> dirList=new ArrayList<>();
 
-    private static int lineWidth=3;
+    private static int lineWidth=5;
     private static int pointWidth=3;
     private static int outPointWidth=3;
     private static int pointRadius=5;
@@ -63,7 +65,7 @@ public class WeatherView extends View {
         maxPaint.setColor(getResources().getColor(R.color.temp_high));
         maxPaint.setAntiAlias(true);
         maxPaint.setStrokeWidth(lineWidth);
-        maxPaint.setStyle(Paint.Style.FILL);
+        maxPaint.setStyle(Paint.Style.STROKE);
 
         minPaint.setColor(getResources().getColor(R.color.temp_low));
         minPaint.setAntiAlias(true);
@@ -91,17 +93,44 @@ public class WeatherView extends View {
             min = Collections.min(minList);
             ySpace = (viewhigh-8*texthigh-40) / (max - min);
         }
-
+        maxPath.reset();
+        minPath.reset();
         //最高温度折线
         for(int i=0;i<maxList.size();i++){
             pointPaint.setColor(getResources().getColor(R.color.temp_high));
             outPointPaint.setColor(getResources().getColor(R.color.temp_high));
-            if(i<maxList.size()-1){
-                canvas.drawLine(getX(2*i+1),getY(i,maxList),
-                        getX(2*i+3),getY(i+1,maxList),maxPaint);
+//            if(i<maxList.size()-1){
+//                canvas.drawLine(getX(2*i+1),getY(i,maxList),
+//                        getX(2*i+3),getY(i+1,maxList),maxPaint);
+//            }
+            float x=getX(2*i+2);
+            float k1=0;
+            float k2=0;
+            float y1=0;
+            float y2=0;
+            if(i==0){
+                k2=(getY(i+2,maxList)-getY(i,maxList))/getX(4);
+                y1=(x-getX(2*i+1))*k1+getY(i,maxList);
+                y2=(x-getX(2*i+3))*k2+getY(i+1,maxList);
+                maxPath.moveTo(getX(2*i+1),getY(i,maxList));
+                maxPath.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,maxList));
+            } else if(i<maxList.size()-2){
+                k1=(getY(i+1,maxList)-getY(i-1,maxList))/getX(4);
+                k2=(getY(i+2,maxList)-getY(i,maxList))/getX(4);
+                y1=(x-getX(2*i+1))*k1+getY(i,maxList);
+                y2=(x-getX(2*i+3))*k2+getY(i+1,maxList);
+                maxPath.moveTo(getX(2*i+1),getY(i,maxList));
+                maxPath.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,maxList));
+            }else if(i==maxList.size()-2){
+                k1=(getY(i+1,maxList)-getY(i-1,maxList))/getX(4);
+                y1=(x-getX(2*i+1))*k1+getY(i,maxList);
+                y2=(x-getX(2*i+3))*k2+getY(i+1,maxList);
+                maxPath.moveTo(getX(2*i+1),getY(i,maxList));
+                maxPath.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,maxList));
             }
-            canvas.drawCircle(getX(2*i+1),getY(i,maxList),pointRadius,pointPaint);
-            canvas.drawCircle(getX(2*i+1),getY(i,maxList),outPointRadius,outPointPaint);
+            canvas.drawPath(maxPath,maxPaint);
+//            canvas.drawCircle(getX(2*i+1),getY(i,maxList),pointRadius,pointPaint);
+//            canvas.drawCircle(getX(2*i+1),getY(i,maxList),outPointRadius,outPointPaint);
             canvas.drawText(maxList.get(i)+"°",getX(2*i+1),getY(i,maxList)-20,textPaint);
         }
         //最低温度折线
@@ -112,29 +141,34 @@ public class WeatherView extends View {
 //                canvas.drawLine((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,
 //                        (2*i+3)*xSpace,(max-minList.get(i+1))*ySpace+offsetHigh,minPaint);
 //            }
-            if(i<minList.size()-3) {
-                float x1 =getX(2*i+3);
-                float y1=(minList.get(i+2)+3*minList.get(i)-4*minList.get(i+1))*ySpace/4+offsetHigh;
-                canvas.drawCircle(x1,y1,pointRadius,outPointPaint);
-            }
+            float x=getX(2*i+2);
+            float k1=0;
+            float k2=0;
+            float y1=0;
+            float y2=0;
             if(i==0){
-                path.moveTo(getX(2*i+1),getY(i,minList));
-                path.quadTo(getX(2*i+2),getY(i+1,minList),
-                        getX(2*i+3),getY(i+1,minList));
-            }
-            else if(i<minList.size()-2){
-                path.moveTo(getX(2*i+1),getY(i,minList));
-                path.cubicTo(getX(2*i+2),getY(i,minList),
-                        getX(2*i+2),getY(i+1,minList),
-                        getX(2*i+3),getY(i+1,minList));
+                k2=(getY(i+2,minList)-getY(i,minList))/getX(4);
+                y1=(x-getX(2*i+1))*k1+getY(i,minList);
+                y2=(x-getX(2*i+3))*k2+getY(i+1,minList);
+                minPath.moveTo(getX(2*i+1),getY(i,minList));
+                minPath.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,minList));
+            } else if(i<minList.size()-2){
+                k1=(getY(i+1,minList)-getY(i-1,minList))/getX(4);
+                k2=(getY(i+2,minList)-getY(i,minList))/getX(4);
+                y1=(x-getX(2*i+1))*k1+getY(i,minList);
+                y2=(x-getX(2*i+3))*k2+getY(i+1,minList);
+                minPath.moveTo(getX(2*i+1),getY(i,minList));
+                minPath.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,minList));
             }else if(i==minList.size()-2){
-                path.moveTo(getX(2*i+1),getY(i,minList));
-                path.quadTo(getX(2*i+2),getY(i,minList),
-                        getX(2*i+3),getY(i+1,minList));
+                k1=(getY(i+1,minList)-getY(i-1,minList))/getX(4);
+                y1=(x-getX(2*i+1))*k1+getY(i,minList);
+                y2=(x-getX(2*i+3))*k2+getY(i+1,minList);
+                minPath.moveTo(getX(2*i+1),getY(i,minList));
+                minPath.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,minList));
             }
-            canvas.drawPath(path,minPaint);
-            canvas.drawCircle(getX(2*i+1),getY(i,minList),pointRadius,pointPaint);
-            canvas.drawCircle(getX(2*i+1),getY(i,minList),outPointRadius,outPointPaint);
+            canvas.drawPath(minPath,minPaint);
+            //canvas.drawCircle(getX(2*i+1),getY(i,minList),pointRadius,pointPaint);
+            //canvas.drawCircle(getX(2*i+1),getY(i,minList),outPointRadius,outPointPaint);
             canvas.drawText(minList.get(i)+"°",getX(2*i+1),getY(i,minList)+texthigh+5,textPaint);
         }
         //日期

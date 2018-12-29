@@ -153,6 +153,7 @@
                         android:background="@color/xiantiao"/>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/weather_life"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"

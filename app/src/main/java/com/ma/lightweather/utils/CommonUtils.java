@@ -140,44 +140,46 @@ public class CommonUtils {
         return false;
     }
 
-    public static int getBackColor(){
-        if(Contants.THEMETAG==0){
-           return  R.color.cyanColorAccent;
-        }else if(Contants.THEMETAG==1){
-            return  R.color.purpleColorAccent;
-        }else if(Contants.THEMETAG==2){
-            return  R.color.redColorAccent;
-        }else if(Contants.THEMETAG==3){
-            return  R.color.pinkColorAccent;
-        }else if(Contants.THEMETAG==4){
-            return  R.color.greenColorAccent;
-        }else if(Contants.THEMETAG==5){
-            return  R.color.blueColorAccent;
-        }else if(Contants.THEMETAG==6){
-            return  R.color.orangeColorAccent;
-        }else if(Contants.THEMETAG==7){
-            return  R.color.greyColorAccent;
+    public static int getBackColor(Context context){
+        int themeTag=(int) SharedPrefencesUtils.getParam(context,Contants.THEME,0);
+        if(themeTag==0){
+           return  R.color.cyanColorPrimaryDark;
+        }else if(themeTag==1){
+            return  R.color.purpleColorPrimaryDark;
+        }else if(themeTag==2){
+            return  R.color.redColorPrimaryDark;
+        }else if(themeTag==3){
+            return  R.color.pinkColorPrimaryDark;
+        }else if(themeTag==4){
+            return  R.color.greenColorPrimaryDark;
+        }else if(themeTag==5){
+            return  R.color.blueColorPrimaryDark;
+        }else if(themeTag==6){
+            return  R.color.orangeColorPrimaryDark;
+        }else if(themeTag==7){
+            return  R.color.greyColorPrimaryDark;
         }
         return  R.color.text;
     }
 
 
-    public static int getTextColor(){
-        if(Contants.THEMETAG==0){
+    public static int getTextColor(Context context){
+        int themeTag=(int) SharedPrefencesUtils.getParam(context,Contants.THEME,0);
+        if(themeTag==0){
             return  R.color.cyanColorAccent;
-        }else if(Contants.THEMETAG==1){
+        }else if(themeTag==1){
             return  R.color.purpleColorAccent;
-        }else if(Contants.THEMETAG==2){
+        }else if(themeTag==2){
             return  R.color.redColorAccent;
-        }else if(Contants.THEMETAG==3){
+        }else if(themeTag==3){
             return  R.color.pinkColorAccent;
-        }else if(Contants.THEMETAG==4){
+        }else if(themeTag==4){
             return  R.color.greenColorAccent;
-        }else if(Contants.THEMETAG==5){
+        }else if(themeTag==5){
             return  R.color.blueColorAccent;
-        }else if(Contants.THEMETAG==6){
+        }else if(themeTag==6){
             return  R.color.orangeColorAccent;
-        }else if(Contants.THEMETAG==7){
+        }else if(themeTag==7){
             return  R.color.greyColorAccent;
         }
         return  R.color.text;

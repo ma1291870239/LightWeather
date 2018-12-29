@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="30dp"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+    <ImageView
+        android:id="@+id/weatherImg"
+        android:layout_width="35dp"
+        android:layout_height="match_parent"
+        android:src="@mipmap/ic_launcher"/>
+    <TextView
+        android:id="@+id/weatherCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/weatherImg"
+        android:textSize="18sp"
+        android:textColor="@color/blacktext"
+        android:gravity="top"
+        android:text="洛阳"/>
+    <TextView
+        android:id="@+id/weatherWind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@id/weatherImg"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/weatherCity"
+        android:textSize="14sp"
+        android:textColor="@color/blacktext"
+        android:gravity="bottom"
+        android:text="大雪 3℃ 东风"/>
+    <TextView
+        android:id="@+id/weatherTmp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:textSize="20sp"
+        android:textColor="@color/blacktext"
+        android:gravity="center_vertical"
+        android:text="洛阳"/>
+
+</RelativeLayout>

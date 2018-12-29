@@ -170,7 +170,7 @@ public class ActionSheetDialog {
 
 			// 字体颜色
 			if (color == null) {
-				textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor()));
+				textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor(context)));
 			} else {
 				textView.setTextColor(Color.parseColor(color.getName()));
 			}

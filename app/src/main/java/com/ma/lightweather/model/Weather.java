@@ -8,17 +8,17 @@ import java.util.List;
  * Created by Ma-PC on 2016/12/13.
  */
 public class Weather implements Serializable{
-    public String tmp;
-    public String feel;
-    public String hum;
-    public String pcpn;
-    public String city;
-    public String cnty;
-    public String dir;
-    public String txt;
-    public String wind;
-    public String pres;
-    public String vis;
+    public String tmp;//温度
+    public String feel;//体感
+    public String hum;//相对湿度
+    public String pcpn;//降水量
+    public String city;//城市
+    public String cnty;//国家
+    public String dir;//风向
+    public String txt;//天气
+    public String wind;//风速
+    public String pres;//气压
+    public String vis;//能见度
     public List<Integer> maxList=new ArrayList<>();
     public List<Integer> minList=new ArrayList<>();
     public List<String> txtList=new ArrayList<>();

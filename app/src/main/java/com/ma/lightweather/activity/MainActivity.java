@@ -76,9 +76,6 @@ public class MainActivity extends BaseActivity {
         titleList.add("拍照");
         viewPager.setAdapter(new ViewAdapter(getSupportFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
-
-        Intent it=new Intent(this, WeatherService.class);
-        startService(it);
     }
 
     private void initView() {

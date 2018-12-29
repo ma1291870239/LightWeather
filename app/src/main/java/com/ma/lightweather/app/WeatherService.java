@@ -15,6 +15,8 @@ import android.os.Message;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
@@ -36,13 +38,16 @@ public class WeatherService extends Service {
 
     private List<Weather> weatherList;
     private static final int WEATHER_CODE=200;
+    private String channelId ;
+    private String channelName;
+    private RemoteViews remoteViews;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
                 case WEATHER_CODE:
-                    //sendMsg("1111");
+                    creatNotify();
                     break;
             }
         }
@@ -59,12 +64,18 @@ public class WeatherService extends Service {
 
     @Override
     public void onCreate() {
+        creatChannel();
         super.onCreate();
     }
 
     @Override
+    public void onDestroy() {
+        stopForeground(true);
+        super.onDestroy();
+    }
+
+    @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        creatChannel();
         initData();
         AlarmManager manager= (AlarmManager) getSystemService(ALARM_SERVICE);
         int spaceTime=8*60*60*1000;
@@ -102,11 +113,70 @@ public class WeatherService extends Service {
         requestQueue.add(stringRequest);
     }
 
+    private void creatNotify() {
+        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = manager.getNotificationChannel(channelId);
+            if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
+                Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
+                intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
+                intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel.getId());
+                startActivity(intent);
+                Toast.makeText(this, "请手动将通知打开", Toast.LENGTH_SHORT).show();
+            }
+        }
+        remoteViews = new RemoteViews(this.getPackageName(), R.layout.item_notify_simple);
+        NotificationCompat.Builder notification = new NotificationCompat.Builder(this,channelId)
+                .setContent(remoteViews)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon( R.mipmap.weather);
+
+        setWeatherMsg(notification);
+        startForeground(111, notification.build());
+    }
+
+    private void setWeatherMsg(NotificationCompat.Builder notification) {
+        for(int i=0;i<weatherList.size();i++) {
+            if(weatherList.get(i).txt.contains("晴")) {
+                notification.setSmallIcon(R.mipmap.sunny);
+                remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.sunny));
+            }if(weatherList.get(i).txt.contains("云")) {
+                notification.setSmallIcon(R.mipmap.cloudy);
+                remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.cloudy));
+            }if(weatherList.get(i).txt.contains("阴")) {
+                notification.setSmallIcon(R.mipmap.shade);
+                remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.shade));
+            }if(weatherList.get(i).txt.contains("风")) {
+                notification.setSmallIcon(R.mipmap.gale);
+                remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.gale));
+            }if(weatherList.get(i).txt.contains("雨")) {
+                notification.setSmallIcon(R.mipmap.rain);
+                remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.rain));
+            }if(weatherList.get(i).txt.contains("雪")) {
+                notification.setSmallIcon(R.mipmap.snow);
+                remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.snow));
+            }if(weatherList.get(i).txt.contains("雾")) {
+                notification.setSmallIcon(R.mipmap.smog);
+                remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.smog));
+            }if(weatherList.get(i).txt.contains("霾")) {
+                notification.setSmallIcon(R.mipmap.smog);
+                remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.smog));
+            }if(weatherList.get(i).txt.contains("沙")) {
+                notification.setSmallIcon(R.mipmap.sand);
+                remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.sand));
+            }
+
+            remoteViews.setTextViewText(R.id.weatherCity,weatherList.get(i).city);
+            remoteViews.setTextViewText(R.id.weatherWind,weatherList.get(i).txt+"　"+weatherList.get(i).dir);
+            remoteViews.setTextViewText(R.id.weatherTmp,weatherList.get(i).tmp+"℃");
+        }
+
+    }
     private void creatChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channelId = "Msg";
-            String channelName = "消息";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
+            channelId = "Service";
+            channelName = "前台服务";
+            int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
             NotificationManager notificationManager = (NotificationManager) getSystemService(
                     NOTIFICATION_SERVICE);
@@ -117,7 +187,7 @@ public class WeatherService extends Service {
     public void sendMsg(String msg) {
         NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = manager.getNotificationChannel("Msg");
+            NotificationChannel channel = manager.getNotificationChannel(channelId);
             if (channel.getImportance() == NotificationManager.IMPORTANCE_NONE) {
                 Intent intent = new Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS);
                 intent.putExtra(Settings.EXTRA_APP_PACKAGE, getPackageName());
@@ -130,7 +200,7 @@ public class WeatherService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 intent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
-        Notification notification = new NotificationCompat.Builder(this, "Msg")
+        Notification notification = new NotificationCompat.Builder(this, channelId)
                 .setContentTitle("收到新消息")
                 .setContentText(msg)
                 .setWhen(System.currentTimeMillis())
