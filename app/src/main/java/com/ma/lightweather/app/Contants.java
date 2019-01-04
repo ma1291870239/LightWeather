@@ -23,4 +23,6 @@ public class Contants {
     public final static String CITYNAME="洛阳";
     public final static String THEME="themetag";
     public final static String NOTIFY="notify";
+    public final static String STATUS="status";
+    public final static String LIFE="life";
 }

@@ -19,6 +19,7 @@ import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.ma.lightweather.R;
+import com.ma.lightweather.activity.MainActivity;
 import com.ma.lightweather.activity.SettingActivity;
 import com.ma.lightweather.adapter.SelectColorAdapter;
 import com.ma.lightweather.app.Contants;

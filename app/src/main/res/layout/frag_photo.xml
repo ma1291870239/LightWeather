@@ -123,7 +123,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="match_parent"
-                    android:text="软件设置"
+                    android:text="实验功能"
                     android:textColor="@color/text"
                     android:gravity="center_vertical"
                     android:textSize="16sp"/>

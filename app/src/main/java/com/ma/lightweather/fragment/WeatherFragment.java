@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,66 +77,39 @@ public class WeatherFragment extends BaseFragment{
                         }else {
                             weatherLife.setVisibility(View.VISIBLE);
                         }
-                        for (int j=0;j<weatherList.get(i).lifeTypeList.size();j++){
-                            Weather weather=weatherList.get(i);
-                            String type=weather.lifeTypeList.get(j);
-                            String s=weather.lifeBrfList.get(j)+"\n"+weather.lifeTxtList.get(j);
-                            if(type.equals("air")&& !TextUtils.isEmpty(s)){
-                                airTv.setVisibility(View.VISIBLE);
-                                airTv.setText("空气指数　　"+s);
-                            }else {
-                                airTv.setVisibility(View.GONE);
-                                airTv.setText("");
+                        if((boolean) SharedPrefencesUtils.getParam(context,Contants.LIFE,true)){
+                            weatherLife.setVisibility(View.VISIBLE);
+                            for (int j=0;j<weatherList.get(i).lifeTypeList.size();j++){
+                                Weather weather=weatherList.get(i);
+                                String type=weather.lifeTypeList.get(j);
+                                String s=weather.lifeBrfList.get(j)+"\n"+weather.lifeTxtList.get(j);
+                                if(type.equals("air")&& !TextUtils.isEmpty(s)){
+                                    airTv.setText("空气指数　　"+s);
+                                }
+                                if(type.equals("cw")&&!TextUtils.isEmpty(s)){
+                                    cwTv.setText("洗车指数　　"+s);
+                                }
+                                if(type.equals("drsg")&&!TextUtils.isEmpty(s)){
+                                    drsgTv.setText("穿衣指数　　"+s);
+                                }
+                                if(type.equals("flu")&&!TextUtils.isEmpty(s)){
+                                    fluTv.setText("感冒指数　　"+s);
+                                }
+                                if(type.equals("sport")&&!TextUtils.isEmpty(s)){
+                                    sportTv.setText("运动指数　　"+s);
+                                }
+                                if(type.equals("trav")&&!TextUtils.isEmpty(s)){
+                                    travTv.setText("旅游指数　　"+s);
+                                }
+                                if(type.equals("comf")&&!TextUtils.isEmpty(s)){
+                                    comfTv.setText("舒适度指数　"+s);
+                                }
+                                if(type.equals("uv")&&!TextUtils.isEmpty(s)){
+                                    uvTv.setText("紫外线指数　"+s);
+                                }
                             }
-                            if(type.equals("cw")&&!TextUtils.isEmpty(s)){
-                                cwTv.setVisibility(View.VISIBLE);
-                                cwTv.setText("洗车指数　　"+s);
-                            }else {
-                                cwTv.setVisibility(View.GONE);
-                                cwTv.setText("");
-                            }
-                            if(type.equals("drsg")&&!TextUtils.isEmpty(s)){
-                                drsgTv.setVisibility(View.VISIBLE);
-                                drsgTv.setText("穿衣指数　　"+s);
-                            }else {
-                                drsgTv.setVisibility(View.GONE);
-                                drsgTv.setText("");
-                            }
-                            if(type.equals("flu")&&!TextUtils.isEmpty(s)){
-                                fluTv.setVisibility(View.VISIBLE);
-                                fluTv.setText("感冒指数　　"+s);
-                            }else {
-                                fluTv.setVisibility(View.GONE);
-                                fluTv.setText("");
-                            }
-                            if(type.equals("sport")&&!TextUtils.isEmpty(s)){
-                                sportTv.setVisibility(View.VISIBLE);
-                                sportTv.setText("运动指数　　"+s);
-                            }else {
-                                sportTv.setVisibility(View.GONE);
-                                sportTv.setText("");
-                            }
-                            if(type.equals("trav")&&!TextUtils.isEmpty(s)){
-                                travTv.setVisibility(View.VISIBLE);
-                                travTv.setText("旅游指数　　"+s);
-                            }else {
-                                travTv.setVisibility(View.GONE);
-                                travTv.setText("");
-                            }
-                            if(type.equals("comf")&&!TextUtils.isEmpty(s)){
-                                comfTv.setVisibility(View.VISIBLE);
-                                comfTv.setText("舒适度指数　"+s);
-                            }else {
-                                comfTv.setVisibility(View.GONE);
-                                comfTv.setText("");
-                            }
-                            if(type.equals("uv")&&!TextUtils.isEmpty(s)){
-                                uvTv.setVisibility(View.VISIBLE);
-                                uvTv.setText("紫外线指数　"+s);
-                            }else {
-                                uvTv.setVisibility(View.GONE);
-                                uvTv.setText("");
-                            }
+                        }else{
+                            weatherLife.setVisibility(View.GONE);
                         }
                         SharedPrefencesUtils.setParam(context,Contants.CITY,weatherList.get(i).city);
                         SharedPrefencesUtils.setParam(context,Contants.TMP,weatherList.get(i).tmp);

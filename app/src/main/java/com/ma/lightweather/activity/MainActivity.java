@@ -40,8 +40,8 @@ public class MainActivity extends BaseActivity {
     private TabLayout tabLayout;
     private List<Fragment> fragmentList=new ArrayList<>();
     private List<String> titleList=new ArrayList<>();
-    private MydataBaseHelper dbHelper;
     private long clickTime = 0;
+    public final static int CHANGETHEME=100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,5 +207,11 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode==RESULT_OK&&requestCode==CHANGETHEME){
+            recreate();
+        }
+    }
 }

@@ -20,7 +20,7 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:launchMode="singleTask" />
+            android:launchMode="standard" />
         <activity android:name=".activity.GuideActivity" />
         <activity android:name=".activity.BaseActivity" />
         <activity
