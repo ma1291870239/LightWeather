@@ -35,7 +35,7 @@ public class WeatherView extends View {
     private List<String> txtList=new ArrayList<>();
     private List<String> dirList=new ArrayList<>();
 
-    private static int lineWidth=5;
+    private static int lineWidth=3;
     private static int pointWidth=3;
     private static int outPointWidth=3;
     private static int pointRadius=5;

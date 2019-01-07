@@ -6,12 +6,14 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
+import android.os.PowerManager;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
@@ -53,6 +55,9 @@ public class WeatherService extends Service {
         }
     };
 
+    private PowerManager pm;
+    private PowerManager.WakeLock wakeLock;
+
     public WeatherService() {
     }
 
@@ -70,6 +75,7 @@ public class WeatherService extends Service {
 
     @Override
     public void onDestroy() {
+        wakeLock.release();
         stopForeground(true);
         super.onDestroy();
     }
@@ -77,6 +83,9 @@ public class WeatherService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         initData();
+        pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "CPUKeepRunning");
+        wakeLock.acquire();
         AlarmManager manager= (AlarmManager) getSystemService(ALARM_SERVICE);
         int spaceTime=8*60*60*1000;
         long updateTime= SystemClock.elapsedRealtime()+spaceTime;
@@ -130,7 +139,9 @@ public class WeatherService extends Service {
                 .setContent(remoteViews)
                 .setWhen(System.currentTimeMillis())
                 .setSmallIcon( R.mipmap.weather);
-
+        if((boolean) SharedPrefencesUtils.getParam(this,Contants.STATUS,false)) {
+            notification.setPriority(NotificationCompat.PRIORITY_MIN);
+        }
         setWeatherMsg(notification);
         startForeground(111, notification.build());
     }
@@ -174,9 +185,9 @@ public class WeatherService extends Service {
     }
     private void creatChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            channelId = "Service";
-            channelName = "前台服务";
-            int importance = NotificationManager.IMPORTANCE_LOW;
+            channelId = "service";
+            channelName = "通知栏天气";
+            int importance=NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel = new NotificationChannel(channelId, channelName, importance);
             NotificationManager notificationManager = (NotificationManager) getSystemService(
                     NOTIFICATION_SERVICE);

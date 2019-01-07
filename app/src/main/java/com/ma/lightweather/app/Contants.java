@@ -12,7 +12,7 @@ public class Contants {
     //全部数据
     public final static String WEATHER_ALL=BASE_URL+"weather?key=4ddad270cdb94639ae5f4cfe11aadf82&location=";
     //必应图片
-    public final static String BINGURL="http://area.sinaapp.com/bingImg/";
+    public final static String BINGURL="http://guolin.tech/api/bing_pic";
 
     public final static String CITY="city";
     public final static String TMP="tmp";
@@ -24,5 +24,6 @@ public class Contants {
     public final static String THEME="themetag";
     public final static String NOTIFY="notify";
     public final static String STATUS="status";
+    public final static String BINGIMG="bingimg";
     public final static String LIFE="life";
 }

@@ -11,17 +11,29 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 import com.ma.lightweather.R;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.utils.CommonUtils;
+import com.ma.lightweather.utils.Parse;
 import com.ma.lightweather.utils.PhotoUtils;
+import com.ma.lightweather.utils.SharedPrefencesUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
@@ -30,8 +42,10 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     private ImageView backIv,downloadIv;
     private TextView skipTv;
     private static final int DOWNLOAD_CODE=200;
+    private static final int IMGLOAD_CODE=100;
     private static final int PERMISSION_CODE_WRITE = 1;
     private CountDownTimer countDownTimer;
+    private String url;
     private Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -40,9 +54,14 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
                 case DOWNLOAD_CODE:
                     CommonUtils.showShortToast(SplashActivity.this,"保存成功");
                     break;
+                case IMGLOAD_CODE:
+
+                    break;
             }
         }
     };
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +69,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
+        url=(String) SharedPrefencesUtils.getParam(this,Contants.BINGIMG,"http://area.sinaapp.com/bingImg/");
         initView();
         checkPermission();
     }
@@ -63,7 +83,7 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initData() {
-        Glide.with(this).load(Contants.BINGURL).into(backIv);
+        Glide.with(SplashActivity.this).load(url).into(backIv);
         countDownTimer=new CountDownTimer(4000,1000) {
             @Override
             public void onTick(long l) {
@@ -76,6 +96,23 @@ public class SplashActivity extends BaseActivity implements View.OnClickListener
             }
         };
         countDownTimer.start();
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.BINGURL ,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        SharedPrefencesUtils.setParam(SplashActivity.this,Contants.BINGIMG,response);
+                        url=response;
+                        handler.sendEmptyMessage(IMGLOAD_CODE);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        requestQueue.add(stringRequest);
     }
 
 
