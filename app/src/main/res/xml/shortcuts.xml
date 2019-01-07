@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/ic_launcher"
+        android:shortcutId="setting"
+        android:shortcutLongLabel="@string/shortcut_text"
+        android:shortcutShortLabel="@string/shortcut_text">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="com.ma.lightweather.activity.SettingActivity"
+            android:targetPackage="com.ma.lightweather" />
+    </shortcut>
+</shortcuts>
