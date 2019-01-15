@@ -2,7 +2,6 @@ package com.ma.lightweather.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -46,6 +45,8 @@ public class WeatherView extends View {
     private int ySpace;
     private int max;
     private int min;
+    private int textHigh;
+    private int textSpace;
 
     public WeatherView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -84,14 +85,15 @@ public class WeatherView extends View {
         int viewwidth=getMeasuredWidth();
         textPaint.setTextSize(viewwidth/30);
         Paint.FontMetrics fm = textPaint.getFontMetrics();
-        int texthigh=(int)Math.ceil(fm.bottom - fm.top);
-        offsetHigh=4*texthigh+10;
+        textHigh =(int)Math.ceil(fm.bottom - fm.top);
+        textSpace=(int)Math.ceil(fm.bottom - fm.leading)+(int)Math.ceil(fm.ascent - fm.top);
+        offsetHigh=(int)(3.5* textHigh);
         xSpace=viewwidth/14;
-        ySpace=(viewhigh-6*texthigh-40) /50;
+        ySpace=(viewhigh-2*offsetHigh) /50;
         if(maxList.size()>0&&minList.size()>0) {
             max = Collections.max(maxList);
             min = Collections.min(minList);
-            ySpace = (viewhigh-8*texthigh-40) / (max - min);
+            ySpace = (viewhigh-2*offsetHigh) / (max - min);
         }
         maxPath.reset();
         minPath.reset();
@@ -131,7 +133,7 @@ public class WeatherView extends View {
             canvas.drawPath(maxPath,maxPaint);
 //            canvas.drawCircle(getX(2*i+1),getY(i,maxList),pointRadius,pointPaint);
 //            canvas.drawCircle(getX(2*i+1),getY(i,maxList),outPointRadius,outPointPaint);
-            canvas.drawText(maxList.get(i)+"°",getX(2*i+1),getY(i,maxList)-20,textPaint);
+            canvas.drawText(maxList.get(i)+"°",getX(2*i+1),getY(i,maxList)-textSpace,textPaint);
         }
         //最低温度折线
         for(int i=0;i<minList.size();i++){
@@ -169,20 +171,20 @@ public class WeatherView extends View {
             canvas.drawPath(minPath,minPaint);
             //canvas.drawCircle(getX(2*i+1),getY(i,minList),pointRadius,pointPaint);
             //canvas.drawCircle(getX(2*i+1),getY(i,minList),outPointRadius,outPointPaint);
-            canvas.drawText(minList.get(i)+"°",getX(2*i+1),getY(i,minList)+texthigh+5,textPaint);
+            canvas.drawText(minList.get(i)+"°",getX(2*i+1),getY(i,minList)+ textHigh,textPaint);
         }
         //日期
         for (int i=0;i<dateList.size();i++){
             String[] data1=dateList.get(i).split("-");
-            canvas.drawText(data1[1]+"/"+data1[2],getX(2*i+1),texthigh,textPaint);
+            canvas.drawText(data1[1]+"/"+data1[2],getX(2*i+1), textHigh,textPaint);
         }
         //天气状况
         for (int i=0;i<txtList.size();i++){
-            canvas.drawText(txtList.get(i),getX(2*i+1),viewhigh-(int)Math.ceil(fm.bottom - fm.leading),textPaint);
+            canvas.drawText(txtList.get(i),getX(2*i+1),viewhigh-textSpace,textPaint);
         }
         //分割线
         for (int i=1;i<dateList.size();i++){
-            canvas.drawLine(getX(2*i),50,getX(2*i),viewhigh-texthigh,textPaint);
+            canvas.drawLine(getX(2*i),50,getX(2*i),viewhigh- textHigh,textPaint);
         }
     }
 

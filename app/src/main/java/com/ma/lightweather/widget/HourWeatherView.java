@@ -2,10 +2,10 @@ package com.ma.lightweather.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.ma.lightweather.R;
@@ -44,6 +44,8 @@ public class HourWeatherView extends View {
     private int ySpace;
     private int max;
     private int min;
+    private int textHigh;
+    private int textSpace;
 
     public HourWeatherView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -77,14 +79,15 @@ public class HourWeatherView extends View {
         int viewwidth=getMeasuredWidth();
         textPaint.setTextSize(viewwidth/30);
         Paint.FontMetrics fm = textPaint.getFontMetrics();
-        int texthigh=(int)Math.ceil(fm.bottom - fm.top);
-        offsetHigh=4*texthigh+10;
+        textHigh =(int)Math.ceil(fm.bottom - fm.top);
+        textSpace=(int)Math.ceil(fm.bottom - fm.leading)+(int)Math.ceil(fm.ascent - fm.top);
+        offsetHigh=3*textHigh;
         xSpace=viewwidth/16;
-        ySpace=(viewhigh-4*texthigh-40)/50;
+        ySpace=(viewhigh-2*offsetHigh)/50;
         if(tmpList.size()>0) {
             max = Collections.max(tmpList);
             min = Collections.min(tmpList);
-            ySpace = (viewhigh-8*texthigh-40) / (max - min);
+            ySpace = (viewhigh-2*offsetHigh) / (max - min);
         }
         path.reset();
         //实时温度折线
@@ -123,24 +126,24 @@ public class HourWeatherView extends View {
             canvas.drawPath(path,tmpPaint);
 //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),pointRadius,pointPaint);
 //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),outPointRadius,outPointPaint);
-            canvas.drawText(tmpList.get(i)+"°",getX(2*i+1),getY(i,tmpList)-20,textPaint);
+            canvas.drawText(tmpList.get(i)+"°",getX(2*i+1),getY(i,tmpList)-textSpace,textPaint);
         }
         //日期
         for (int i=0;i<dateList.size();i++){
             String[] data1=dateList.get(i).split(" ");
-            canvas.drawText(data1[1],getX(2*i+1),texthigh,textPaint);
+            canvas.drawText(data1[1],getX(2*i+1), textHigh,textPaint);
         }
         //天气状况
         for (int i=0;i<txtList.size();i++){
-            canvas.drawText(txtList.get(i),getX(2*i+1),viewhigh-(int)Math.ceil(fm.bottom - fm.leading),textPaint);
+            canvas.drawText(txtList.get(i),getX(2*i+1),viewhigh-textSpace,textPaint);
         }
         //降水概率
         for (int i=0;i<popList.size();i++){
-            canvas.drawText(popList.get(i)+"%",getX(2*i+1),viewhigh-(int)Math.ceil(fm.bottom - fm.leading)-texthigh,textPaint);
+            canvas.drawText(popList.get(i)+"%",getX(2*i+1),viewhigh-textSpace- textHigh,textPaint);
         }
         //分割线
         for (int i=1;i<dateList.size();i++){
-            canvas.drawLine(getX(2*i),50,getX(2*i),viewhigh-texthigh,textPaint);
+            canvas.drawLine(getX(2*i),50,getX(2*i),viewhigh- textHigh,textPaint);
         }
     }
 
