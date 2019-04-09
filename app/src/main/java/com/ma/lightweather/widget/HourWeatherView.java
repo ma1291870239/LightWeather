@@ -2,6 +2,7 @@ package com.ma.lightweather.widget;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
@@ -10,6 +11,7 @@ import android.view.View;
 
 import com.ma.lightweather.R;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +35,7 @@ public class HourWeatherView extends View {
     private List<String> txtList=new ArrayList<>();
     private List<String> dirList=new ArrayList<>();
 
-    private static int lineWidth=3;
+    private static int lineWidth=4;
     private static int pointWidth=3;
     private static int outPointWidth=3;
     private static int pointRadius=5;
@@ -89,45 +91,8 @@ public class HourWeatherView extends View {
             min = Collections.min(tmpList);
             ySpace = (viewhigh-2*offsetHigh) / (max - min);
         }
-        path.reset();
-        //实时温度折线
-        for(int i=0;i<tmpList.size();i++){
-            pointPaint.setColor(getResources().getColor(R.color.temp));
-            outPointPaint.setColor(getResources().getColor(R.color.temp));
-//            if(i<minList.size()-1){
-//                canvas.drawLine((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,
-//                        (2*i+3)*xSpace,(max-minList.get(i+1))*ySpace+offsetHigh,minPaint);
-//            }
-            float x=getX(2*i+2);
-            float k1=0;
-            float k2=0;
-            float y1=0;
-            float y2=0;
-            if(i==0){
-                k2=(getY(i+2,tmpList)-getY(i,tmpList))/getX(4);
-                y1=(x-getX(2*i+1))*k1+getY(i,tmpList);
-                y2=(x-getX(2*i+3))*k2+getY(i+1,tmpList);
-                path.moveTo(getX(2*i+1),getY(i,tmpList));
-                path.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,tmpList));
-            } else if(i<tmpList.size()-2){
-                k1=(getY(i+1,tmpList)-getY(i-1,tmpList))/getX(4);
-                k2=(getY(i+2,tmpList)-getY(i,tmpList))/getX(4);
-                y1=(x-getX(2*i+1))*k1+getY(i,tmpList);
-                y2=(x-getX(2*i+3))*k2+getY(i+1,tmpList);
-                path.moveTo(getX(2*i+1),getY(i,tmpList));
-                path.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,tmpList));
-            }else if(i==tmpList.size()-2){
-                k1=(getY(i+1,tmpList)-getY(i-1,tmpList))/getX(4);
-                y1=(x-getX(2*i+1))*k1+getY(i,tmpList);
-                y2=(x-getX(2*i+3))*k2+getY(i+1,tmpList);
-                path.moveTo(getX(2*i+1),getY(i,tmpList));
-                path.cubicTo(x,y1, x,y2, getX(2*i+3),getY(i+1,tmpList));
-            }
-            canvas.drawPath(path,tmpPaint);
-//            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),pointRadius,pointPaint);
-//            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),outPointRadius,outPointPaint);
-            canvas.drawText(tmpList.get(i)+"°",getX(2*i+1),getY(i,tmpList)-textSpace,textPaint);
-        }
+        //getFoldLine(canvas);
+        getCurveLine(canvas);
         //日期
         for (int i=0;i<dateList.size();i++){
             String[] data1=dateList.get(i).split(" ");
@@ -147,6 +112,73 @@ public class HourWeatherView extends View {
         }
     }
 
+    private void  getFoldLine(Canvas canvas){
+        for(int i=0;i<tmpList.size();i++) {
+            pointPaint.setColor(getResources().getColor(R.color.temp));
+            outPointPaint.setColor(getResources().getColor(R.color.temp));
+            pointPaint.setColor(getResources().getColor(R.color.temp));
+            outPointPaint.setColor(getResources().getColor(R.color.temp));
+            if (i < tmpList.size() - 1) {
+                canvas.drawLine((2 * i + 1) * xSpace, (max - tmpList.get(i)) * ySpace + offsetHigh,
+                        (2 * i + 3) * xSpace, (max - tmpList.get(i + 1)) * ySpace + offsetHigh, tmpPaint);
+            }
+
+//            canvas.drawCircle(getX(2 * i + 1), getY(i, tmpList), pointRadius, pointPaint);
+//            canvas.drawCircle(getX(2 * i + 1), getY(i, tmpList), outPointRadius, outPointPaint);
+        }
+    }
+
+    /**
+     * 需要四个点控制   当前点  当前点后控制点  下一个点  下一个点前控制点
+     *
+     */
+    private void  getCurveLine(Canvas canvas){
+        path.reset();
+        for(int i=0;i<tmpList.size();i++){
+            float k1=0;//当前点斜率
+            float k2=0;//下一个点斜率
+            float b1=0;//当前点常量
+            float b2=0;//下一个点常量
+            float x1=0;// 当前点后控制点x坐标
+            float y1=0;// 当前点后控制点y坐标
+            float x2=0;// 下一个点前控制点x坐标
+            float y2=0;// 下一个点前控制点y坐标
+            double r=0.5;//控制点与经过点的距离  取值0-1  越大距离越近
+            if(i==0){
+                x1=getX(2*i+2-r);
+                y1=getY(i);
+                k2=(getY(i+2)-getY(i))/getX(4);
+                b2=getY(i+1)-k2*getX(2*i+3);
+                x2=getX(2*i+2+r);
+                y2=x2*k2+b2;
+                path.moveTo(getX(2*i+1),getY(i));
+                path.cubicTo(x1,y1, x2,y2, getX(2*i+3),getY(i+1));
+            } else if(i<tmpList.size()-2){
+                k1=(getY(i+1)-getY(i-1))/getX(4);
+                b1=getY(i)-k1*getX(2*i+1);
+                x1=getX(2*i+2-r);
+                y1=x1*k1+b1;
+                k2=(getY(i+2)-getY(i))/getX(4);
+                b2=getY(i+1)-k2*getX(2*i+3);
+                x2=getX(2*i+2+r);
+                y2=x2*k2+b2;
+                path.moveTo(getX(2*i+1),getY(i));
+                path.cubicTo(x1,y1, x2,y2, getX(2*i+3),getY(i+1));
+            }else if(i==tmpList.size()-2){
+                k1=(getY(i+1)-getY(i-1))/getX(4);
+                b1=getY(i)-k1*getX(2*i+1);
+                x1=getX(2*i+2-r);
+                y1=x1*k1+b1;
+                x2=getX(2*i+2+r);
+                y2=getY(i);
+                path.moveTo(getX(2*i+1),getY(i));
+                path.cubicTo(x1,y1, x2,y2, getX(2*i+3),getY(i+1));
+            }
+            canvas.drawPath(path,tmpPaint);
+            canvas.drawText(tmpList.get(i)+"°",getX(2*i+1),getY(i)-textSpace,textPaint);
+        }
+    }
+
     public void loadViewData(List<Integer> tmpList, List<Integer> popList, List<String> dateList , List<String> txtList, List<String> dirList) {
         this.tmpList=tmpList;
         this.popList=popList;
@@ -156,12 +188,12 @@ public class HourWeatherView extends View {
         postInvalidate();
     }
 
-    private float getX(int i){
-        return i*xSpace;
+    private float getX(double i){
+        return Float.valueOf(String.valueOf(i*xSpace));
     }
 
-    private float getY(int i,List<Integer> list){
-        return (max-list.get(i))*ySpace+offsetHigh;
+    private float getY(int i){
+        return (max-tmpList.get(i))*ySpace+offsetHigh;
     }
 
 }

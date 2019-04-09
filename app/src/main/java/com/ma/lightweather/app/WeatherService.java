@@ -1,5 +1,6 @@
 package com.ma.lightweather.app;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -80,6 +81,7 @@ public class WeatherService extends Service {
         super.onDestroy();
     }
 
+    @SuppressLint("InvalidWakeLockTag")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         initData();
