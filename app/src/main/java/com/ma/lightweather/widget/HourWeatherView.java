@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.ma.lightweather.R;
+import com.ma.lightweather.model.HeFengWeather;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -28,12 +29,11 @@ public class HourWeatherView extends View {
     private Paint tmpPaint =new Paint();
     private Path path=new Path();
 
+    private List<HeFengWeather.Hourly> hourlyList=new ArrayList<>();
     private List<Integer> tmpList=new ArrayList<>();
-    private List<Float> midelTmpList=new ArrayList<>();
-    private List<Integer> popList=new ArrayList<>();
+    private List<String> popList=new ArrayList<>();
     private List<String> dateList=new ArrayList<>();
     private List<String> txtList=new ArrayList<>();
-    private List<String> dirList=new ArrayList<>();
 
     private static int lineWidth=4;
     private static int pointWidth=3;
@@ -145,8 +145,10 @@ public class HourWeatherView extends View {
             float y2=0;// 下一个点前控制点y坐标
             double r=0.5;//控制点与经过点的距离  取值0-1  越大距离越近
             if(i==0){
+                k1=(getY(i+1)-getY(i))/getX(2);
+                b1=getY(i)-k1*getX(2*i+1);
                 x1=getX(2*i+2-r);
-                y1=getY(i);
+                y1=x1*k1+b1;
                 k2=(getY(i+2)-getY(i))/getX(4);
                 b2=getY(i+1)-k2*getX(2*i+3);
                 x2=getX(2*i+2+r);
@@ -169,8 +171,10 @@ public class HourWeatherView extends View {
                 b1=getY(i)-k1*getX(2*i+1);
                 x1=getX(2*i+2-r);
                 y1=x1*k1+b1;
+                k2=(getY(i+1)-getY(i))/getX(2);
+                b2=getY(i+1)-k2*getX(2*i+3);
                 x2=getX(2*i+2+r);
-                y2=getY(i);
+                y2=x2*k2+b2;
                 path.moveTo(getX(2*i+1),getY(i));
                 path.cubicTo(x1,y1, x2,y2, getX(2*i+3),getY(i+1));
             }
@@ -179,12 +183,18 @@ public class HourWeatherView extends View {
         }
     }
 
-    public void loadViewData(List<Integer> tmpList, List<Integer> popList, List<String> dateList , List<String> txtList, List<String> dirList) {
-        this.tmpList=tmpList;
-        this.popList=popList;
-        this.dateList=dateList;
-        this.txtList=txtList;
-        this.dirList=dirList;
+    public void loadViewData(List<HeFengWeather.Hourly> hourlyList) {
+        this.hourlyList=hourlyList;
+        tmpList.clear();
+        popList.clear();
+        dateList.clear();
+        txtList.clear();
+        for (int i=0;i<hourlyList.size();i++){
+            tmpList.add(hourlyList.get(i).getTmp());
+            popList.add(hourlyList.get(i).getPop());
+            dateList.add(hourlyList.get(i).getTime());
+            txtList.add(hourlyList.get(i).getCond_txt());
+        }
         postInvalidate();
     }
 

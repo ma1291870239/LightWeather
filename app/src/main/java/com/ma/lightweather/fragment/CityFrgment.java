@@ -11,22 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.ma.lightweather.R;
 import com.ma.lightweather.adapter.CityAdapter;
-import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.model.Weather;
 import com.ma.lightweather.utils.CommonUtils;
 import com.ma.lightweather.utils.DbUtils;
-import com.ma.lightweather.utils.Parse;
 import com.ma.lightweather.widget.HourWeatherView;
 import com.ma.lightweather.widget.WeatherView;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,34 +80,6 @@ public class CityFrgment extends BaseFragment{
         DividerItemDecoration divider = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(context,R.drawable.bg_divider));
         recyclerView.addItemDecoration(divider);
-    }
-
-    private void loadData(final String city) {
-        RequestQueue requestQueue=Volley.newRequestQueue(context);
-        StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        swipeRefreshLayout.setRefreshing(false);
-                        try {
-                            weatherList= Parse.parseWeather(response,null,null,context);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        if(weatherList.size()>0) {
-
-                        }else {
-
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-        });
-        requestQueue.add(stringRequest);
     }
 
     @Override

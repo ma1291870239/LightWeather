@@ -1,101 +1,172 @@
 package com.ma.lightweather.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Ma-PC on 2016/12/13.
- */
-public class Weather implements Serializable{
-    public String tmp;//温度
-    public String feel;//体感
-    public String hum;//相对湿度
-    public String pcpn;//降水量
-    public String location;
-    public String city;//城市
-    public String cnty;//国家
-    public String dir;//风向
-    public String txt;//天气
-    public String wind;//风速
-    public String pres;//气压
-    public String vis;//能见度
-    public List<Integer> maxList=new ArrayList<>();
-    public List<Integer> minList=new ArrayList<>();
-    public List<String> txtList=new ArrayList<>();
-    public List<String> dirList=new ArrayList<>();
-    public List<String> dateList=new ArrayList<>();
+public class HeFengWeather extends Bean {
+    private List<HeWeather> HeWeather6;
 
-
-    public List<Integer> hourTmpList=new ArrayList<>();
-    public List<Integer> hourPopList=new ArrayList<>();
-    public List<String> hourTxtList=new ArrayList<>();
-    public List<String> hourDirList=new ArrayList<>();
-    public List<String> hourDateList=new ArrayList<>();
-
-    public List<String> lifeTypeList=new ArrayList<>();
-    public List<String> lifeTxtList=new ArrayList<>();
-    public List<String> lifeBrfList=new ArrayList<>();
-
-
-    private List<WeatherBean> HeWeather6;
-
-    public List<WeatherBean> getHeWeather6() {
+    public List<HeWeather> getHeWeather6() {
         return HeWeather6;
     }
 
-    public void setHeWeather6(List<WeatherBean> heWeather6) {
+    public void setHeWeather6(List<HeWeather> heWeather6) {
         HeWeather6 = heWeather6;
     }
 
-    class WeatherBean implements Serializable{
-        private NowWeather now;
-        private BasicWeather basic;
-        private List<DailyWeather> daily_forecast;
-        private List<HourlyWeather> hourly;
-        private List<LifeWeather> lifestyle;
+    public class HeWeather extends Bean{
+        private Basic basic;
+        private Update uodate;
+        private Now now;
+        private List<Daily> daily_forecast;
+        private List<Hourly> hourly;
+        private List<Lifestyle> lifestyle;
 
-        public NowWeather getNow() {
-            return now;
-        }
-
-        public void setNow(NowWeather now) {
-            this.now = now;
-        }
-
-        public BasicWeather getBasic() {
+        public Basic getBasic() {
             return basic;
         }
 
-        public void setBasic(BasicWeather basic) {
+        public void setBasic(Basic basic) {
             this.basic = basic;
         }
 
-        public List<DailyWeather> getDaily_forecast() {
+        public Update getUodate() {
+            return uodate;
+        }
+
+        public void setUodate(Update uodate) {
+            this.uodate = uodate;
+        }
+
+        public Now getNow() {
+            return now;
+        }
+
+        public void setNow(Now now) {
+            this.now = now;
+        }
+
+        public List<Daily> getDaily_forecast() {
             return daily_forecast;
         }
 
-        public void setDaily_forecast(List<DailyWeather> daily_forecast) {
+        public void setDaily_forecast(List<Daily> daily_forecast) {
             this.daily_forecast = daily_forecast;
         }
 
-        public List<HourlyWeather> getHourly() {
+        public List<Hourly> getHourly() {
             return hourly;
         }
 
-        public void setHourly(List<HourlyWeather> hourly) {
+        public void setHourly(List<Hourly> hourly) {
             this.hourly = hourly;
         }
 
-        public List<LifeWeather> getLifestyle() {
+        public List<Lifestyle> getLifestyle() {
             return lifestyle;
         }
 
-        public void setLifestyle(List<LifeWeather> lifestyle) {
+        public void setLifestyle(List<Lifestyle> lifestyle) {
             this.lifestyle = lifestyle;
         }
     }
-    class NowWeather implements Serializable{
+
+    public class Basic extends Bean{
+        private String cid;
+        private String location;
+        private String parent_city;
+        private String admin_area;
+        private String cnty;
+        private String lat;
+        private String lon;
+        private String tz;
+
+        public String getCid() {
+            return cid;
+        }
+
+        public void setCid(String cid) {
+            this.cid = cid;
+        }
+
+        public String getLocation() {
+            return location;
+        }
+
+        public void setLocation(String location) {
+            this.location = location;
+        }
+
+        public String getParent_city() {
+            return parent_city;
+        }
+
+        public void setParent_city(String parent_city) {
+            this.parent_city = parent_city;
+        }
+
+        public String getAdmin_area() {
+            return admin_area;
+        }
+
+        public void setAdmin_area(String admin_area) {
+            this.admin_area = admin_area;
+        }
+
+        public String getCnty() {
+            return cnty;
+        }
+
+        public void setCnty(String cnty) {
+            this.cnty = cnty;
+        }
+
+        public String getLat() {
+            return lat;
+        }
+
+        public void setLat(String lat) {
+            this.lat = lat;
+        }
+
+        public String getLon() {
+            return lon;
+        }
+
+        public void setLon(String lon) {
+            this.lon = lon;
+        }
+
+        public String getTz() {
+            return tz;
+        }
+
+        public void setTz(String tz) {
+            this.tz = tz;
+        }
+    }
+
+    public class Update extends Bean{
+        private String loc;
+        private String utc;
+
+        public String getLoc() {
+            return loc;
+        }
+
+        public void setLoc(String loc) {
+            this.loc = loc;
+        }
+
+        public String getUtc() {
+            return utc;
+        }
+
+        public void setUtc(String utc) {
+            this.utc = utc;
+        }
+    }
+    public class Now extends Bean{
+        private String cloud;
         private String cond_code;
         private String cond_txt;
         private String fl;
@@ -108,6 +179,14 @@ public class Weather implements Serializable{
         private String wind_dir;
         private String wind_sc;
         private String wind_spd;
+
+        public String getCloud() {
+            return cloud;
+        }
+
+        public void setCloud(String cloud) {
+            this.cloud = cloud;
+        }
 
         public String getCond_code() {
             return cond_code;
@@ -205,92 +284,23 @@ public class Weather implements Serializable{
             this.wind_spd = wind_spd;
         }
     }
-    class BasicWeather implements Serializable{
-        private String cid;
-        private String location;
-        private String parent_city;
-        private String admin_area;
-        private String cnty;
-        private String lat;
-        private String lon;
-        private String tz;
 
-        public String getCid() {
-            return cid;
-        }
-
-        public void setCid(String cid) {
-            this.cid = cid;
-        }
-
-        public String getLocation() {
-            return location;
-        }
-
-        public void setLocation(String location) {
-            this.location = location;
-        }
-
-        public String getParent_city() {
-            return parent_city;
-        }
-
-        public void setParent_city(String parent_city) {
-            this.parent_city = parent_city;
-        }
-
-        public String getAdmin_area() {
-            return admin_area;
-        }
-
-        public void setAdmin_area(String admin_area) {
-            this.admin_area = admin_area;
-        }
-
-        public String getCnty() {
-            return cnty;
-        }
-
-        public void setCnty(String cnty) {
-            this.cnty = cnty;
-        }
-
-        public String getLat() {
-            return lat;
-        }
-
-        public void setLat(String lat) {
-            this.lat = lat;
-        }
-
-        public String getLon() {
-            return lon;
-        }
-
-        public void setLon(String lon) {
-            this.lon = lon;
-        }
-
-        public String getTz() {
-            return tz;
-        }
-
-        public void setTz(String tz) {
-            this.tz = tz;
-        }
-    }
-    class DailyWeather implements Serializable{
+    public class Daily extends Bean{
         private String cond_code_d;
         private String cond_code_n;
         private String cond_txt_d;
         private String cond_txt_n;
         private String date;
         private String hum;
+        private String mr;
+        private String ms;
         private String pcpn;
         private String pop;
         private String pres;
-        private String tmp_max;
-        private String tmp_min;
+        private String sr;
+        private String ss;
+        private int tmp_max;
+        private int tmp_min;
         private String uv_index;
         private String vis;
         private String wind_deg;
@@ -346,6 +356,22 @@ public class Weather implements Serializable{
             this.hum = hum;
         }
 
+        public String getMr() {
+            return mr;
+        }
+
+        public void setMr(String mr) {
+            this.mr = mr;
+        }
+
+        public String getMs() {
+            return ms;
+        }
+
+        public void setMs(String ms) {
+            this.ms = ms;
+        }
+
         public String getPcpn() {
             return pcpn;
         }
@@ -370,19 +396,35 @@ public class Weather implements Serializable{
             this.pres = pres;
         }
 
-        public String getTmp_max() {
+        public String getSr() {
+            return sr;
+        }
+
+        public void setSr(String sr) {
+            this.sr = sr;
+        }
+
+        public String getSs() {
+            return ss;
+        }
+
+        public void setSs(String ss) {
+            this.ss = ss;
+        }
+
+        public int getTmp_max() {
             return tmp_max;
         }
 
-        public void setTmp_max(String tmp_max) {
+        public void setTmp_max(int tmp_max) {
             this.tmp_max = tmp_max;
         }
 
-        public String getTmp_min() {
+        public int getTmp_min() {
             return tmp_min;
         }
 
-        public void setTmp_min(String tmp_min) {
+        public void setTmp_min(int tmp_min) {
             this.tmp_min = tmp_min;
         }
 
@@ -434,7 +476,7 @@ public class Weather implements Serializable{
             this.wind_spd = wind_spd;
         }
     }
-    class HourlyWeather implements Serializable{
+    public class Hourly extends Bean{
         private String cloud;
         private String cond_code;
         private String cond_txt;
@@ -442,7 +484,7 @@ public class Weather implements Serializable{
         private String pop;
         private String pres;
         private String time;
-        private String tmp;
+        private int tmp;
         private String wind_deg;
         private String wind_dir;
         private String wind_sc;
@@ -504,11 +546,11 @@ public class Weather implements Serializable{
             this.time = time;
         }
 
-        public String getTmp() {
+        public int getTmp() {
             return tmp;
         }
 
-        public void setTmp(String tmp) {
+        public void setTmp(int tmp) {
             this.tmp = tmp;
         }
 
@@ -544,10 +586,18 @@ public class Weather implements Serializable{
             this.wind_spd = wind_spd;
         }
     }
-    class LifeWeather implements Serializable{
+    public class Lifestyle extends Bean{
+        private String type;
         private String brf;
         private String txt;
-        private String type;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
         public String getBrf() {
             return brf;
@@ -563,14 +613,6 @@ public class Weather implements Serializable{
 
         public void setTxt(String txt) {
             this.txt = txt;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
         }
     }
 }

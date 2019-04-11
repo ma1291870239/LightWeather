@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.ma.lightweather.db.MydataBaseHelper;
+import com.ma.lightweather.model.HeFengWeather;
 import com.ma.lightweather.model.Weather;
 
 import java.util.ArrayList;
@@ -25,11 +26,11 @@ public class DbUtils {
         if(cursor.moveToFirst()){
             do{
                 Weather weather=new Weather();
-                weather.city=cursor.getString(cursor.getColumnIndex("city"));
+                weather.location=cursor.getString(cursor.getColumnIndex("city"));
                 weather.tmp=cursor.getString(cursor.getColumnIndex("tmp"));
                 weather.txt=cursor.getString(cursor.getColumnIndex("txt"));
                 weather.dir=cursor.getString(cursor.getColumnIndex("dir"));
-                if(weather.city!=null) {
+                if(weather.location!=null) {
                     weatherData.add(weather);
                 }
             }while (cursor.moveToNext());
@@ -39,17 +40,17 @@ public class DbUtils {
         return  weatherData;
     }
 
-    public static void createdb(Context context,List<Weather> weatherList) {
+    public static void createdb(Context context,List<HeFengWeather.HeWeather> weatherList) {
         MydataBaseHelper dbHelper=new MydataBaseHelper(context,"Weather.db",null,1);
         SQLiteDatabase db=dbHelper.getWritableDatabase();
         db.beginTransaction();
         for (int i=0;i<weatherList.size();i++){
             ContentValues values = new ContentValues();
-            values.put("city", weatherList.get(i).city);
-            values.put("tmp", weatherList.get(i).tmp);
-            values.put("txt", weatherList.get(i).txt);
-            values.put("dir", weatherList.get(i).dir);
-            db.delete("weather","city = ?",new String[]{weatherList.get(i).city});
+            values.put("city", weatherList.get(i).getBasic().getLocation());
+            values.put("tmp", weatherList.get(i).getNow().getTmp());
+            values.put("txt", weatherList.get(i).getNow().getCond_txt());
+            values.put("dir", weatherList.get(i).getNow().getWind_dir());
+            db.delete("weather","city = ?",new String[]{weatherList.get(i).getBasic().getLocation()});
             db.insert("weather",null,values);
         }
         db.setTransactionSuccessful();

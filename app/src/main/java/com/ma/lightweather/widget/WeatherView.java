@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.ma.lightweather.R;
+import com.ma.lightweather.model.HeFengWeather;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -28,9 +29,9 @@ public class WeatherView extends View {
     private Path maxPath=new Path();
     private Path minPath=new Path();
 
+    private List<HeFengWeather.Daily> dailyList=new ArrayList<>();
     private List<Integer> maxList=new ArrayList<>();
     private List<Integer> minList=new ArrayList<>();
-    private List<Float> midelMinList=new ArrayList<>();
     private List<String> dateList=new ArrayList<>();
     private List<String> txtList=new ArrayList<>();
     private List<String> dirList=new ArrayList<>();
@@ -68,7 +69,6 @@ public class WeatherView extends View {
         maxPaint.setAntiAlias(true);
         maxPaint.setStrokeWidth(lineWidth);
         maxPaint.setStyle(Paint.Style.STROKE);
-        maxPaint.setPathEffect(new CornerPathEffect(10));
 
         minPaint.setColor(getResources().getColor(R.color.temp_low));
         minPaint.setAntiAlias(true);
@@ -221,12 +221,20 @@ public class WeatherView extends View {
         }
     }
 
-    public void loadViewData(List<Integer> maxList, List<Integer> minList, List<String> dateList , List<String> txtList, List<String> dirList) {
-        this.maxList=maxList;
-        this.minList=minList;
-        this.dateList=dateList;
-        this.txtList=txtList;
-        this.dirList=dirList;
+    public void loadViewData(List<HeFengWeather.Daily> dailyList) {
+        this.dailyList=dailyList;
+        maxList.clear();
+        minList.clear();
+        dateList.clear();
+        txtList.clear();
+        dirList.clear();
+        for (int i=0;i<dailyList.size();i++){
+            maxList.add(dailyList.get(i).getTmp_max());
+            minList.add(dailyList.get(i).getTmp_min());
+            dateList.add(dailyList.get(i).getDate());
+            txtList.add(dailyList.get(i).getCond_txt_d());
+            dirList.add(dailyList.get(i).getWind_dir());
+        }
         postInvalidate();
     }
 

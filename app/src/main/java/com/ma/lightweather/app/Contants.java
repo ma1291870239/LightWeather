@@ -13,6 +13,14 @@ public class Contants {
     public final static String WEATHER_ALL=BASE_URL+"weather?key=4ddad270cdb94639ae5f4cfe11aadf82&location=";
     //必应图片
     public final static String BINGURL="http://guolin.tech/api/bing_pic";
+    //百度逆地理
+    public final static String BAIDUGETADDRESS="http://api.map.baidu.com/geocoder/v2/?" +
+            "output=json" +
+            "&pois=1" +
+            "&latest_admin=1" +
+            "&ak=fGsdz2W5duRKjf1Gafg2nQRhgkbm7Tad" +
+            "&mcode=FD:DB:F3:34:1C:AF:37:38:10:8A:38:44:06:BC:52:10:D7:41:CD:69;com.ma.lightweather"+
+            "&location=";
 
     public final static String CITY="city";
     public final static String TMP="tmp";
@@ -26,4 +34,5 @@ public class Contants {
     public final static String STATUS="status";
     public final static String BINGIMG="bingimg";
     public final static String LIFE="life";
+    public final static String FIRSTSHOW="firstshow";
 }

@@ -1,14 +1,28 @@
 package com.ma.lightweather.activity;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,16 +33,31 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.ma.lightweather.R;
+import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.app.WeatherService;
 import com.ma.lightweather.db.MydataBaseHelper;
 import com.ma.lightweather.fragment.PhotoFragment;
 import com.ma.lightweather.fragment.CityFrgment;
 import com.ma.lightweather.fragment.WeatherFragment;
+import com.ma.lightweather.model.BaiduLocation;
 import com.ma.lightweather.utils.CommonUtils;
+import com.ma.lightweather.utils.SharedPrefencesUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends BaseActivity {
 
@@ -42,13 +71,52 @@ public class MainActivity extends BaseActivity {
     private List<String> titleList=new ArrayList<>();
     private long clickTime = 0;
     public final static int CHANGETHEME=100;
-
+    public final static int GETADDRESS_CODE=100;
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private Location bdlocation;
+    private String address;
+    private static final int PERMISSION_CODE_LOCATION = 1;
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(final Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case GETADDRESS_CODE:
+                    if(!(boolean)SharedPrefencesUtils.getParam(MainActivity.this,Contants.FIRSTSHOW,false)){
+                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivity.this);
+                        dialogBuilder.setTitle("提示");
+                        dialogBuilder.setMessage("你当前所在位置是"+address+",需要切换地区吗");
+                        dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                refresh(bdlocation.getLongitude()+","+bdlocation.getLatitude(),false);
+                                dialog.dismiss();
+                            }
+                        });
+                        dialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialogBuilder.create().show();
+                        SharedPrefencesUtils.setParam(MainActivity.this,Contants.FIRSTSHOW,true);
+                    }else{
+                        refresh(bdlocation.getLongitude()+","+bdlocation.getLatitude(),false);
+                    }
+                    break;
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+        requestLocationPermission();
         initData();
+
     }
 
     @Override
@@ -86,6 +154,112 @@ public class MainActivity extends BaseActivity {
         viewPager.setOffscreenPageLimit(2);
         viewPager.setCurrentItem(0);
         setSupportActionBar(toolBar);
+    }
+
+    private void requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            startLocation();
+        }else{
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+                dialogBuilder.setTitle("权限请求");
+                dialogBuilder.setMessage("我们希望获取您的位置信息，给您的书房安个家");
+                dialogBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                        ActivityCompat.requestPermissions(MainActivity.this,
+                                new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_CODE_LOCATION);
+                    }
+                });
+                dialogBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                dialogBuilder.create().show();
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_CODE_LOCATION);
+            }
+        }
+    }
+
+
+    private void startLocation() {
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                bdlocation=location;
+                getDistrictFromLocation();
+                if (locationManager != null) {
+                    locationManager.removeUpdates(locationListener);
+                    locationManager = null;
+                    locationListener = null;
+                }
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+
+            }
+        };
+        for (String s : locationManager.getAllProviders()) {
+            if (s.equals(LocationManager.NETWORK_PROVIDER)) {
+
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, locationListener, null);
+
+    }
+
+
+    private void getDistrictFromLocation() {
+        if (bdlocation == null) {
+            return;
+        }
+        RequestQueue requestQueue= Volley.newRequestQueue(this);
+        StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.BAIDUGETADDRESS+bdlocation.getLatitude()+","+bdlocation.getLongitude() ,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson=new Gson();
+                        BaiduLocation baiduLocation=gson.fromJson(response,BaiduLocation.class);
+                        address=baiduLocation.getResult().getAddressComponent().getDistrict();
+                        handler.sendEmptyMessage(GETADDRESS_CODE);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+        requestQueue.add(stringRequest);
     }
 
 
@@ -165,7 +339,6 @@ public class MainActivity extends BaseActivity {
             clickTime = System.currentTimeMillis();
         } else {
             this.finish();
-            System.exit(0);
         }
     }
 
@@ -212,6 +385,15 @@ public class MainActivity extends BaseActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode==RESULT_OK&&requestCode==CHANGETHEME){
             recreate();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case PERMISSION_CODE_LOCATION:
+                startLocation();
+                return;
         }
     }
 }

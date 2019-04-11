@@ -18,7 +18,6 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -27,19 +26,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.ma.lightweather.R;
 import com.ma.lightweather.activity.MainActivity;
-import com.ma.lightweather.model.Weather;
-import com.ma.lightweather.utils.Parse;
+import com.ma.lightweather.model.HeFengWeather;
+import com.ma.lightweather.utils.DbUtils;
 import com.ma.lightweather.utils.SharedPrefencesUtils;
-
-import org.json.JSONException;
 
 import java.util.List;
 
 public class WeatherService extends Service {
 
-    private List<Weather> weatherList;
+    private List<HeFengWeather.HeWeather> weatherList;
     private static final int WEATHER_CODE=200;
     private String channelId ;
     private String channelName;
@@ -105,11 +103,10 @@ public class WeatherService extends Service {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            weatherList= Parse.parseWeather(response,null,null,getApplicationContext());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        Gson gson=new Gson();
+                        HeFengWeather heFengWeather = gson.fromJson(response, HeFengWeather.class);
+                        weatherList=heFengWeather.getHeWeather6();
+                        DbUtils.createdb(getApplicationContext(),weatherList);
                         if(weatherList.size()>0) {
                             handler.sendEmptyMessage(WEATHER_CODE);
                         }
@@ -150,38 +147,39 @@ public class WeatherService extends Service {
 
     private void setWeatherMsg(NotificationCompat.Builder notification) {
         for(int i=0;i<weatherList.size();i++) {
-            if(weatherList.get(i).txt.contains("晴")) {
+            String txt=weatherList.get(i).getNow().getCond_txt();
+            if(txt.contains("晴")) {
                 notification.setSmallIcon(R.mipmap.sunny);
                 remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.sunny));
-            }if(weatherList.get(i).txt.contains("云")) {
+            }if(txt.contains("云")) {
                 notification.setSmallIcon(R.mipmap.cloudy);
                 remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.cloudy));
-            }if(weatherList.get(i).txt.contains("阴")) {
+            }if(txt.contains("阴")) {
                 notification.setSmallIcon(R.mipmap.shade);
                 remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.shade));
-            }if(weatherList.get(i).txt.contains("风")) {
+            }if(txt.contains("风")) {
                 notification.setSmallIcon(R.mipmap.gale);
                 remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.gale));
-            }if(weatherList.get(i).txt.contains("雨")) {
+            }if(txt.contains("雨")) {
                 notification.setSmallIcon(R.mipmap.rain);
                 remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.rain));
-            }if(weatherList.get(i).txt.contains("雪")) {
+            }if(txt.contains("雪")) {
                 notification.setSmallIcon(R.mipmap.snow);
                 remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.snow));
-            }if(weatherList.get(i).txt.contains("雾")) {
+            }if(txt.contains("雾")) {
                 notification.setSmallIcon(R.mipmap.smog);
                 remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.smog));
-            }if(weatherList.get(i).txt.contains("霾")) {
+            }if(txt.contains("霾")) {
                 notification.setSmallIcon(R.mipmap.smog);
                 remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.smog));
-            }if(weatherList.get(i).txt.contains("沙")) {
+            }if(txt.contains("沙")) {
                 notification.setSmallIcon(R.mipmap.sand);
                 remoteViews.setImageViewBitmap(R.id.weatherImg,BitmapFactory.decodeResource(getResources(), R.mipmap.sand));
             }
 
-            remoteViews.setTextViewText(R.id.weatherCity,weatherList.get(i).city);
-            remoteViews.setTextViewText(R.id.weatherWind,weatherList.get(i).txt+"　"+weatherList.get(i).dir);
-            remoteViews.setTextViewText(R.id.weatherTmp,weatherList.get(i).tmp+"℃");
+            remoteViews.setTextViewText(R.id.weatherCity,weatherList.get(i).getBasic().getLocation());
+            remoteViews.setTextViewText(R.id.weatherWind,txt+"　"+weatherList.get(i).getNow().getWind_dir());
+            remoteViews.setTextViewText(R.id.weatherTmp,weatherList.get(i).getNow().getTmp()+"℃");
         }
 
     }

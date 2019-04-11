@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,19 +19,17 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 import com.ma.lightweather.R;
 import com.ma.lightweather.activity.MainActivity;
-import com.ma.lightweather.activity.SettingActivity;
 import com.ma.lightweather.app.Contants;
 import com.ma.lightweather.app.WeatherService;
-import com.ma.lightweather.model.Weather;
+import com.ma.lightweather.model.HeFengWeather;
 import com.ma.lightweather.utils.CommonUtils;
-import com.ma.lightweather.utils.Parse;
+import com.ma.lightweather.utils.DbUtils;
 import com.ma.lightweather.utils.SharedPrefencesUtils;
 import com.ma.lightweather.widget.HourWeatherView;
 import com.ma.lightweather.widget.WeatherView;
-
-import org.json.JSONException;
 
 import java.util.List;
 
@@ -50,7 +47,7 @@ public class WeatherFragment extends BaseFragment{
     private WeatherView weatherView;
     private HourWeatherView hourWeatherView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private List<Weather> weatherList;
+    private List<HeFengWeather.HeWeather> weatherList;
     private String city;
     private static final int WEATHER_CODE=200;
     private static final int NOCITY_CODE=100;
@@ -60,66 +57,7 @@ public class WeatherFragment extends BaseFragment{
             super.handleMessage(msg);
             switch (msg.what){
                 case WEATHER_CODE:
-                    swipeRefreshLayout.setRefreshing(false);
-                    scrollView.scrollTo(0,0);
-                    for(int i=0;i<weatherList.size();i++) {
-                        tmptv.setText(weatherList.get(i).tmp+"℃");
-                        feeltv.setText("　体感："+weatherList.get(i).feel+" ℃");
-                        humtv.setText("　湿度："+weatherList.get(i).hum+" %");
-                        pcpntv.setText("　降雨："+weatherList.get(i).pcpn+" mm");
-                        citytv.setText(weatherList.get(i).city+"　"+weatherList.get(i).cnty);
-                        windtv.setText(weatherList.get(i).txt+"　"+weatherList.get(i).dir);
-                        pmtv.setText("　风速："+weatherList.get(i).wind+" km/h");
-                        prestv.setText("　气压："+weatherList.get(i).pres+" Pa");
-                        vistv.setText("　能见："+weatherList.get(i).vis+" km");
-                        if(weatherList.get(i).lifeTypeList.size()<=0){
-                            weatherLife.setVisibility(View.GONE);
-                        }else {
-                            weatherLife.setVisibility(View.VISIBLE);
-                        }
-                        if((boolean) SharedPrefencesUtils.getParam(context,Contants.LIFE,true)){
-                            weatherLife.setVisibility(View.VISIBLE);
-                            for (int j=0;j<weatherList.get(i).lifeTypeList.size();j++){
-                                Weather weather=weatherList.get(i);
-                                String type=weather.lifeTypeList.get(j);
-                                String s=weather.lifeBrfList.get(j)+"\n"+weather.lifeTxtList.get(j);
-                                if(type.equals("air")&& !TextUtils.isEmpty(s)){
-                                    airTv.setText("空气指数　　"+s);
-                                }
-                                if(type.equals("cw")&&!TextUtils.isEmpty(s)){
-                                    cwTv.setText("洗车指数　　"+s);
-                                }
-                                if(type.equals("drsg")&&!TextUtils.isEmpty(s)){
-                                    drsgTv.setText("穿衣指数　　"+s);
-                                }
-                                if(type.equals("flu")&&!TextUtils.isEmpty(s)){
-                                    fluTv.setText("感冒指数　　"+s);
-                                }
-                                if(type.equals("sport")&&!TextUtils.isEmpty(s)){
-                                    sportTv.setText("运动指数　　"+s);
-                                }
-                                if(type.equals("trav")&&!TextUtils.isEmpty(s)){
-                                    travTv.setText("旅游指数　　"+s);
-                                }
-                                if(type.equals("comf")&&!TextUtils.isEmpty(s)){
-                                    comfTv.setText("舒适度指数　"+s);
-                                }
-                                if(type.equals("uv")&&!TextUtils.isEmpty(s)){
-                                    uvTv.setText("紫外线指数　"+s);
-                                }
-                            }
-                        }else{
-                            weatherLife.setVisibility(View.GONE);
-                        }
-                        SharedPrefencesUtils.setParam(context,Contants.CITY,weatherList.get(i).city);
-                        SharedPrefencesUtils.setParam(context,Contants.TMP,weatherList.get(i).tmp);
-                        SharedPrefencesUtils.setParam(context,Contants.TXT,weatherList.get(i).txt);
-                        //CommonUtils.showShortToast(getC,"数据已更新");
-                        if((boolean) SharedPrefencesUtils.getParam(context,Contants.NOTIFY,false)){
-                            Intent it=new Intent(context, WeatherService.class);
-                            context.startService(it);
-                        }
-                    }
+                    setData();
                     break;
                 case NOCITY_CODE:
                     CommonUtils.showShortToast(context,"未找到该城市");
@@ -148,11 +86,10 @@ public class WeatherFragment extends BaseFragment{
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        try {
-                            weatherList= Parse.parseWeather(response,weatherView,hourWeatherView,context);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        Gson gson=new Gson();
+                        HeFengWeather heFengWeather = gson.fromJson(response, HeFengWeather.class);
+                        weatherList=heFengWeather.getHeWeather6();
+                        DbUtils.createdb(context,weatherList);
                         if(weatherList.size()>0) {
                             handler.sendEmptyMessage(WEATHER_CODE);
                             ((MainActivity)getActivity()).refreshCity();
@@ -168,6 +105,77 @@ public class WeatherFragment extends BaseFragment{
                     }
                 });
         requestQueue.add(stringRequest);
+    }
+
+    private void setData(){
+        swipeRefreshLayout.setRefreshing(false);
+        scrollView.scrollTo(0,0);
+        for(int i=0;i<weatherList.size();i++) {
+            HeFengWeather.Basic basic=weatherList.get(i).getBasic();
+            HeFengWeather.Now now=weatherList.get(i).getNow();
+            List<HeFengWeather.Hourly> hourlyList=weatherList.get(i).getHourly();
+            List<HeFengWeather.Daily> dailyList=weatherList.get(i).getDaily_forecast();
+
+            tmptv.setText(now.getTmp()+"℃");
+            feeltv.setText("　体感："+now.getFl()+" ℃");
+            humtv.setText("　湿度："+now.getHum()+" %");
+            pcpntv.setText("　降雨："+now.getPcpn()+" mm");
+            citytv.setText(basic.getLocation()+"　"+basic.getParent_city()+"　"+basic.getCnty());
+            windtv.setText(now.getCond_txt()+"　"+now.getWind_sc()+"级"+now.getWind_dir());
+            pmtv.setText("　风速："+now.getWind_spd()+" km/h");
+            prestv.setText("　气压："+now.getPres()+" Pa");
+            vistv.setText("　能见："+now.getVis()+" km");
+            if(weatherList.get(i).getLifestyle().size()<=0){
+                weatherLife.setVisibility(View.GONE);
+            }else {
+                weatherLife.setVisibility(View.VISIBLE);
+            }
+            if((boolean) SharedPrefencesUtils.getParam(context,Contants.LIFE,true)){
+                weatherLife.setVisibility(View.VISIBLE);
+                for (int j=0;j<weatherList.get(i).getLifestyle().size();j++){
+                    HeFengWeather.Lifestyle lifestyle=weatherList.get(i).getLifestyle().get(j);
+                    String type=lifestyle.getType();
+                    String s=lifestyle.getBrf()+"\n"+lifestyle.getTxt();
+                    if(type.equals("air")&& !TextUtils.isEmpty(s)){
+                        airTv.setText("空气指数　　"+s);
+                    }
+                    if(type.equals("cw")&&!TextUtils.isEmpty(s)){
+                        cwTv.setText("洗车指数　　"+s);
+                    }
+                    if(type.equals("drsg")&&!TextUtils.isEmpty(s)){
+                        drsgTv.setText("穿衣指数　　"+s);
+                    }
+                    if(type.equals("flu")&&!TextUtils.isEmpty(s)){
+                        fluTv.setText("感冒指数　　"+s);
+                    }
+                    if(type.equals("sport")&&!TextUtils.isEmpty(s)){
+                        sportTv.setText("运动指数　　"+s);
+                    }
+                    if(type.equals("trav")&&!TextUtils.isEmpty(s)){
+                        travTv.setText("旅游指数　　"+s);
+                    }
+                    if(type.equals("comf")&&!TextUtils.isEmpty(s)){
+                        comfTv.setText("舒适度指数　"+s);
+                    }
+                    if(type.equals("uv")&&!TextUtils.isEmpty(s)){
+                        uvTv.setText("紫外线指数　"+s);
+                    }
+                }
+            }else{
+                weatherLife.setVisibility(View.GONE);
+            }
+            hourWeatherView.loadViewData(hourlyList);
+            weatherView.loadViewData(dailyList);
+
+            SharedPrefencesUtils.setParam(context,Contants.CITY,basic.getLocation());
+            SharedPrefencesUtils.setParam(context,Contants.TMP,now.getTmp());
+            SharedPrefencesUtils.setParam(context,Contants.TXT,now.getCond_txt());
+            //CommonUtils.showShortToast(getC,"数据已更新");
+            if((boolean) SharedPrefencesUtils.getParam(context,Contants.NOTIFY,false)){
+                Intent it=new Intent(context, WeatherService.class);
+                context.startService(it);
+            }
+        }
     }
 
     private void initView() {

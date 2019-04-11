@@ -44,14 +44,14 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> {
 
     @Override
     public void onBindViewHolder(CityHolder holder, final int i) {
-        holder.citytv.setText(weatherList.get(i).city);
+        holder.citytv.setText(weatherList.get(i).location);
         holder.tmptv.setText(weatherList.get(i).tmp+"℃");
         holder.txttv.setText(weatherList.get(i).txt+" "+weatherList.get(i).dir);
         holder.weatherLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(context instanceof MainActivity){
-                    ((MainActivity) context).refresh(weatherList.get(i).city,true);
+                    ((MainActivity) context).refresh(weatherList.get(i).location,true);
                 }
             }
         });
@@ -59,13 +59,13 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.CityHolder> {
             @Override
             public void onClick(View view) {
                 String city1= (String) SharedPrefencesUtils.getParam(context,Contants.CITY,Contants.CITYNAME);
-                String city2=weatherList.get(i).city;
+                String city2=weatherList.get(i).location;
                 if(weatherList.size()>1) {
-                    DbUtils.deleteCity(context, weatherList.get(i).city);
+                    DbUtils.deleteCity(context, weatherList.get(i).location);
                     if (context instanceof MainActivity) {
                         ((MainActivity) context).refreshCity();
                         if(city1.equals(city2)){
-                            ((MainActivity) context).refresh(weatherList.get(0).city,false);
+                            ((MainActivity) context).refresh(weatherList.get(0).location,false);
                         }
                     }
                 }else {
