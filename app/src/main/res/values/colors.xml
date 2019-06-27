@@ -36,6 +36,7 @@
     <color name="white">#FFFFFF</color>
     <color name="grey">#EEEEEE</color>
     <color name="xiantiao">#D9D9D9</color>
+    <color name="hinttext">#BDBDBD</color>
     <color name="temp_high">#F4511E</color>
     <color name="temp_low">#039BE5</color>
     <color name="search_bg">#ECEFF1</color>
