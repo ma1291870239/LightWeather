@@ -25,11 +25,11 @@ public class DbUtils {
         if(cursor.moveToFirst()){
             do{
                 Weather weather=new Weather();
-                weather.city=cursor.getString(cursor.getColumnIndex("city"));
-                weather.tmp=cursor.getString(cursor.getColumnIndex("tmp"));
-                weather.txt=cursor.getString(cursor.getColumnIndex("txt"));
-                weather.dir=cursor.getString(cursor.getColumnIndex("dir"));
-                if(weather.city!=null) {
+                weather.setCity(cursor.getString(cursor.getColumnIndex("city")));
+                weather.setTmp(cursor.getString(cursor.getColumnIndex("tmp")));
+                weather.setTxt(cursor.getString(cursor.getColumnIndex("txt")));
+                weather.setDir(cursor.getString(cursor.getColumnIndex("dir")));
+                if(weather.getCity() !=null) {
                     weatherData.add(weather);
                 }
             }while (cursor.moveToNext());
@@ -45,11 +45,11 @@ public class DbUtils {
         db.beginTransaction();
         for (int i=0;i<weatherList.size();i++){
             ContentValues values = new ContentValues();
-            values.put("city", weatherList.get(i).city);
-            values.put("tmp", weatherList.get(i).tmp);
-            values.put("txt", weatherList.get(i).txt);
-            values.put("dir", weatherList.get(i).dir);
-            db.delete("weather","city = ?",new String[]{weatherList.get(i).city});
+            values.put("city", weatherList.get(i).getCity());
+            values.put("tmp", weatherList.get(i).getTmp());
+            values.put("txt", weatherList.get(i).getTxt());
+            values.put("dir", weatherList.get(i).getDir());
+            db.delete("weather","city = ?",new String[]{weatherList.get(i).getCity()});
             db.insert("weather",null,values);
         }
         db.setTransactionSuccessful();

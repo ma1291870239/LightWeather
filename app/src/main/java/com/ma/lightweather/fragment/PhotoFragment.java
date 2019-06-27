@@ -78,7 +78,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
             switch (msg.what){
                 case SAVE_CODE:
                     String storePath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "lightweather";
-                    CommonUtils.showShortToast(context,"水印照片已成功保存至\n"+storePath);
+                    CommonUtils.INSTANCE.showShortToast(getContext(),"水印照片已成功保存至\n"+storePath);
                     break;
                 case TOBYTE_CODE:
                     showImgDialog();
@@ -125,9 +125,9 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         shareLayout.setOnClickListener(this);
 
 
-        phoneTv.setText((String) SharedPrefencesUtils.getParam(context,Contants.MODEL,"点击左侧设置当前机型"));
-        loctionTv.setText((String) SharedPrefencesUtils.getParam(context,Contants.LOCTION,"点击左侧设置当前城市"));
-        weatherTv.setText((String) SharedPrefencesUtils.getParam(context,Contants.WEATHER,"点击左侧设置当前天气"));
+        phoneTv.setText((String) SharedPrefencesUtils.INSTANCE.getParam(getContext(), Contants.MODEL,"点击左侧设置当前机型"));
+        loctionTv.setText((String) SharedPrefencesUtils.INSTANCE.getParam(getContext(), Contants.LOCTION,"点击左侧设置当前城市"));
+        weatherTv.setText((String) SharedPrefencesUtils.INSTANCE.getParam(getContext(), Contants.WEATHER,"点击左侧设置当前天气"));
     }
 
     @Override
@@ -144,21 +144,21 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                 break;
             case R.id.defaultPhoneTv:
                 phoneTv.setText(android.os.Build.BRAND+" "+android.os.Build.MODEL);
-                SharedPrefencesUtils.setParam(context,Contants.MODEL,phoneTv.getText().toString());
+                SharedPrefencesUtils.INSTANCE.setParam(getContext(), Contants.MODEL,phoneTv.getText().toString());
                 break;
             case R.id.defaultLoctionTv:
-                loctionTv.setText((String) SharedPrefencesUtils.getParam(context,Contants.CITY,""));
-                SharedPrefencesUtils.setParam(context,Contants.LOCTION,loctionTv.getText().toString());
+                loctionTv.setText((String) SharedPrefencesUtils.INSTANCE.getParam(getContext(), Contants.CITY,""));
+                SharedPrefencesUtils.INSTANCE.setParam(getContext(), Contants.LOCTION,loctionTv.getText().toString());
                 break;
             case R.id.defaultWeatherTv:
-                weatherTv.setText(SharedPrefencesUtils.getParam(context,Contants.TMP,"")+"℃ "
-                        +SharedPrefencesUtils.getParam(context,Contants.TXT,""));
-                SharedPrefencesUtils.setParam(context,Contants.WEATHER,weatherTv.getText().toString());
+                weatherTv.setText(SharedPrefencesUtils.INSTANCE.getParam(getContext(), Contants.TMP,"")+"℃ "
+                        + SharedPrefencesUtils.INSTANCE.getParam(getContext(), Contants.TXT,""));
+                SharedPrefencesUtils.INSTANCE.setParam(getContext(), Contants.WEATHER,weatherTv.getText().toString());
                 break;
             case R.id.photoLayout:
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED){
-                    CommonUtils.showShortToast(context,"当前没有读写权限");
+                    CommonUtils.INSTANCE.showShortToast(getContext(),"当前没有读写权限");
                     return ;
                 }
                 showActionSheet();
@@ -170,7 +170,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                 selectColor();
                 break;
             case R.id.settingLayout:
-                Intent it=new Intent(context, SettingActivity.class);
+                Intent it=new Intent(getContext(), SettingActivity.class);
                 startActivity(it);
                 break;
             case R.id.shareLayout:
@@ -197,7 +197,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();
-                        SharedPrefencesUtils.setParam(context,Contants.THEME,which);
+                        SharedPrefencesUtils.INSTANCE.setParam(getContext(), Contants.THEME,which);
                         getActivity().recreate();
                     }
                 }).create();
@@ -206,22 +206,22 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         WindowManager.LayoutParams lp = window.getAttributes();
         lp.gravity = Gravity.CENTER;
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        lp.width  =  CommonUtils.dp2px(context,200);
+        lp.width  =  CommonUtils.INSTANCE.dp2px(getContext(),200);
         //dialog.getWindow().setAttributes(lp);
 
     }
 
     private void goToMarket() {
-        Uri uri = Uri.parse("market://details?id=" + context.getPackageName());
+        Uri uri = Uri.parse("market://details?id=" + getContext().getPackageName());
         Intent goToMarket = new Intent(Intent.ACTION_VIEW, uri);
         try {
-            if(CommonUtils.isContains(context,"com.tencent.android.qqdownloader")){
+            if(CommonUtils.INSTANCE.isContains(getContext(),"com.tencent.android.qqdownloader")){
                 goToMarket.setPackage("com.tencent.android.qqdownloader");
             }
-            if(CommonUtils.isContains(context,"com.coolapk.market")) {
+            if(CommonUtils.INSTANCE.isContains(getContext(),"com.coolapk.market")) {
                 goToMarket.setPackage("com.coolapk.market");
             }
-            context.startActivity(goToMarket);
+            getContext().startActivity(goToMarket);
         } catch (Exception e) {
             e.printStackTrace();
             Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -251,15 +251,15 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
     }
 
     private void showDialog(final int tag){
-        final View titleView =LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null);
+        final View titleView =LayoutInflater.from(getContext()).inflate(R.layout.item_title_dialog, null);
         final TextView textView=titleView.findViewById(R.id.dialogTitle);
         textView.setText("请输入");
-        textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor(context)));
+        textView.setTextColor(getContext().getResources().getColor(CommonUtils.INSTANCE.getTextColor(getContext())));
 
-        final View contentView =LayoutInflater.from(context).inflate(R.layout.item_edit_dialog, null);
+        final View contentView =LayoutInflater.from(getContext()).inflate(R.layout.item_edit_dialog, null);
         final EditText editText=contentView.findViewById(R.id.editText);
         GradientDrawable gradientDrawable = (GradientDrawable) editText.getBackground();
-        gradientDrawable.setStroke(CommonUtils.dp2px(context, 1),context.getResources().getColor(CommonUtils.getBackColor(context)));
+        gradientDrawable.setStroke(CommonUtils.INSTANCE.dp2px(getContext(), 1), getContext().getResources().getColor(CommonUtils.INSTANCE.getBackColor(getContext())));
 
         new AlertDialog.Builder(getActivity())
                 .setCustomTitle(titleView)
@@ -270,13 +270,13 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                         String s=editText.getText().toString();
                         if(tag==1){
                             phoneTv.setText(s);
-                            SharedPrefencesUtils.setParam(context,Contants.MODEL,phoneTv.getText().toString());
+                            SharedPrefencesUtils.INSTANCE.setParam(getContext(), Contants.MODEL,phoneTv.getText().toString());
                         }if(tag==2){
                             loctionTv.setText(s);
-                            SharedPrefencesUtils.setParam(context,Contants.LOCTION,loctionTv.getText().toString());
+                            SharedPrefencesUtils.INSTANCE.setParam(getContext(), Contants.LOCTION,loctionTv.getText().toString());
                         }if(tag==3){
                             weatherTv.setText(s);
-                            SharedPrefencesUtils.setParam(context,Contants.WEATHER,weatherTv.getText().toString());
+                            SharedPrefencesUtils.INSTANCE.setParam(getContext(), Contants.WEATHER,weatherTv.getText().toString());
                         }
                     }
                 })
@@ -286,14 +286,14 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
 
     private void showImgDialog(){
 
-        final View titleView =LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null);
+        final View titleView =LayoutInflater.from(getContext()).inflate(R.layout.item_title_dialog, null);
         final TextView textView=titleView.findViewById(R.id.dialogTitle);
         textView.setText("是否保存水印照片");
-        textView.setTextColor(context.getResources().getColor(CommonUtils.getTextColor(context)));
+        textView.setTextColor(getContext().getResources().getColor(CommonUtils.INSTANCE.getTextColor(getContext())));
 
-        final View contentView =LayoutInflater.from(context).inflate(R.layout.item_img_dialog, null);
+        final View contentView =LayoutInflater.from(getContext()).inflate(R.layout.item_img_dialog, null);
         final ImageView imageView=contentView.findViewById(R.id.imgView);
-        Glide.with(context).load(bytes).into(imageView);
+        Glide.with(getContext()).load(bytes).into(imageView);
 
         if(progressDialog!=null) {
             progressDialog.cancel();
@@ -308,7 +308,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                boolean isSave=PhotoUtils.saveImageToGallery(context,bitmap);
+                                boolean isSave= PhotoUtils.INSTANCE.saveImageToGallery(getContext(),bitmap);
                                 bitmap.recycle();
                                 if(isSave){
                                     handler.sendEmptyMessage(SAVE_CODE);
@@ -332,7 +332,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
         }
         out = new File(strImgPath, filename);
         strImgPath = strImgPath + filename;
-        imgUrl = PhotoUtils.getUriForFile(context,out);
+        imgUrl = PhotoUtils.INSTANCE.getUriForFile(getContext(),out);
         imageCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUrl);
         imageCaptureIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
         startActivityForResult(imageCaptureIntent, RESULT_PHOTO);
@@ -342,14 +342,14 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ContentResolver contentResolver = context.getContentResolver();
+        ContentResolver contentResolver = getContext().getContentResolver();
         bitmap=null;
             switch (requestCode) {
                 case RESULT_PHOTO://拍照
                     try {
                         bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imgUrl);
-                        int degree=PhotoUtils.readPictureDegree(strImgPath);
-                        bitmap=PhotoUtils.toTurn(bitmap,degree);
+                        int degree= PhotoUtils.INSTANCE.readPictureDegree(strImgPath);
+                        bitmap= PhotoUtils.INSTANCE.toTurn(bitmap,degree);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -365,7 +365,7 @@ public class PhotoFragment extends BaseFragment implements View.OnClickListener{
                     break;
             }
             if(bitmap!=null){
-                bitmap=CommonUtils.drawTextToRightBottom(context,bitmap,phoneTv.getText().toString(),loctionTv.getText().toString(),weatherTv.getText().toString());
+                bitmap= CommonUtils.INSTANCE.drawTextToRightBottom(getContext(),bitmap,phoneTv.getText().toString(),loctionTv.getText().toString(),weatherTv.getText().toString());
                 progressDialog=ProgressDialog.show(getActivity(), null, "正在生成水印照片");
                 new Thread(new Runnable() {
                     @Override

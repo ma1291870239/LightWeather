@@ -60,7 +60,7 @@ public class CityFrgment extends BaseFragment{
     public void initData() {
         city="";
         weatherData.clear();
-        weatherData.addAll(DbUtils.selectdb(context));
+        weatherData.addAll(DbUtils.selectdb(getContext()));
         if(swipeRefreshLayout!=null){
             swipeRefreshLayout.setRefreshing(false);
         }
@@ -75,7 +75,7 @@ public class CityFrgment extends BaseFragment{
     private void initView() {
         recyclerView = view.findViewById(R.id.recyclerView);
         swipeRefreshLayout=view.findViewById(R.id.swipeRefreshLayout);
-        swipeRefreshLayout.setColorSchemeResources(CommonUtils.getBackColor(context));
+        swipeRefreshLayout.setColorSchemeResources(CommonUtils.INSTANCE.getBackColor(getContext()));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -83,23 +83,23 @@ public class CityFrgment extends BaseFragment{
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        DividerItemDecoration divider = new DividerItemDecoration(context,DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(context,R.drawable.bg_divider));
+        DividerItemDecoration divider = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(getContext(),R.drawable.bg_divider));
         recyclerView.addItemDecoration(divider);
     }
 
     private void loadData(final String city) {
-        RequestQueue requestQueue=Volley.newRequestQueue(context);
+        RequestQueue requestQueue=Volley.newRequestQueue(getContext());
         StringRequest stringRequest=new StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         swipeRefreshLayout.setRefreshing(false);
                         try {
-                            weatherList= Parse.parseWeather(response,null,null,context);
+                            weatherList= Parse.parseWeather(response,null,null, getContext());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

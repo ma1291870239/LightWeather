@@ -34,31 +34,31 @@ public class Parse {
                     if(!weatherObj.isNull("basic")){
                         JSONObject basicObj=weatherObj.getJSONObject("basic");
                         if(!basicObj.isNull("location"))
-                            weather.city=basicObj.getString("location");
+                            weather.setCity(basicObj.getString("location"));
                         if (!basicObj.isNull("cnty"))
-                            weather.cnty=basicObj.getString("cnty");
+                            weather.setCnty(basicObj.getString("cnty"));
                     }
                     //实况天气
                     if(!weatherObj.isNull("now")){
                         JSONObject nowObj=weatherObj.getJSONObject("now");
                         if(!nowObj.isNull("fl"))
-                            weather.feel=nowObj.getString("fl");
+                            weather.setFeel(nowObj.getString("fl"));
                         if(!nowObj.isNull("hum"))
-                            weather.hum=nowObj.getString("hum");
+                            weather.setHum(nowObj.getString("hum"));
                         if(!nowObj.isNull("pcpn"))
-                            weather.pcpn=nowObj.getString("pcpn");
+                            weather.setPcpn(nowObj.getString("pcpn"));
                         if(!nowObj.isNull("pres"))
-                            weather.pres=nowObj.getString("pres");
+                            weather.setPres(nowObj.getString("pres"));
                         if(!nowObj.isNull("tmp"))
-                            weather.tmp=nowObj.getString("tmp");
+                            weather.setTmp(nowObj.getString("tmp"));
                         if(!nowObj.isNull("vis"))
-                            weather.vis=nowObj.getString("vis");
+                            weather.setVis(nowObj.getString("vis"));
                         if(!nowObj.isNull("cond_txt"))
-                            weather.txt= nowObj.getString("cond_txt");
+                            weather.setTxt(nowObj.getString("cond_txt"));
                         if(!nowObj.isNull("wind_dir"))
-                            weather.dir=nowObj.getString("wind_dir");
+                            weather.setDir(nowObj.getString("wind_dir"));
                         if(!nowObj.isNull("wind_spd"))
-                            weather.wind=nowObj.getString("wind_spd");
+                            weather.setWind(nowObj.getString("wind_spd"));
                     }
                     //未来七天
                     if(!weatherObj.isNull("daily_forecast")){
@@ -67,15 +67,15 @@ public class Parse {
                             for (int j=0;j<dailyArray.length();j++){
                                 JSONObject dailyObj=dailyArray.getJSONObject(j);
                                 if(!dailyObj.isNull("date"))
-                                    weather.dateList.add(dailyObj.getString("date"));
+                                    weather.getDateList().add(dailyObj.getString("date"));
                                 if(!dailyObj.isNull("cond_txt_d"))
-                                    weather.txtList.add(dailyObj.getString("cond_txt_d"));
+                                    weather.getTxtList().add(dailyObj.getString("cond_txt_d"));
                                 if(!dailyObj.isNull("tmp_max"))
-                                    weather.maxList.add(Integer.valueOf(dailyObj.getString("tmp_max")));
+                                    weather.getMaxList().add(Integer.valueOf(dailyObj.getString("tmp_max")));
                                 if(!dailyObj.isNull("tmp_min"))
-                                    weather.minList.add(Integer.valueOf(dailyObj.getString("tmp_min")));
+                                    weather.getMinList().add(Integer.valueOf(dailyObj.getString("tmp_min")));
                                 if(!dailyObj.isNull("wind_dir"))
-                                    weather.dirList.add(dailyObj.getString("wind_dir"));
+                                    weather.getDirList().add(dailyObj.getString("wind_dir"));
                             }
                         }
                     }
@@ -87,15 +87,15 @@ public class Parse {
                             for (int j=0;j<hourArray.length();j++){
                                 JSONObject hourObj=hourArray.getJSONObject(j);
                                 if(!hourObj.isNull("time"))
-                                    weather.hourDateList.add(hourObj.getString("time"));
+                                    weather.getHourDateList().add(hourObj.getString("time"));
                                 if(!hourObj.isNull("cond_txt"))
-                                    weather.hourTxtList.add(hourObj.getString("cond_txt"));
+                                    weather.getHourTxtList().add(hourObj.getString("cond_txt"));
                                 if(!hourObj.isNull("pop"))
-                                    weather.hourPopList.add(hourObj.getInt("pop"));
+                                    weather.getHourPopList().add(hourObj.getInt("pop"));
                                 if(!hourObj.isNull("tmp"))
-                                    weather.hourTmpList.add(hourObj.getInt("tmp"));
+                                    weather.getHourTmpList().add(hourObj.getInt("tmp"));
                                 if(!hourObj.isNull("wind_dir"))
-                                    weather.hourDirList.add(hourObj.getString("wind_dir"));
+                                    weather.getHourDirList().add(hourObj.getString("wind_dir"));
                             }
                         }
                     }
@@ -107,11 +107,11 @@ public class Parse {
                             for (int j=0;j<lifeArray.length();j++){
                                 JSONObject lifeObj=lifeArray.getJSONObject(j);
                                 if(!lifeObj.isNull("type"))
-                                    weather.lifeTypeList.add(lifeObj.getString("type"));
+                                    weather.getLifeTypeList().add(lifeObj.getString("type"));
                                 if(!lifeObj.isNull("txt"))
-                                    weather.lifeTxtList.add(lifeObj.getString("txt"));
+                                    weather.getLifeTxtList().add(lifeObj.getString("txt"));
                                 if(!lifeObj.isNull("brf"))
-                                    weather.lifeBrfList.add(lifeObj.getString("brf"));
+                                    weather.getLifeBrfList().add(lifeObj.getString("brf"));
                             }
                         }
                     }
@@ -119,14 +119,14 @@ public class Parse {
             }
         }
 
-        if(weather.city!=null) {
+        if(weather.getCity() !=null) {
             weatherList.add(weather);
             DbUtils.createdb(context,weatherList);
             if(weatherView!=null) {
-                weatherView.loadViewData(weather.maxList, weather.minList, weather.dateList, weather.txtList, weather.dirList);
+                weatherView.loadViewData(weather.getMaxList(), weather.getMinList(), weather.getDateList(), weather.getTxtList(), weather.getDirList());
             }
             if(hourWeatherView!=null) {
-                hourWeatherView.loadViewData(weather.hourTmpList, weather.hourPopList, weather.hourDateList, weather.hourTxtList, weather.hourDirList);
+                hourWeatherView.loadViewData(weather.getHourTmpList(), weather.getHourPopList(), weather.getHourDateList(), weather.getHourTxtList(), weather.getHourDirList());
             }
         }
         return weatherList;
