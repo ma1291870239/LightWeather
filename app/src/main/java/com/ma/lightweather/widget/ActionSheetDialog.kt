@@ -1,26 +1,18 @@
 package com.ma.lightweather.widget
 
+
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
-import android.view.Display
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.View.OnClickListener
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
 import android.widget.ScrollView
 import android.widget.TextView
-
-
 import com.ma.lightweather.R
 import com.ma.lightweather.utils.CommonUtils
-
-import java.util.ArrayList
+import java.util.*
 
 class ActionSheetDialog(private val context: Context) {
     private var dialog: Dialog? = null
@@ -95,7 +87,7 @@ class ActionSheetDialog(private val context: Context) {
      * @param listener
      * @return
      */
-    fun addSheetItem(strItem: String, color: SheetItemColor,
+    fun addSheetItem(strItem: String, color: SheetItemColor?,
                      listener: OnSheetItemClickListener): ActionSheetDialog {
         if (sheetItemList == null) {
             sheetItemList = ArrayList()

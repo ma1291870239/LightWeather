@@ -2,16 +2,13 @@ package com.ma.lightweather.widget
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.view.View
-
 import com.ma.lightweather.R
-
-import java.util.ArrayList
-import java.util.Collections
+import com.ma.lightweather.model.Weather
+import java.util.*
 
 /**
  * Created by Aeolus on 2018/8/24.
@@ -135,12 +132,16 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         }
     }
 
-    fun loadViewData(tmpList: List<Int>, popList: List<Int>, dateList: List<String>, txtList: List<String>, dirList: List<String>) {
-        this.tmpList = tmpList
-        this.popList = popList
-        this.dateList = dateList
-        this.txtList = txtList
-        this.dirList = dirList
+    fun loadViewData(hourlyList: List<Weather.HourlyWeather>?) {
+        if (hourlyList != null) {
+            for (hourly in hourlyList){
+                (tmpList as ArrayList).add(hourly.tmp!!.toInt())
+                (popList as ArrayList).add(hourly.pop!!.toInt())
+                hourly.time?.let { (dateList as ArrayList).add(it) }
+                hourly.cond_txt?.let { (txtList as ArrayList).add(it) }
+                hourly.wind_dir?.let { (dirList as ArrayList).add(it) }
+            }
+        }
         postInvalidate()
     }
 

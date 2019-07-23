@@ -41,7 +41,7 @@ class CityAdapter(private val context: Context, private val weatherList: List<We
             val city1 = SharedPrefencesUtils.getParam(context, Contants.CITY, Contants.CITYNAME) as String
             val city2 = weatherList[i].city
             if (weatherList.size > 1) {
-                DbUtils.deleteCity(context, weatherList[i].city)
+                weatherList[i].city?.let { it1 -> DbUtils.deleteCity(context, it1) }
                 if (context is MainActivity) {
                     context.refreshCity()
                     if (city1 == city2) {

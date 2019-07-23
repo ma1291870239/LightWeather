@@ -1,11 +1,8 @@
 package com.ma.lightweather.model;
 
-import android.location.Address;
-import android.location.Location;
 
-import java.io.Serializable;
 
-public class BaiduLocation extends Bean {
+public class BaiduLocation  {
 
     private Result result;
 
@@ -17,7 +14,7 @@ public class BaiduLocation extends Bean {
         this.result = result;
     }
 
-    public class Result extends Bean{
+    public class Result {
         private String formatted_address;
         private Address addressComponent;
 
@@ -38,7 +35,7 @@ public class BaiduLocation extends Bean {
         }
     }
 
-    public class Address extends Bean{
+    public class Address {
         private String country;
         private String province;
         private String city;

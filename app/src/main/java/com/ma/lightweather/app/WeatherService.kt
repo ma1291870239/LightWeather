@@ -1,28 +1,15 @@
 package com.ma.lightweather.app
 
-import android.app.AlarmManager
-import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.os.Build
-import android.os.Handler
-import android.os.IBinder
-import android.os.Message
-import android.os.SystemClock
+import android.os.*
 import android.provider.Settings
 import android.support.v4.app.NotificationCompat
-import android.util.Log
 import android.widget.RemoteViews
 import android.widget.Toast
-
-import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ma.lightweather.R
@@ -30,12 +17,11 @@ import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
-
 import org.json.JSONException
 
 class WeatherService : Service() {
 
-    private var weatherList: List<Weather>? = null
+    private var weatherList: List<Weather.WeatherBean>? = null
     private var channelId: String? = null
     private var channelName: String? = null
     private var remoteViews: RemoteViews? = null
@@ -81,12 +67,12 @@ class WeatherService : Service() {
         val stringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
                 Response.Listener { response ->
                     try {
-                        weatherList = Parse.parseWeather(response, null, null, applicationContext)
+                        weatherList = Parse.parse(response, null, null, applicationContext)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
 
-                    if (weatherList!!.size > 0) {
+                    if (weatherList!!.isNotEmpty()) {
                         handler.sendEmptyMessage(WEATHER_CODE)
                     }
                 },
@@ -118,42 +104,43 @@ class WeatherService : Service() {
 
     private fun setWeatherMsg(notification: NotificationCompat.Builder) {
         for (i in weatherList!!.indices) {
-            if (weatherList!![i].txt!!.contains("晴")) {
+            val condTxt=weatherList!![i].now?.cond_txt
+            if (condTxt?.contains("晴")!!) {
                 notification.setSmallIcon(R.mipmap.sunny)
                 remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sunny))
             }
-            if (weatherList!![i].txt!!.contains("云")) {
+            if (condTxt.contains("云")) {
                 notification.setSmallIcon(R.mipmap.cloudy)
                 remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.cloudy))
             }
-            if (weatherList!![i].txt!!.contains("阴")) {
+            if (condTxt.contains("阴")) {
                 notification.setSmallIcon(R.mipmap.shade)
                 remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.shade))
             }
-            if (weatherList!![i].txt!!.contains("雨")) {
+            if (condTxt.contains("雨")) {
                 notification.setSmallIcon(R.mipmap.rain)
                 remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.rain))
             }
-            if (weatherList!![i].txt!!.contains("雪")) {
+            if (condTxt.contains("雪")) {
                 notification.setSmallIcon(R.mipmap.snow)
                 remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.snow))
             }
-            if (weatherList!![i].txt!!.contains("雾")) {
+            if (condTxt.contains("雾")) {
                 notification.setSmallIcon(R.mipmap.smog)
                 remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.smog))
             }
-            if (weatherList!![i].txt!!.contains("霾")) {
+            if (condTxt.contains("霾")) {
                 notification.setSmallIcon(R.mipmap.smog)
                 remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.smog))
             }
-            if (weatherList!![i].txt!!.contains("沙")) {
+            if (condTxt.contains("沙")) {
                 notification.setSmallIcon(R.mipmap.sand)
                 remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sand))
             }
 
-            remoteViews!!.setTextViewText(R.id.weatherCity, weatherList!![i].city)
-            remoteViews!!.setTextViewText(R.id.weatherWind, weatherList!![i].txt + "　" + weatherList!![i].dir)
-            remoteViews!!.setTextViewText(R.id.weatherTmp, weatherList!![i].tmp + "℃")
+            remoteViews!!.setTextViewText(R.id.weatherCity, weatherList!![i].basic?.location)
+            remoteViews!!.setTextViewText(R.id.weatherWind, weatherList!![i].now?.cond_txt + "　" + weatherList!![i].now?.wind_dir)
+            remoteViews!!.setTextViewText(R.id.weatherTmp, weatherList!![i].now?.tmp + "℃")
         }
 
     }

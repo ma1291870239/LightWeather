@@ -2,17 +2,14 @@ package com.ma.lightweather.widget
 
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-
 import com.ma.lightweather.R
-
-import java.util.ArrayList
-import java.util.Collections
+import com.ma.lightweather.model.Weather
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Created by Ma-PC on 2016/12/14.
@@ -177,12 +174,16 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         }
     }
 
-    fun loadViewData(maxList: List<Int>, minList: List<Int>, dateList: List<String>, txtList: List<String>, dirList: List<String>) {
-        this.maxList = maxList
-        this.minList = minList
-        this.dateList = dateList
-        this.txtList = txtList
-        this.dirList = dirList
+    fun loadViewData(dailyList: List<Weather.DailyWeather>?) {
+        if (dailyList != null) {
+            for (daily in dailyList){
+                (maxList as ArrayList).add(daily.tmp_max!!.toInt())
+                (minList as ArrayList).add(daily.tmp_min!!.toInt())
+                daily.date?.let { (dateList as ArrayList).add(it) }
+                daily.cond_txt_d?.let { (txtList as ArrayList).add(it) }
+                daily.wind_dir?.let { (dirList as ArrayList).add(it) }
+            }
+        }
         postInvalidate()
     }
 

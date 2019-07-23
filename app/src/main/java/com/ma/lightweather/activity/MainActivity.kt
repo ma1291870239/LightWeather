@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
 import android.view.KeyEvent
@@ -14,15 +15,13 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
-
 import com.ma.lightweather.R
-import com.ma.lightweather.db.MydataBaseHelper
-import com.ma.lightweather.fragment.PhotoFragment
 import com.ma.lightweather.fragment.CityFrgment
+import com.ma.lightweather.fragment.PhotoFragment
 import com.ma.lightweather.fragment.WeatherFragment
 import com.ma.lightweather.utils.CommonUtils
-
-import java.util.ArrayList
+import java.util.*
+import kotlin.system.exitProcess
 
 class MainActivity : BaseActivity() {
 
@@ -34,7 +33,6 @@ class MainActivity : BaseActivity() {
     private var tabLayout: TabLayout? = null
     private val fragmentList = ArrayList<Fragment>()
     private val titleList = ArrayList<String>()
-    private val dbHelper: MydataBaseHelper? = null
     private var clickTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,8 +98,8 @@ class MainActivity : BaseActivity() {
         val et = searchView.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)
         et.textSize = 14f
         et.hint = "请输入要查询的城市名字"
-        et.setHintTextColor(resources.getColor(R.color.text))
-        et.setTextColor(resources.getColor(R.color.text))
+        et.setHintTextColor(ContextCompat.getColor(this,R.color.text))
+        et.setTextColor(ContextCompat.getColor(this,R.color.text))
         et.setBackgroundResource(R.drawable.bg_search_round_grey)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -148,7 +146,7 @@ class MainActivity : BaseActivity() {
             clickTime = System.currentTimeMillis()
         } else {
             this.finish()
-            System.exit(0)
+            exitProcess(0)
         }
     }
 

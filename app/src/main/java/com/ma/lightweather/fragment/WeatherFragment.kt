@@ -12,15 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-
-import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.VolleyError
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ma.lightweather.R
 import com.ma.lightweather.activity.MainActivity
-import com.ma.lightweather.activity.SettingActivity
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.app.WeatherService
 import com.ma.lightweather.model.Weather
@@ -29,7 +25,6 @@ import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
 import com.ma.lightweather.widget.HourWeatherView
 import com.ma.lightweather.widget.WeatherView
-
 import org.json.JSONException
 
 
@@ -61,7 +56,7 @@ class WeatherFragment : BaseFragment() {
     private var weatherView: WeatherView? = null
     private var hourWeatherView: HourWeatherView? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
-    private var weatherList: List<Weather>? = null
+    private var weatherList: List<Weather.WeatherBean>? = null
     private var city: String? = null
     private val handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -74,7 +69,7 @@ class WeatherFragment : BaseFragment() {
         var view = inflater!!.inflate(R.layout.frag_weather, null)
         city = SharedPrefencesUtils.getParam(context, Contants.CITY, Contants.CITYNAME) as String
         if (isAdded) {
-            initView()
+            initView(view)
             loadData(city)
         }
         return view
@@ -87,7 +82,8 @@ class WeatherFragment : BaseFragment() {
         val stringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city!!,
                 Response.Listener { response ->
                     try {
-                        weatherList = Parse.parseWeather(response, weatherView, hourWeatherView, context)
+                        //weatherList = Parse.parseWeather(response, weatherView, hourWeatherView, context)
+                        weatherList=Parse.parse(response, weatherView, hourWeatherView, context)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
@@ -103,7 +99,7 @@ class WeatherFragment : BaseFragment() {
         requestQueue.add(stringRequest)
     }
 
-    private fun initView() {
+    private fun initView(view: View) {
         tmptv = view!!.findViewById(R.id.weather_tmp)//温度
         feeltv = view!!.findViewById(R.id.weather_feel)//体感
         humtv = view!!.findViewById(R.id.weather_hum)//湿度
@@ -143,24 +139,24 @@ class WeatherFragment : BaseFragment() {
                 swipeRefreshLayout!!.isRefreshing = false
                 scrollView!!.scrollTo(0, 0)
                 for (i in weatherList!!.indices) {
-                    tmptv!!.text = weatherList!![i].tmp + "℃"
-                    feeltv!!.text = "　体感：" + weatherList!![i].feel + " ℃"
-                    humtv!!.text = "　湿度：" + weatherList!![i].hum + " %"
-                    pcpntv!!.text = "　降雨：" + weatherList!![i].pcpn + " mm"
-                    citytv!!.text = weatherList!![i].city + "　" + weatherList!![i].cnty
-                    windtv!!.text = weatherList!![i].txt + "　" + weatherList!![i].dir
-                    pmtv!!.text = "　风速：" + weatherList!![i].wind + " km/h"
-                    prestv!!.text = "　气压：" + weatherList!![i].pres + " Pa"
-                    vistv!!.text = "　能见：" + weatherList!![i].vis + " km"
-                    if (weatherList!![i].lifeTypeList.size <= 0) {
+                    tmptv!!.text = weatherList!![i].now?.tmp+ "℃"
+                    feeltv!!.text = "　体感：" + weatherList!![i].now?.fl + " ℃"
+                    humtv!!.text = "　湿度：" + weatherList!![i].now?.hum + " %"
+                    pcpntv!!.text = "　降雨：" + weatherList!![i].now?.pcpn + " mm"
+                    citytv!!.text = weatherList!![i].basic?.location + "　" + weatherList!![i].basic?.cnty
+                    windtv!!.text = weatherList!![i].now?.cond_txt + "　" + weatherList!![i].now?.wind_dir
+                    pmtv!!.text = "　风速：" + weatherList!![i].now?.wind_spd + " km/h"
+                    prestv!!.text = "　气压：" + weatherList!![i].now?.pres + " Pa"
+                    vistv!!.text = "　能见：" + weatherList!![i].now?.vis + " km"
+                    if (weatherList!![i].lifestyle?.size!! <=0) {
                         weatherLife!!.visibility = View.GONE
                     } else {
                         weatherLife!!.visibility = View.VISIBLE
                     }
-                    for (j in weatherList!![i].lifeTypeList.indices) {
+                    for (j in weatherList!![i].lifestyle?.indices!!) {
                         val weather = weatherList!![i]
-                        val type = weather.lifeTypeList[j]
-                        val s = weather.lifeBrfList[j] + "\n" + weather.lifeTxtList[j]
+                        val type = weather.lifestyle?.get(j)?.type
+                        val s =weather.lifestyle?.get(j)?.brf+ "\n" + weather.lifestyle?.get(j)?.txt
                         if (type == "air" && !TextUtils.isEmpty(s)) {
                             airTv!!.visibility = View.VISIBLE
                             airTv!!.text = "空气指数　　$s"
@@ -218,9 +214,9 @@ class WeatherFragment : BaseFragment() {
                             uvTv!!.text = ""
                         }
                     }
-                    weatherList!![i].city?.let { SharedPrefencesUtils.setParam(context, Contants.CITY, it) }
-                    weatherList!![i].tmp?.let { SharedPrefencesUtils.setParam(context, Contants.TMP, it) }
-                    weatherList!![i].txt?.let { SharedPrefencesUtils.setParam(context, Contants.TXT, it) }
+                    weatherList!![i].basic?.location.let { SharedPrefencesUtils.setParam(context, Contants.CITY, it!!) }
+                    weatherList!![i].now?.tmp.let { SharedPrefencesUtils.setParam(context, Contants.TMP, it!!) }
+                    weatherList!![i].now?.cond_txt.let { SharedPrefencesUtils.setParam(context, Contants.TXT, it!!) }
                     //CommonUtils.showShortToast(getC,"数据已更新");
                     if (SharedPrefencesUtils.getParam(context, Contants.NOTIFY, false) as Boolean) {
                         val it = Intent(context, WeatherService::class.java)

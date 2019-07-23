@@ -1,7 +1,7 @@
 package com.ma.lightweather.model
 
 import java.io.Serializable
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by Ma-PC on 2016/12/13.
@@ -18,22 +18,22 @@ class Weather : Serializable {
     var wind: String? = null//风速
     var pres: String? = null//气压
     var vis: String? = null//能见度
-    var maxList: List<Int> = ArrayList()
-    var minList: List<Int> = ArrayList()
-    var txtList: List<String> = ArrayList()
-    var dirList: List<String> = ArrayList()
-    var dateList: List<String> = ArrayList()
+    var maxList: MutableList<Int> = ArrayList()
+    var minList: MutableList<Int> = ArrayList()
+    var txtList: MutableList<String> = ArrayList()
+    var dirList: MutableList<String> = ArrayList()
+    var dateList: MutableList<String> = ArrayList()
 
 
-    var hourTmpList: List<Int> = ArrayList()
-    var hourPopList: List<Int> = ArrayList()
-    var hourTxtList: List<String> = ArrayList()
-    var hourDirList: List<String> = ArrayList()
-    var hourDateList: List<String> = ArrayList()
+    var hourTmpList: MutableList<Int> = ArrayList()
+    var hourPopList: MutableList<Int> = ArrayList()
+    var hourTxtList: MutableList<String> = ArrayList()
+    var hourDirList: MutableList<String> = ArrayList()
+    var hourDateList: MutableList<String> = ArrayList()
 
-    var lifeTypeList: List<String> = ArrayList()
-    var lifeTxtList: List<String> = ArrayList()
-    var lifeBrfList: List<String> = ArrayList()
+    var lifeTypeList: MutableList<String> = ArrayList()
+    var lifeTxtList: MutableList<String> = ArrayList()
+    var lifeBrfList: MutableList<String> = ArrayList()
 
 
     var heWeather6: List<WeatherBean>? = null
