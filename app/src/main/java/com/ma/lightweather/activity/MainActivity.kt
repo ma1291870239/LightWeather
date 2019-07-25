@@ -142,7 +142,7 @@ class MainActivity : BaseActivity() {
 
     private fun exit() {
         if (System.currentTimeMillis() - clickTime > 2000) {
-            CommonUtils.showShortToast(this, "再按一次退出程序")
+            CommonUtils.showShortSnackBar(tabLayout, "再按一次退出程序")
             clickTime = System.currentTimeMillis()
         } else {
             this.finish()

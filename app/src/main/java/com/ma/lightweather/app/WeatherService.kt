@@ -13,7 +13,6 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ma.lightweather.R
-import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
@@ -21,7 +20,7 @@ import org.json.JSONException
 
 class WeatherService : Service() {
 
-    private var weatherList: List<Weather.WeatherBean>? = null
+    private var weatherList: List<Weather>? = null
     private var channelId: String? = null
     private var channelName: String? = null
     private var remoteViews: RemoteViews? = null
@@ -157,35 +156,8 @@ class WeatherService : Service() {
         }
     }
 
-    fun sendMsg(msg: String) {
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = manager.getNotificationChannel(channelId)
-            if (channel.importance == NotificationManager.IMPORTANCE_NONE) {
-                val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS)
-                intent.putExtra(Settings.EXTRA_APP_PACKAGE, packageName)
-                intent.putExtra(Settings.EXTRA_CHANNEL_ID, channel.id)
-                startActivity(intent)
-                Toast.makeText(this, "请手动将通知打开", Toast.LENGTH_SHORT).show()
-            }
-        }
-        val intent = Intent(this, MainActivity::class.java)
-        val pendingIntent = PendingIntent.getActivity(this, 0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
-        val notification = NotificationCompat.Builder(this, channelId!!)
-                .setContentTitle("收到新消息")
-                .setContentText(msg)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setLargeIcon(BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher))
-                .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
-                .build()
-        manager.notify(System.currentTimeMillis().toInt(), notification)
-    }
 
     companion object {
-        private val WEATHER_CODE = 200
+        private const val WEATHER_CODE = 200
     }
 }

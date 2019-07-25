@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +16,6 @@ import com.ma.lightweather.adapter.CityAdapter
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.DbUtils
-import com.ma.lightweather.widget.HourWeatherView
-import com.ma.lightweather.widget.WeatherView
 import java.util.*
 
 /**
@@ -25,16 +24,13 @@ import java.util.*
 class CityFrgment : BaseFragment() {
 
     private var recyclerView: RecyclerView? = null
-    private val weatherView: WeatherView? = null
-    private val hourWeatherView: HourWeatherView? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
-    private var weatherList: List<Weather> = ArrayList()
-    private val weatherData = ArrayList<Weather>()
+    private val weatherList = ArrayList<Weather>()
     private var cityAdapter: CityAdapter? = null
     private var city: String? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.frag_city, null)
+        var view = inflater?.inflate(R.layout.frag_city, null)
         if (isAdded) {
             initView(view)
             initData()
@@ -44,31 +40,32 @@ class CityFrgment : BaseFragment() {
 
     fun initData() {
         city = ""
-        weatherData.clear()
-        weatherData.addAll(DbUtils.selectdb(mContext))
+        weatherList.clear()
+        weatherList.addAll(DbUtils.queryDb(mContext))
+        Log.e("abc",""+weatherList.size)
         if (swipeRefreshLayout != null) {
-            swipeRefreshLayout!!.isRefreshing = false
+            swipeRefreshLayout?.isRefreshing = false
         }
         if (cityAdapter == null) {
-            cityAdapter = CityAdapter(activity, weatherData)
-            recyclerView!!.adapter = cityAdapter
+            cityAdapter = CityAdapter(activity, weatherList)
+            recyclerView?.adapter = cityAdapter
         } else {
-            cityAdapter!!.notifyDataSetChanged()
+            cityAdapter?.notifyDataSetChanged()
         }
     }
 
-    private fun initView(view: View) {
-        recyclerView = view!!.findViewById(R.id.recyclerView)
-        swipeRefreshLayout = view!!.findViewById(R.id.swipeRefreshLayout)
-        swipeRefreshLayout!!.setColorSchemeResources(CommonUtils.getBackColor(mContext))
-        swipeRefreshLayout!!.setOnRefreshListener { initData() }
+    private fun initView(view: View?) {
+        recyclerView = view?.findViewById(R.id.recyclerView)
+        swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
+        swipeRefreshLayout?.setOnRefreshListener { initData() }
 
         val layoutManager = LinearLayoutManager(mContext)
         layoutManager.orientation = LinearLayoutManager.VERTICAL
-        recyclerView!!.layoutManager = layoutManager
+        recyclerView?.layoutManager = layoutManager
         val divider = DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL)
         divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.bg_divider))
-        recyclerView!!.addItemDecoration(divider)
+        recyclerView?.addItemDecoration(divider)
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {

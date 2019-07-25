@@ -1,21 +1,16 @@
 package com.ma.lightweather.utils
 
 import android.content.Context
-import android.content.pm.PackageInfo
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import android.util.Log
+import android.support.design.widget.Snackbar
+import android.view.View
 import android.widget.Toast
-
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
-
-import java.io.ByteArrayOutputStream
-import java.io.FileOutputStream
-import java.util.ArrayList
+import java.util.*
 
 /**
  * Created by Aeolus on 2018/6/5.
@@ -23,6 +18,7 @@ import java.util.ArrayList
 
 object CommonUtils {
     var mToast: Toast? = null
+    var mSnackbar: Snackbar? = null
 
     fun showLongToast(context: Context, content: String) {
         if (mToast == null) {
@@ -44,6 +40,16 @@ object CommonUtils {
         mToast!!.show()
     }
 
+    fun showShortSnackBar(view: View?, content: String) {
+        if (mSnackbar == null) {
+            mSnackbar = Snackbar.make(view!!,content,Snackbar.LENGTH_SHORT)
+        } else {
+            mSnackbar!!.setText(content)
+            mSnackbar!!.duration = Toast.LENGTH_SHORT
+        }
+        mSnackbar!!.show()
+    }
+
 
     /**
      * 绘制文字到右下角
@@ -51,7 +57,7 @@ object CommonUtils {
      * @param bitmap
      * @return
      */
-    fun drawTextToRightBottom(context: Context, bitmap: Bitmap, phoneText: String, loctionText: String, weatherText: String): Bitmap {
+    fun drawTextToRightBottom(context: Context, bitmap: Bitmap, phoneText: String, loctionText: String, weatherText: String,view: View?): Bitmap {
         var bitmap = bitmap
 
         val w = bitmap.width
@@ -74,7 +80,7 @@ object CommonUtils {
             phoneSpace = phoneBounds.height() + offset
             bitmap = drawTextToBitmap(context, bitmap, phoneText, phonePaint, phoneBounds,
                     paddingLeft - phoneBounds.width(),
-                    paddingTop)
+                    paddingTop,view)
         }
 
         if (!loctionText.isEmpty()) {
@@ -87,7 +93,7 @@ object CommonUtils {
             loctionSpace = loctionBounds.height() + offset
             bitmap = drawTextToBitmap(context, bitmap, loctionText, loctionPaint, loctionBounds,
                     paddingLeft - loctionBounds.width(),
-                    paddingTop - phoneSpace)
+                    paddingTop - phoneSpace,view)
         }
 
         if (!weatherText.isEmpty()) {
@@ -100,7 +106,7 @@ object CommonUtils {
 
             bitmap = drawTextToBitmap(context, bitmap, weatherText, weatherPaint, weatherBounds,
                     paddingLeft - weatherBounds.width(),
-                    paddingTop - phoneSpace - loctionSpace)
+                    paddingTop - phoneSpace - loctionSpace,view)
         }
 
         return bitmap
@@ -109,7 +115,7 @@ object CommonUtils {
 
     //图片上绘制文字
     private fun drawTextToBitmap(context: Context, bitmap: Bitmap, text: String,
-                                 paint: Paint, bounds: Rect, paddingLeft: Int, paddingTop: Int): Bitmap{
+                                 paint: Paint, bounds: Rect, paddingLeft: Int, paddingTop: Int,view: View?): Bitmap{
         try {
             paint.isDither = true // 获取跟清晰的图像采样
             paint.isFilterBitmap = true// 过滤一些
@@ -120,7 +126,7 @@ object CommonUtils {
             bitmap.recycle()
             return bmp
         } catch (error: OutOfMemoryError) {
-            CommonUtils.showShortToast(context, "图片过大")
+            showShortSnackBar(view, "图片过大")
         }
 
         return bitmap

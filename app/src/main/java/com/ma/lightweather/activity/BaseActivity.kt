@@ -1,14 +1,10 @@
 package com.ma.lightweather.activity
 
 import android.app.ActivityManager
-import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
-
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.utils.CommonUtils
@@ -33,8 +29,7 @@ open class BaseActivity : AppCompatActivity() {
     }
 
     private fun setAppTheme() {
-        val themeTag = SharedPrefencesUtils.getParam(this, Contants.THEME, 0) as Int
-        when (themeTag) {
+        when (SharedPrefencesUtils.getParam(this, Contants.THEME, 0) as Int) {
             0 -> setTheme(R.style.CyanAppTheme)
             1 -> setTheme(R.style.PuroleAppTheme)
             2 -> setTheme(R.style.RedAppTheme)

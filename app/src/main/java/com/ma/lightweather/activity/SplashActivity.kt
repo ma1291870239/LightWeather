@@ -34,7 +34,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
-                DOWNLOAD_CODE -> CommonUtils.showShortToast(this@SplashActivity, "保存成功")
+                DOWNLOAD_CODE -> CommonUtils.showShortSnackBar(downloadIv, "保存成功")
             }
         }
     }
@@ -85,7 +85,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         when (view.id) {
             R.id.downloadIv -> {
                 if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    CommonUtils.showShortToast(this, "当前没有读写权限")
+                    CommonUtils.showShortSnackBar(downloadIv, "当前没有读写权限")
                     return
                 }
                 Thread(Runnable {

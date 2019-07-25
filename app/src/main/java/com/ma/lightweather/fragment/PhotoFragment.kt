@@ -72,7 +72,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
             when (msg.what) {
                 SAVE_CODE -> {
                     val storePath = Environment.getExternalStorageDirectory().absolutePath + File.separator + "lightweather"
-                    CommonUtils.showShortToast(context, "水印照片已成功保存至\n$storePath")
+                    CommonUtils.showShortSnackBar(photoLayout, "水印照片已成功保存至\n$storePath")
                 }
                 TOBYTE_CODE -> showImgDialog()
             }
@@ -140,7 +140,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
             }
             R.id.photoLayout -> {
                 if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    CommonUtils.showShortToast(context, "当前没有读写权限")
+                    CommonUtils.showShortSnackBar(photoLayout, "当前没有读写权限")
                     return
                 }
                 showActionSheet()
@@ -225,7 +225,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
                     }
                 }).addSheetItem("相册", null, object : ActionSheetDialog.OnSheetItemClickListener {
                     override fun onClick(which: Int) {
-                        val intent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
                         intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
                         startActivityForResult(intent, RESULT_PICTURE)
                     }
@@ -338,7 +338,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
 
         }
         if (bitmap != null) {
-            bitmap = CommonUtils.drawTextToRightBottom(context, bitmap!!, phoneTv!!.text.toString(), loctionTv!!.text.toString(), weatherTv!!.text.toString())
+            bitmap = CommonUtils.drawTextToRightBottom(context, bitmap!!, phoneTv!!.text.toString(), loctionTv!!.text.toString(), weatherTv!!.text.toString(),photoLayout)
             progressDialog = ProgressDialog.show(activity, null, "正在生成水印照片")
             Thread(Runnable {
                 val matrix = Matrix()

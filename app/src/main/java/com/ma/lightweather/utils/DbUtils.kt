@@ -2,6 +2,7 @@ package com.ma.lightweather.utils
 
 import android.content.ContentValues
 import android.content.Context
+import com.ma.lightweather.app.Contants
 import com.ma.lightweather.db.MydataBaseHelper
 import com.ma.lightweather.model.Weather
 import java.util.*
@@ -12,49 +13,51 @@ import java.util.*
 
 object DbUtils {
 
-    fun selectdb(context: Context): List<Weather> {
-        val weatherData = ArrayList<Weather>()
-        val dbHelper = MydataBaseHelper(context, "Weather.db", null, 1)
+    fun queryDb(context: Context): List<Weather> {
+        val weatherList = ArrayList<Weather>()
+        val dbHelper = MydataBaseHelper(context, Contants.WEATHERDB, null, 1)
         val db = dbHelper.writableDatabase
-        val cursor = db.query("weather", null, null, null, null, null, "id desc")
+        val cursor = db.query(Contants.WEATHER, null, null, null, null, null, "id desc")
         if (cursor.moveToFirst()) {
             do {
                 val weather = Weather()
-                weather.city = cursor.getString(cursor.getColumnIndex("city"))
-                weather.tmp = cursor.getString(cursor.getColumnIndex("tmp"))
-                weather.txt = cursor.getString(cursor.getColumnIndex("txt"))
-                weather.dir = cursor.getString(cursor.getColumnIndex("dir"))
-                if (weather.city != null) {
-                    weatherData.add(weather)
+                weather.basic.location = cursor.getString(cursor.getColumnIndex(Contants.CITY))
+                weather.now.tmp = cursor.getString(cursor.getColumnIndex(Contants.TMP))
+                weather.now.cond_txt = cursor.getString(cursor.getColumnIndex(Contants.TXT))
+                weather.now.wind_dir = cursor.getString(cursor.getColumnIndex(Contants.DIR))
+                weather.update.loc=cursor.getString(cursor.getColumnIndex(Contants.DATE))
+                if (weather.basic.location != null) {
+                    weatherList.add(weather)
                 }
             } while (cursor.moveToNext())
         }
         cursor.close()
         db.close()
-        return weatherData
+        return weatherList
     }
 
-    fun createdb(context: Context, weatherList: List<Weather.WeatherBean>) {
-        val dbHelper = MydataBaseHelper(context, "Weather.db", null, 1)
+    fun writeDb(context: Context, weatherList: List<Weather>) {
+        val dbHelper = MydataBaseHelper(context, Contants.WEATHERDB, null, 1)
         val db = dbHelper.writableDatabase
         db.beginTransaction()
         for (i in weatherList.indices) {
             val values = ContentValues()
-            values.put("city", weatherList[i].basic?.location)
-            values.put("tmp", weatherList[i].now?.tmp)
-            values.put("txt", weatherList[i].now?.cond_txt)
-            values.put("dir", weatherList[i].now?.wind_dir)
-            db.delete("weather", "city = ?", arrayOf<String>(weatherList[i].basic?.location!!))
-            db.insert("weather", null, values)
+            values.put(Contants.CITY, weatherList[i].basic.location)
+            values.put(Contants.TMP, weatherList[i].now.tmp)
+            values.put(Contants.TXT, weatherList[i].now.cond_txt)
+            values.put(Contants.DIR, weatherList[i].now.wind_dir)
+            values.put(Contants.DATE, weatherList[i].update.loc)
+            db.delete(Contants.WEATHER, "city = ?", arrayOf(weatherList[i].basic.location))
+            db.insert(Contants.WEATHER, null, values)
         }
         db.setTransactionSuccessful()
         db.endTransaction()
         db.close()
     }
 
-    fun deleteCity(context: Context, city: String) {
-        val dbHelper = MydataBaseHelper(context, "Weather.db", null, 1)
+    fun deleteDb(context: Context, city: String) {
+        val dbHelper = MydataBaseHelper(context, Contants.WEATHERDB, null, 1)
         val db = dbHelper.writableDatabase
-        db.delete("weather", "city = ?", arrayOf(city))
+        db.delete(Contants.WEATHER, "city = ?", arrayOf(city))
     }
 }
