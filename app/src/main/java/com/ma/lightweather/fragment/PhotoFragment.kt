@@ -81,43 +81,43 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
 
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater!!.inflate(R.layout.frag_photo, null)
+        var view = inflater?.inflate(R.layout.frag_photo, null)
         initView(view)
         return view
     }
 
-    private fun initView(view: View) {
-        phoneLayout = view!!.findViewById(R.id.phoneLayout)
-        loctionLayout = view!!.findViewById(R.id.loctionLayout)
-        weatherLayout = view!!.findViewById(R.id.weatherLayout)
-        photoLayout = view!!.findViewById(R.id.photoLayout)
-        scoreLayout = view!!.findViewById(R.id.scoreLayout)
-        themeLayout = view!!.findViewById(R.id.themeLayout)
-        settingLayout = view!!.findViewById(R.id.settingLayout)
-        shareLayout = view!!.findViewById(R.id.shareLayout)
-        phoneTv = view!!.findViewById(R.id.phoneTv)
-        loctionTv = view!!.findViewById(R.id.loctionTv)
-        weatherTv = view!!.findViewById(R.id.weatherTv)
-        imgView = view!!.findViewById(R.id.imgView)
-        defaultPhoneTv = view!!.findViewById(R.id.defaultPhoneTv)
-        defaultLoctionTv = view!!.findViewById(R.id.defaultLoctionTv)
-        defaultWeatherTv = view!!.findViewById(R.id.defaultWeatherTv)
-        phoneTv!!.setOnClickListener(this)
-        loctionTv!!.setOnClickListener(this)
-        weatherTv!!.setOnClickListener(this)
-        defaultPhoneTv!!.setOnClickListener(this)
-        defaultLoctionTv!!.setOnClickListener(this)
-        defaultWeatherTv!!.setOnClickListener(this)
-        photoLayout!!.setOnClickListener(this)
-        scoreLayout!!.setOnClickListener(this)
-        themeLayout!!.setOnClickListener(this)
-        settingLayout!!.setOnClickListener(this)
-        shareLayout!!.setOnClickListener(this)
+    private fun initView(view: View?) {
+        phoneLayout = view?.findViewById(R.id.phoneLayout)
+        loctionLayout = view?.findViewById(R.id.loctionLayout)
+        weatherLayout = view?.findViewById(R.id.weatherLayout)
+        photoLayout = view?.findViewById(R.id.photoLayout)
+        scoreLayout = view?.findViewById(R.id.scoreLayout)
+        themeLayout = view?.findViewById(R.id.themeLayout)
+        settingLayout = view?.findViewById(R.id.settingLayout)
+        shareLayout = view?.findViewById(R.id.shareLayout)
+        phoneTv = view?.findViewById(R.id.phoneTv)
+        loctionTv = view?.findViewById(R.id.loctionTv)
+        weatherTv = view?.findViewById(R.id.weatherTv)
+        imgView = view?.findViewById(R.id.imgView)
+        defaultPhoneTv = view?.findViewById(R.id.defaultPhoneTv)
+        defaultLoctionTv = view?.findViewById(R.id.defaultLoctionTv)
+        defaultWeatherTv = view?.findViewById(R.id.defaultWeatherTv)
+        phoneTv?.setOnClickListener(this)
+        loctionTv?.setOnClickListener(this)
+        weatherTv?.setOnClickListener(this)
+        defaultPhoneTv?.setOnClickListener(this)
+        defaultLoctionTv?.setOnClickListener(this)
+        defaultWeatherTv?.setOnClickListener(this)
+        photoLayout?.setOnClickListener(this)
+        scoreLayout?.setOnClickListener(this)
+        themeLayout?.setOnClickListener(this)
+        settingLayout?.setOnClickListener(this)
+        shareLayout?.setOnClickListener(this)
 
 
-        phoneTv!!.text = SharedPrefencesUtils.getParam(context, Contants.MODEL, "点击左侧设置当前机型") as String?
-        loctionTv!!.text = SharedPrefencesUtils.getParam(context, Contants.LOCTION, "点击左侧设置当前城市") as String?
-        weatherTv!!.text = SharedPrefencesUtils.getParam(context, Contants.WEATHER, "点击左侧设置当前天气") as String?
+        phoneTv?.text = SharedPrefencesUtils.getParam(context, Contants.MODEL, "点击左侧设置当前机型") as String?
+        loctionTv?.text = SharedPrefencesUtils.getParam(context, Contants.LOCTION, "点击左侧设置当前城市") as String?
+        weatherTv?.text = SharedPrefencesUtils.getParam(context, Contants.WEATHER, "点击左侧设置当前天气") as String?
     }
 
     override fun onClick(view: View) {
@@ -249,15 +249,15 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
                 .setPositiveButton("确定") { dialogInterface, i ->
                     val s = editText.text.toString()
                     if (tag == 1) {
-                        phoneTv!!.text = s
+                        phoneTv?.text = s
                         SharedPrefencesUtils.setParam(context, Contants.MODEL, phoneTv!!.text.toString())
                     }
                     if (tag == 2) {
-                        loctionTv!!.text = s
+                        loctionTv?.text = s
                         SharedPrefencesUtils.setParam(context, Contants.LOCTION, loctionTv!!.text.toString())
                     }
                     if (tag == 3) {
-                        weatherTv!!.text = s
+                        weatherTv?.text = s
                         SharedPrefencesUtils.setParam(context, Contants.WEATHER, weatherTv!!.text.toString())
                     }
                 }
@@ -277,13 +277,13 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         Glide.with(context).load(bytes).into(imageView)
 
         if (progressDialog != null) {
-            progressDialog!!.cancel()
-            progressDialog!!.dismiss()
+            progressDialog?.cancel()
+            progressDialog?.dismiss()
         }
         AlertDialog.Builder(activity).setTitle("是否保存")
                 .setCustomTitle(titleView)
                 .setView(contentView)
-                .setPositiveButton("确定") { dialogInterface, i ->
+                .setPositiveButton("确定") { _, _ ->
                     Thread(Runnable {
                         val isSave = PhotoUtils.saveImageToGallery(context, bitmap!!)
                         bitmap!!.recycle()
@@ -302,10 +302,10 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         filename = Calendar.getInstance().timeInMillis.toString() + ".png"
         out = File(strImgPath!!)
         if (!out!!.exists()) {
-            out!!.mkdirs()
+            out?.mkdirs()
         }
         out = File(strImgPath, filename!!)
-        strImgPath = strImgPath!! + filename!!
+        strImgPath += filename
         imgUrl = PhotoUtils.getUriForFile(context, out!!)
         imageCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUrl)
         imageCaptureIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
@@ -357,10 +357,10 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
 
     companion object {
 
-        private val RESULT_PHOTO = 1
-        private val RESULT_PICTURE = 2
-        private val SAVE_CODE = 200
-        private val TOBYTE_CODE = 300
+        private const val RESULT_PHOTO = 1
+        private const val RESULT_PICTURE = 2
+        private const val SAVE_CODE = 200
+        private const val TOBYTE_CODE = 300
     }
 
 }

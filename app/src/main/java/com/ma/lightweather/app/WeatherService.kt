@@ -106,35 +106,35 @@ class WeatherService : Service() {
             val condTxt=weatherList!![i].now?.cond_txt
             if (condTxt?.contains("晴")!!) {
                 notification.setSmallIcon(R.mipmap.sunny)
-                remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sunny))
+                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sunny))
             }
             if (condTxt.contains("云")) {
                 notification.setSmallIcon(R.mipmap.cloudy)
-                remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.cloudy))
+                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.cloudy))
             }
             if (condTxt.contains("阴")) {
                 notification.setSmallIcon(R.mipmap.shade)
-                remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.shade))
+                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.shade))
             }
             if (condTxt.contains("雨")) {
                 notification.setSmallIcon(R.mipmap.rain)
-                remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.rain))
+                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.rain))
             }
             if (condTxt.contains("雪")) {
                 notification.setSmallIcon(R.mipmap.snow)
-                remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.snow))
+                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.snow))
             }
             if (condTxt.contains("雾")) {
                 notification.setSmallIcon(R.mipmap.smog)
-                remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.smog))
+                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.smog))
             }
             if (condTxt.contains("霾")) {
                 notification.setSmallIcon(R.mipmap.smog)
-                remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.smog))
+                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.smog))
             }
             if (condTxt.contains("沙")) {
                 notification.setSmallIcon(R.mipmap.sand)
-                remoteViews!!.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sand))
+                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sand))
             }
 
             remoteViews!!.setTextViewText(R.id.weatherCity, weatherList!![i].basic?.location)

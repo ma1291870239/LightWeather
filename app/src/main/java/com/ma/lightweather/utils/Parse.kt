@@ -22,7 +22,7 @@ object Parse {
 
     private var hfWeatherList: List<Weather>? = null
 
-    fun parse(resource: String, weatherView: WeatherView?, hourWeatherView: HourWeatherView?, context: Context): List<Weather> {
+    fun parse(resource: String, weatherView: WeatherView?, hourWeatherView: HourWeatherView?, context: Context): List<Weather>? {
         hfWeatherList = ArrayList()
         val jsonObject = JsonParser().parse(resource).asJsonObject
         //再转JsonArray 加上数据头
@@ -35,6 +35,6 @@ object Parse {
             weatherView?.loadViewData(weatherBean.daily_forecast)
             hourWeatherView?.loadViewData(weatherBean.hourly)
         }
-        return hfWeatherList!!
+        return hfWeatherList
     }
 }

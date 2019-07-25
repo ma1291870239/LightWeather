@@ -7,7 +7,6 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,7 +41,6 @@ class CityFrgment : BaseFragment() {
         city = ""
         weatherList.clear()
         weatherList.addAll(DbUtils.queryDb(mContext))
-        Log.e("abc",""+weatherList.size)
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout?.isRefreshing = false
         }

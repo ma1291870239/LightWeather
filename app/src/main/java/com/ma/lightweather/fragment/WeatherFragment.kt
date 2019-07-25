@@ -6,6 +6,7 @@ import android.os.Handler
 import android.os.Message
 import android.support.v4.widget.NestedScrollView
 import android.support.v4.widget.SwipeRefreshLayout
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -86,19 +87,22 @@ class WeatherFragment : BaseFragment() {
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
-
-                    if (weatherList!!.isNotEmpty()&& weatherList!![0].status.equals("ok")) {
+                    Log.e("abc","---"+weatherList?.size)
+                    if (weatherList!!.isNotEmpty()&& weatherList!![0].status == "ok") {
                         handler.sendEmptyMessage(WEATHER_SUCCESE)
                         (activity as MainActivity).refreshCity()
-                    } else if(weatherList!![0].status.equals("no more requests")){
+                    } else if(weatherList!![0].status == "no more requests"){
                         handler.sendEmptyMessage(WEATHER_NOMORE)
-                    } else if(weatherList!![0].status.equals("unknown location")){
+                    } else if(weatherList!![0].status == "unknown location"){
                         handler.sendEmptyMessage(WEATHER_NOLOCATION)
                     } else{
                         handler.sendEmptyMessage(WEATHER_ERROR)
                     }
                 },
-                Response.ErrorListener { swipeRefreshLayout!!.isRefreshing = false })
+                Response.ErrorListener {
+                    swipeRefreshLayout!!.isRefreshing = false
+                    handler.sendEmptyMessage(WEATHER_ERROR)
+                })
         requestQueue.add(stringRequest)
     }
 
@@ -125,9 +129,10 @@ class WeatherFragment : BaseFragment() {
         travTv = view?.findViewById(R.id.travTextView)
         uvTv = view?.findViewById(R.id.uvTextView)
 
-        swipeRefreshLayout = view!!.findViewById(R.id.swipeRefreshLayout)
-        swipeRefreshLayout!!.setColorSchemeResources(CommonUtils.getBackColor(context))
-        swipeRefreshLayout!!.setOnRefreshListener { loadData(city) }
+        swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout?.setDistanceToTriggerSync(300)
+        swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(context))
+        swipeRefreshLayout?.setOnRefreshListener { loadData("洛阳") }
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -142,52 +147,52 @@ class WeatherFragment : BaseFragment() {
                 swipeRefreshLayout?.isRefreshing = false
                 scrollView?.scrollTo(0, 0)
                 for (i in weatherList!!.indices) {
-                    tmptv?.text = weatherList!![i].now?.tmp+ "℃"
-                    feeltv?.text = "　体感：" + weatherList!![i].now?.fl + " ℃"
-                    humtv?.text = "　湿度：" + weatherList!![i].now?.hum + " %"
-                    pcpntv?.text = "　降雨：" + weatherList!![i].now?.pcpn + " mm"
-                    citytv?.text = weatherList!![i].basic?.location + "　" + weatherList!![i].basic?.cnty
-                    windtv?.text = weatherList!![i].now?.cond_txt + "　" + weatherList!![i].now?.wind_dir
-                    pmtv?.text = "　风速：" + weatherList!![i].now?.wind_spd + " km/h"
-                    prestv?.text = "　气压：" + weatherList!![i].now?.pres + " Pa"
-                    vistv?.text = "　能见：" + weatherList!![i].now?.vis + " km"
-                    if (weatherList!![i].lifestyle!!.isNotEmpty() && weatherList!![i].lifestyle?.size!!  <=0) {
+                    tmptv?.text = weatherList!![i].now.tmp+ "℃"
+                    feeltv?.text = "　体感：" + weatherList!![i].now.fl + " ℃"
+                    humtv?.text = "　湿度：" + weatherList!![i].now.hum + " %"
+                    pcpntv?.text = "　降雨：" + weatherList!![i].now.pcpn + " mm"
+                    citytv?.text = weatherList!![i].basic.location + "　" + weatherList!![i].basic.cnty
+                    windtv?.text = weatherList!![i].now.cond_txt + "　" + weatherList!![i].now.wind_dir
+                    pmtv?.text = "　风速：" + weatherList!![i].now.wind_spd + " km/h"
+                    prestv?.text = "　气压：" + weatherList!![i].now.pres + " Pa"
+                    vistv?.text = "　能见：" + weatherList!![i].now.vis + " km"
+                    if (weatherList!![i].lifestyle.isNotEmpty() && weatherList!![i].lifestyle.size  <=0) {
                         weatherLife?.visibility = View.GONE
                     } else {
                         weatherLife?.visibility = View.VISIBLE
                     }
-                    for (j in weatherList!![i].lifestyle?.indices!!) {
+                    for (j in weatherList!![i].lifestyle.indices) {
                         val weather = weatherList!![i]
-                        val type = weather.lifestyle?.get(j)?.type
-                        val s =weather.lifestyle?.get(j)?.brf+ "\n" + weather.lifestyle?.get(j)?.txt
+                        val type = weather.lifestyle[j].type
+                        val s = weather.lifestyle[j].brf+ "\n" + weather.lifestyle[j].txt
                         if (type == "air") {
-                            setLifeView(airTv!!,s,"空气指数")
+                            setLifeView(airTv,s,"空气指数")
                         }
                         if (type == "cw" ) {
-                            setLifeView(cwTv!!,s,"洗车指数")
+                            setLifeView(cwTv,s,"洗车指数")
                         }
                         if (type == "drsg") {
-                            setLifeView(drsgTv!!,s,"穿衣指数")
+                            setLifeView(drsgTv,s,"穿衣指数")
                         }
                         if (type == "flu" ) {
-                            setLifeView(fluTv!!,s,"感冒指数")
+                            setLifeView(fluTv,s,"感冒指数")
                         }
                         if (type == "sport") {
-                            setLifeView(sportTv!!,s,"运动指数")
+                            setLifeView(sportTv,s,"运动指数")
                         }
                         if (type == "trav") {
-                            setLifeView(travTv!!,s,"旅游指数")
+                            setLifeView(travTv,s,"旅游指数")
                         }
                         if (type == "comf") {
-                            setLifeView(comfTv!!,s,"舒适度指数")
+                            setLifeView(comfTv,s,"舒适度指数")
                         }
                         if (type == "uv") {
-                            setLifeView(uvTv!!,s,"紫外线指数")
+                            setLifeView(uvTv,s,"紫外线指数")
                         }
                     }
-                    weatherList!![i].basic?.location.let { SharedPrefencesUtils.setParam(context, Contants.CITY, it!!) }
-                    weatherList!![i].now?.tmp.let { SharedPrefencesUtils.setParam(context, Contants.TMP, it!!) }
-                    weatherList!![i].now?.cond_txt.let { SharedPrefencesUtils.setParam(context, Contants.TXT, it!!) }
+                    SharedPrefencesUtils.setParam(context, Contants.CITY, weatherList!![i].basic.location)
+                    SharedPrefencesUtils.setParam(context, Contants.TMP, weatherList!![i].now.tmp)
+                    SharedPrefencesUtils.setParam(context, Contants.TXT, weatherList!![i].now.cond_txt)
                     //CommonUtils.showShortToast(getC,"数据已更新");
                     if (SharedPrefencesUtils.getParam(context, Contants.NOTIFY, false) as Boolean) {
                         val it = Intent(context, WeatherService::class.java)

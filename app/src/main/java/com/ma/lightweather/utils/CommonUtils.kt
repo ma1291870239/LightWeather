@@ -20,26 +20,6 @@ object CommonUtils {
     var mToast: Toast? = null
     var mSnackbar: Snackbar? = null
 
-    fun showLongToast(context: Context, content: String) {
-        if (mToast == null) {
-            mToast = Toast.makeText(context, content, Toast.LENGTH_LONG)
-        } else {
-            mToast!!.setText(content)
-            mToast!!.duration = Toast.LENGTH_LONG
-        }
-        mToast!!.show()
-    }
-
-    fun showShortToast(context: Context, content: String) {
-        if (mToast == null) {
-            mToast = Toast.makeText(context, content, Toast.LENGTH_SHORT)
-        } else {
-            mToast!!.setText(content)
-            mToast!!.duration = Toast.LENGTH_SHORT
-        }
-        mToast!!.show()
-    }
-
     fun showShortSnackBar(view: View?, content: String) {
         if (mSnackbar == null) {
             mSnackbar = Snackbar.make(view!!,content,Snackbar.LENGTH_SHORT)

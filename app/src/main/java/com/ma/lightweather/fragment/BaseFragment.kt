@@ -1,7 +1,6 @@
 package com.ma.lightweather.fragment
 
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -21,15 +20,4 @@ open class BaseFragment : Fragment() {
         return inflater!!.inflate(R.layout.frag_base, null)
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-    }
 }

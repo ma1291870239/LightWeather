@@ -10,6 +10,7 @@ import com.ma.lightweather.R
 import com.ma.lightweather.model.Weather
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.math.ceil
 
 /**
  * Created by Ma-PC on 2016/12/14.
@@ -24,12 +25,11 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     private val maxPath = Path()
     private val minPath = Path()
 
-    private var maxList: List<Int> = ArrayList()
-    private var minList: List<Int> = ArrayList()
-    private val midelMinList = ArrayList<Float>()
-    private var dateList: List<String> = ArrayList()
-    private var txtList: List<String> = ArrayList()
-    private var dirList: List<String> = ArrayList()
+    private var maxList: MutableList<Int> = ArrayList()
+    private var minList: MutableList<Int> = ArrayList()
+    private var dateList: MutableList<String> = ArrayList()
+    private var txtList: MutableList<String> = ArrayList()
+    private var dirList: MutableList<String> = ArrayList()
 
     private var xSpace: Int = 0
     private var offsetHigh: Int = 0
@@ -72,11 +72,11 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         val viewwidth = measuredWidth
         textPaint.textSize = (viewwidth / 30).toFloat()
         val fm = textPaint.fontMetrics
-        val texthigh = Math.ceil((fm.bottom - fm.top).toDouble()).toInt()
+        val texthigh = ceil((fm.bottom - fm.top).toDouble()).toInt()
         offsetHigh = 4 * texthigh + 10
         xSpace = viewwidth / 14
         ySpace = (viewhigh - 6 * texthigh - 40) / 50
-        if (maxList.size > 0 && minList.size > 0) {
+        if (maxList.isNotEmpty() && minList.isNotEmpty()) {
             max = Collections.max(maxList)
             min = Collections.min(minList)
             ySpace = (viewhigh - 8 * texthigh - 40) / (max - min)
@@ -96,25 +96,31 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
             var k2 = 0f
             var y1 = 0f
             var y2 = 0f
-            if (i == 0) {
-                k2 = (getY(i + 2, maxList) - getY(i, maxList)) / getX(4)
-                y1 = (x - getX(2 * i + 1)) * k1 + getY(i, maxList)
-                y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, maxList)
-                maxPath.moveTo(getX(2 * i + 1), getY(i, maxList))
-                maxPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, maxList))
-            } else if (i < maxList.size - 2) {
-                k1 = (getY(i + 1, maxList) - getY(i - 1, maxList)) / getX(4)
-                k2 = (getY(i + 2, maxList) - getY(i, maxList)) / getX(4)
-                y1 = (x - getX(2 * i + 1)) * k1 + getY(i, maxList)
-                y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, maxList)
-                maxPath.moveTo(getX(2 * i + 1), getY(i, maxList))
-                maxPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, maxList))
-            } else if (i == maxList.size - 2) {
-                k1 = (getY(i + 1, maxList) - getY(i - 1, maxList)) / getX(4)
-                y1 = (x - getX(2 * i + 1)) * k1 + getY(i, maxList)
-                y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, maxList)
-                maxPath.moveTo(getX(2 * i + 1), getY(i, maxList))
-                maxPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, maxList))
+            when {
+                i == 0 -> {
+                    k2 = (getY(i + 2, maxList) - getY(i, maxList)) / getX(4)
+                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, maxList)
+                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, maxList)
+                    maxPath.moveTo(getX(2 * i + 1), getY(i, maxList))
+                    maxPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, maxList))
+                }
+                i < maxList.size - 2 -> {
+                    k1 = (getY(i + 1, maxList) - getY(i - 1, maxList)) / getX(4)
+                    k2 = (getY(i + 2, maxList) - getY(i, maxList)) / getX(4)
+                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, maxList)
+                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, maxList)
+                    maxPath.moveTo(getX(2 * i + 1), getY(i, maxList))
+                    maxPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, maxList))
+                }
+                i == maxList.size - 2 -> {
+                    k1 = (getY(i + 1, maxList) - getY(i - 1, maxList)) / getX(4)
+                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, maxList)
+                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, maxList)
+                    maxPath.moveTo(getX(2 * i + 1), getY(i, maxList))
+                    maxPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, maxList))
+                }
+                //            canvas.drawCircle(getX(2*i+1),getY(i,maxList),pointRadius,pointPaint);
+                //            canvas.drawCircle(getX(2*i+1),getY(i,maxList),outPointRadius,outPointPaint);
             }
             canvas.drawPath(maxPath, maxPaint)
             //            canvas.drawCircle(getX(2*i+1),getY(i,maxList),pointRadius,pointPaint);
@@ -134,25 +140,31 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
             var k2 = 0f
             var y1 = 0f
             var y2 = 0f
-            if (i == 0) {
-                k2 = (getY(i + 2, minList) - getY(i, minList)) / getX(4)
-                y1 = (x - getX(2 * i + 1)) * k1 + getY(i, minList)
-                y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, minList)
-                minPath.moveTo(getX(2 * i + 1), getY(i, minList))
-                minPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, minList))
-            } else if (i < minList.size - 2) {
-                k1 = (getY(i + 1, minList) - getY(i - 1, minList)) / getX(4)
-                k2 = (getY(i + 2, minList) - getY(i, minList)) / getX(4)
-                y1 = (x - getX(2 * i + 1)) * k1 + getY(i, minList)
-                y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, minList)
-                minPath.moveTo(getX(2 * i + 1), getY(i, minList))
-                minPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, minList))
-            } else if (i == minList.size - 2) {
-                k1 = (getY(i + 1, minList) - getY(i - 1, minList)) / getX(4)
-                y1 = (x - getX(2 * i + 1)) * k1 + getY(i, minList)
-                y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, minList)
-                minPath.moveTo(getX(2 * i + 1), getY(i, minList))
-                minPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, minList))
+            when {
+                i == 0 -> {
+                    k2 = (getY(i + 2, minList) - getY(i, minList)) / getX(4)
+                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, minList)
+                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, minList)
+                    minPath.moveTo(getX(2 * i + 1), getY(i, minList))
+                    minPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, minList))
+                }
+                i < minList.size - 2 -> {
+                    k1 = (getY(i + 1, minList) - getY(i - 1, minList)) / getX(4)
+                    k2 = (getY(i + 2, minList) - getY(i, minList)) / getX(4)
+                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, minList)
+                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, minList)
+                    minPath.moveTo(getX(2 * i + 1), getY(i, minList))
+                    minPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, minList))
+                }
+                i == minList.size - 2 -> {
+                    k1 = (getY(i + 1, minList) - getY(i - 1, minList)) / getX(4)
+                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, minList)
+                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, minList)
+                    minPath.moveTo(getX(2 * i + 1), getY(i, minList))
+                    minPath.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, minList))
+                }
+                //canvas.drawCircle(getX(2*i+1),getY(i,minList),pointRadius,pointPaint);
+                //canvas.drawCircle(getX(2*i+1),getY(i,minList),outPointRadius,outPointPaint);
             }
             canvas.drawPath(minPath, minPaint)
             //canvas.drawCircle(getX(2*i+1),getY(i,minList),pointRadius,pointPaint);
@@ -176,6 +188,11 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
     fun loadViewData(dailyList: List<Weather.DailyWeather>?) {
         if (dailyList != null) {
+            maxList.clear()
+            minList.clear()
+            dateList.clear()
+            txtList.clear()
+            dirList.clear()
             for (daily in dailyList){
                 (maxList as ArrayList).add(daily.tmp_max!!.toInt())
                 (minList as ArrayList).add(daily.tmp_min!!.toInt())

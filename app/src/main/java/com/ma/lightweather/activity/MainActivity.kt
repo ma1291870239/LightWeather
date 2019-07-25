@@ -65,30 +65,30 @@ class MainActivity : BaseActivity() {
         titleList.add("天气")
         titleList.add("城市")
         titleList.add("拍照")
-        viewPager!!.adapter = ViewAdapter(supportFragmentManager)
-        tabLayout!!.setupWithViewPager(viewPager)
+        viewPager?.adapter = ViewAdapter(supportFragmentManager)
+        tabLayout?.setupWithViewPager(viewPager)
     }
 
     private fun initView() {
         toolBar = findViewById(R.id.toolBar)
-        toolBar!!.inflateMenu(R.menu.toolbar_menu)
+        toolBar?.inflateMenu(R.menu.toolbar_menu)
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
-        viewPager!!.offscreenPageLimit = 2
-        viewPager!!.currentItem = 0
+        viewPager?.offscreenPageLimit = 2
+        viewPager?.currentItem = 0
         setSupportActionBar(toolBar)
     }
 
 
     fun refresh(city: String, isSkip: Boolean) {
         if (isSkip) {
-            viewPager!!.currentItem = 0
+            viewPager?.currentItem = 0
         }
-        weatherFrag!!.loadData(city)
+        weatherFrag?.loadData(city)
     }
 
     fun refreshCity() {
-        cityFrag!!.initData()
+        cityFrag?.initData()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

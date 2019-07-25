@@ -9,6 +9,7 @@ import android.view.View
 import com.ma.lightweather.R
 import com.ma.lightweather.model.Weather
 import java.util.*
+import kotlin.math.ceil
 
 /**
  * Created by Aeolus on 2018/8/24.
@@ -22,12 +23,11 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     private val tmpPaint = Paint()
     private val path = Path()
 
-    private var tmpList: List<Int> = ArrayList()
-    private val midelTmpList = ArrayList<Float>()
-    private var popList: List<Int> = ArrayList()
-    private var dateList: List<String> = ArrayList()
-    private var txtList: List<String> = ArrayList()
-    private var dirList: List<String> = ArrayList()
+    private var tmpList: MutableList<Int> = ArrayList()
+    private var popList: MutableList<Int> = ArrayList()
+    private var dateList: MutableList<String> = ArrayList()
+    private var txtList: MutableList<String> = ArrayList()
+    private var dirList: MutableList<String> = ArrayList()
 
     private var xSpace: Int = 0
     private var offsetHigh: Int = 0
@@ -65,11 +65,11 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         val viewwidth = measuredWidth
         textPaint.textSize = (viewwidth / 30).toFloat()
         val fm = textPaint.fontMetrics
-        val texthigh = Math.ceil((fm.bottom - fm.top).toDouble()).toInt()
+        val texthigh = ceil((fm.bottom - fm.top).toDouble()).toInt()
         offsetHigh = 4 * texthigh + 10
         xSpace = viewwidth / 16
         ySpace = (viewhigh - 4 * texthigh - 40) / 50
-        if (tmpList.size > 0) {
+        if (tmpList.isNotEmpty()) {
             max = Collections.max(tmpList)
             min = Collections.min(tmpList)
             ySpace = (viewhigh - 8 * texthigh - 40) / (max - min)
@@ -88,25 +88,31 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
             var k2 = 0f
             var y1 = 0f
             var y2 = 0f
-            if (i == 0) {
-                k2 = (getY(i + 2, tmpList) - getY(i, tmpList)) / getX(4)
-                y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
-                y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
-                path.moveTo(getX(2 * i + 1), getY(i, tmpList))
-                path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
-            } else if (i < tmpList.size - 2) {
-                k1 = (getY(i + 1, tmpList) - getY(i - 1, tmpList)) / getX(4)
-                k2 = (getY(i + 2, tmpList) - getY(i, tmpList)) / getX(4)
-                y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
-                y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
-                path.moveTo(getX(2 * i + 1), getY(i, tmpList))
-                path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
-            } else if (i == tmpList.size - 2) {
-                k1 = (getY(i + 1, tmpList) - getY(i - 1, tmpList)) / getX(4)
-                y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
-                y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
-                path.moveTo(getX(2 * i + 1), getY(i, tmpList))
-                path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
+            when {
+                i == 0 -> {
+                    k2 = (getY(i + 2, tmpList) - getY(i, tmpList)) / getX(4)
+                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
+                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
+                    path.moveTo(getX(2 * i + 1), getY(i, tmpList))
+                    path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
+                }
+                i < tmpList.size - 2 -> {
+                    k1 = (getY(i + 1, tmpList) - getY(i - 1, tmpList)) / getX(4)
+                    k2 = (getY(i + 2, tmpList) - getY(i, tmpList)) / getX(4)
+                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
+                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
+                    path.moveTo(getX(2 * i + 1), getY(i, tmpList))
+                    path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
+                }
+                i == tmpList.size - 2 -> {
+                    k1 = (getY(i + 1, tmpList) - getY(i - 1, tmpList)) / getX(4)
+                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
+                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
+                    path.moveTo(getX(2 * i + 1), getY(i, tmpList))
+                    path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
+                }
+                //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),pointRadius,pointPaint);
+                //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),outPointRadius,outPointPaint);
             }
             canvas.drawPath(path, tmpPaint)
             //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),pointRadius,pointPaint);
@@ -134,6 +140,11 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
 
     fun loadViewData(hourlyList: List<Weather.HourlyWeather>?) {
         if (hourlyList != null) {
+            tmpList.clear()
+            popList.clear()
+            dateList.clear()
+            txtList.clear()
+            dirList.clear()
             for (hourly in hourlyList){
                 (tmpList as ArrayList).add(hourly.tmp!!.toInt())
                 (popList as ArrayList).add(hourly.pop!!.toInt())
