@@ -34,6 +34,7 @@ class CityAdapter(private val context: Context, private val weatherList: List<We
         holder.tmpTv.text = weatherList[i].now.tmp + "℃"
         holder.txtTv.text = weatherList[i].now.cond_txt
         holder.dirTv.text=weatherList[i].now.wind_dir
+        holder.scTv.text=weatherList[i].now.wind_sc+"级"
         holder.dateTv.text=weatherList[i].update.loc
         Glide.with(context).load(getWeatherIcon(weatherList[i].now.cond_txt)).into(holder.weatherIv)
         holder.weatherLayout.setOnClickListener {
@@ -45,11 +46,12 @@ class CityAdapter(private val context: Context, private val weatherList: List<We
             val city1 = SharedPrefencesUtils.getParam(context, Contants.CITY, Contants.CITYNAME) as String
             val city2 = weatherList[i].basic.location
             if (weatherList.size > 1) {
-                DbUtils.deleteDb(context, weatherList[i].basic.location)
                 Snackbar.make(holder.weatherLayout,"删除成功", Snackbar.LENGTH_SHORT)
-                        .setAction("撤销") {
-
-                        }.show()
+//                        .setAction("撤销") {
+//
+//                        }
+                        .show()
+                DbUtils.deleteDb(context, weatherList[i].basic.location)
                 if (context is MainActivity) {
                     context.refreshCity()
                     if (city1 == city2) {
@@ -71,7 +73,7 @@ class CityAdapter(private val context: Context, private val weatherList: List<We
     }
 
     private fun getWeatherIcon(condTxt:String):Int {
-        if (condTxt?.contains("晴")!!) {
+        if (condTxt.contains("晴")) {
             return R.mipmap.sunny
         }
         if (condTxt.contains("云")) {
@@ -103,6 +105,7 @@ class CityAdapter(private val context: Context, private val weatherList: List<We
         val tmpTv: TextView = itemView.findViewById(R.id.item_tmp)
         val txtTv: TextView = itemView.findViewById(R.id.item_txt)
         val dirTv: TextView = itemView.findViewById(R.id.item_dir)
+        val scTv: TextView = itemView.findViewById(R.id.item_sc)
         val dateTv: TextView = itemView.findViewById(R.id.item_date)
         val weatherLayout: RelativeLayout = itemView.findViewById(R.id.item_weather)
         val iv: ImageView = itemView.findViewById(R.id.item_delete)

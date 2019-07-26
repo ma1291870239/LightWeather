@@ -18,6 +18,7 @@ object Contants {
     const val TMP = "tmp"
     const val TXT = "txt"
     const val DIR = "dir"
+    const val SC = "sc"
     const val DATE = "date"
     const val MODEL = "model"
     const val LOCTION = "loction"

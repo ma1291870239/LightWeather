@@ -17,7 +17,6 @@ import java.util.*
  */
 
 object CommonUtils {
-    var mToast: Toast? = null
     var mSnackbar: Snackbar? = null
 
     fun showShortSnackBar(view: View?, content: String) {

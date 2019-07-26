@@ -1,12 +1,21 @@
 package com.ma.lightweather.fragment
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Geocoder
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v4.widget.SwipeRefreshLayout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +34,10 @@ import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
 import com.ma.lightweather.widget.HourWeatherView
 import com.ma.lightweather.widget.WeatherView
+import kotlinx.android.synthetic.main.activity_splash.*
 import org.json.JSONException
+import java.io.IOException
+import java.util.*
 
 
 /**
@@ -58,6 +70,9 @@ class WeatherFragment : BaseFragment() {
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     private var weatherList: List<Weather>? = null
     private var city: String? = null
+    private var locArea: String? = null
+    private var locationManager:LocationManager? = null
+    private var locationListener:LocationListener? = null
     private val handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -71,6 +86,7 @@ class WeatherFragment : BaseFragment() {
         if (isAdded) {
             initView(view)
             loadData(city)
+            requestLocationPermission()
         }
         return view
     }
@@ -87,7 +103,6 @@ class WeatherFragment : BaseFragment() {
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
-                    Log.e("abc","---"+weatherList?.size)
                     if (weatherList!!.isNotEmpty()&& weatherList!![0].status == "ok") {
                         handler.sendEmptyMessage(WEATHER_SUCCESE)
                         (activity as MainActivity).refreshCity()
@@ -130,9 +145,8 @@ class WeatherFragment : BaseFragment() {
         uvTv = view?.findViewById(R.id.uvTextView)
 
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
-        swipeRefreshLayout?.setDistanceToTriggerSync(300)
         swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(context))
-        swipeRefreshLayout?.setOnRefreshListener { loadData("洛阳") }
+        swipeRefreshLayout?.setOnRefreshListener { loadData(city) }
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -203,6 +217,14 @@ class WeatherFragment : BaseFragment() {
             WEATHER_NOMORE -> CommonUtils.showShortSnackBar(swipeRefreshLayout, "请求超过每天次数")
             WEATHER_NOLOCATION -> CommonUtils.showShortSnackBar(swipeRefreshLayout, "未找到该城市")
             WEATHER_ERROR -> CommonUtils.showShortSnackBar(swipeRefreshLayout, "服务器错误")
+            WEATHER_CHANGECITY->{
+                val builder=AlertDialog.Builder(mContext)
+                        .setTitle("提示")
+                        .setMessage("")
+                        .setPositiveButton("确定") { _, _ -> loadData(locArea) }
+                        .setNegativeButton("取消") { p0, _ -> p0?.dismiss() }
+                builder.create().show()
+            }
         }
     }
 
@@ -216,7 +238,81 @@ class WeatherFragment : BaseFragment() {
         }
     }
 
+    private fun requestLocationPermission() {
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            CommonUtils.showShortSnackBar(downloadIv, "当前没有定位权限")
+            return
+        }
+        locationManager = mContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        locationListener = object : LocationListener {
+            override fun onLocationChanged(location: Location) {
+                getDistrictFromLocation(location)
+                if (locationManager != null) {
+                    locationManager?.removeUpdates(locationListener)
+                    locationManager = null
+                    locationListener = null
+                }
+            }
+
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {
+
+            }
+
+            override fun onProviderEnabled(provider: String) {
+
+            }
+
+            override fun onProviderDisabled(provider: String) {
+
+            }
+        }
+
+        for (s in locationManager?.allProviders!!) {
+            if (s == LocationManager.NETWORK_PROVIDER) {
+            }
+        }
+
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return
+        }
+        locationManager?.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, locationListener, null)
+    }
+
+    private fun getDistrictFromLocation(location: Location?) {
+        if (location == null) {
+            return
+        }
+        try {
+            val geocoder = Geocoder(mContext, Locale.getDefault())
+            val latitude = location.latitude
+            val longitude = location.longitude
+            val addressList = geocoder.getFromLocation(latitude, longitude, 2)
+            if (addressList.size > 0) {
+                val address = addressList[0]
+                val locProvince = address.adminArea
+                val locCity = address.locality
+                locArea = address.subLocality
+                if(locArea?.isNotEmpty()!! &&city!=locArea){
+                    handler.sendEmptyMessage(WEATHER_CHANGECITY)
+                }
+            }
+        } catch (e: IOException) {
+            CommonUtils.showShortSnackBar(downloadIv, "定位失败")
+            e.printStackTrace()
+        }
+
+    }
+
     companion object {
+        private const val WEATHER_CHANGECITY = 14
         private const val WEATHER_ERROR = 13
         private const val WEATHER_NOMORE = 12
         private const val WEATHER_NOLOCATION = 11

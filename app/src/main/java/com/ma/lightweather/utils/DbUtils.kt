@@ -25,6 +25,7 @@ object DbUtils {
                 weather.now.tmp = cursor.getString(cursor.getColumnIndex(Contants.TMP))
                 weather.now.cond_txt = cursor.getString(cursor.getColumnIndex(Contants.TXT))
                 weather.now.wind_dir = cursor.getString(cursor.getColumnIndex(Contants.DIR))
+                weather.now.wind_sc = cursor.getString(cursor.getColumnIndex(Contants.SC))
                 weather.update.loc=cursor.getString(cursor.getColumnIndex(Contants.DATE))
                 if (weather.basic.location != null) {
                     weatherList.add(weather)
@@ -46,6 +47,7 @@ object DbUtils {
             values.put(Contants.TMP, weatherList[i].now.tmp)
             values.put(Contants.TXT, weatherList[i].now.cond_txt)
             values.put(Contants.DIR, weatherList[i].now.wind_dir)
+            values.put(Contants.SC, weatherList[i].now.wind_sc)
             values.put(Contants.DATE, weatherList[i].update.loc)
             db.delete(Contants.WEATHER, "city = ?", arrayOf(weatherList[i].basic.location))
             db.insert(Contants.WEATHER, null, values)

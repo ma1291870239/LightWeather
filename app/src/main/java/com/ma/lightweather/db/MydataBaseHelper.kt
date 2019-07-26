@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper
 class MydataBaseHelper(context: Context, name: String, factory: SQLiteDatabase.CursorFactory?, version: Int) : SQLiteOpenHelper(context, name, factory, version) {
 
     override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
-        val creatSQL = "create table weather(id integer primary key autoincrement,city,tmp,txt,dir,date)"
+        val creatSQL = "create table weather(id integer primary key autoincrement,city,tmp,txt,dir,sc,date)"
         sqLiteDatabase.execSQL(creatSQL)
     }
 

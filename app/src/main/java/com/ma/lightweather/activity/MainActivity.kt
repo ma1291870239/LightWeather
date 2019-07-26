@@ -23,6 +23,7 @@ import com.ma.lightweather.utils.CommonUtils
 import java.util.*
 import kotlin.system.exitProcess
 
+
 class MainActivity : BaseActivity() {
 
     private var weatherFrag: WeatherFragment? = null
@@ -98,8 +99,8 @@ class MainActivity : BaseActivity() {
         val et = searchView.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)
         et.textSize = 14f
         et.hint = "请输入要查询的城市名字"
-        et.setHintTextColor(ContextCompat.getColor(this,R.color.text))
-        et.setTextColor(ContextCompat.getColor(this,R.color.text))
+        et.setHintTextColor(ContextCompat.getColor(this, R.color.text))
+        et.setTextColor(ContextCompat.getColor(this, R.color.text))
         et.setBackgroundResource(R.drawable.bg_search_round_grey)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -188,6 +189,5 @@ class MainActivity : BaseActivity() {
                     InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
-
 
 }

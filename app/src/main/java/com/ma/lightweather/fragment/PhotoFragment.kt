@@ -64,7 +64,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
     private var out: File? = null
     private var bitmap: Bitmap? = null
     private var bytes: ByteArray? = null
-    private var progressDialog: ProgressDialog? = null
+    private var progressBar: ProgressDialog? = null
 
     private val handler = object : Handler() {
         override fun handleMessage(msg: Message) {
@@ -276,9 +276,9 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         val imageView = contentView.findViewById<ImageView>(R.id.imgView)
         Glide.with(context).load(bytes).into(imageView)
 
-        if (progressDialog != null) {
-            progressDialog?.cancel()
-            progressDialog?.dismiss()
+        if (progressBar != null) {
+            progressBar?.cancel()
+            progressBar?.dismiss()
         }
         AlertDialog.Builder(activity).setTitle("是否保存")
                 .setCustomTitle(titleView)
@@ -339,7 +339,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         }
         if (bitmap != null) {
             bitmap = CommonUtils.drawTextToRightBottom(context, bitmap!!, phoneTv!!.text.toString(), loctionTv!!.text.toString(), weatherTv!!.text.toString(),photoLayout)
-            progressDialog = ProgressDialog.show(activity, null, "正在生成水印照片")
+            progressBar = ProgressDialog.show(activity, null, "正在生成水印照片")
             Thread(Runnable {
                 val matrix = Matrix()
                 matrix.setScale(0.5f, 0.5f)
