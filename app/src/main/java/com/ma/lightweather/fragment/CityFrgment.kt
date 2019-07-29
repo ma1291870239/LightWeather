@@ -28,8 +28,8 @@ class CityFrgment : BaseFragment() {
     private var cityAdapter: CityAdapter? = null
     private var city: String? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater?.inflate(R.layout.frag_city, null)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        var view = inflater.inflate(R.layout.frag_city, null)
         if (isAdded) {
             initView(view)
             initData()
@@ -45,7 +45,7 @@ class CityFrgment : BaseFragment() {
             swipeRefreshLayout?.isRefreshing = false
         }
         if (cityAdapter == null) {
-            cityAdapter = CityAdapter(activity, weatherList)
+            cityAdapter = CityAdapter(activity!!, weatherList)
             recyclerView?.adapter = cityAdapter
         } else {
             cityAdapter?.notifyDataSetChanged()
@@ -62,7 +62,7 @@ class CityFrgment : BaseFragment() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = layoutManager
         val divider = DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL)
-        divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.bg_divider))
+        divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.bg_divider)!!)
         recyclerView?.addItemDecoration(divider)
     }
 

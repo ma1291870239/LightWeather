@@ -80,7 +80,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
     }
 
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater?.inflate(R.layout.frag_photo, null)
         initView(view)
         return view
@@ -115,9 +115,9 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         shareLayout?.setOnClickListener(this)
 
 
-        phoneTv?.text = SharedPrefencesUtils.getParam(context, Contants.MODEL, "点击左侧设置当前机型") as String?
-        loctionTv?.text = SharedPrefencesUtils.getParam(context, Contants.LOCTION, "点击左侧设置当前城市") as String?
-        weatherTv?.text = SharedPrefencesUtils.getParam(context, Contants.WEATHER, "点击左侧设置当前天气") as String?
+        phoneTv?.text = SharedPrefencesUtils.getParam(mContext, Contants.MODEL, "点击左侧设置当前机型") as String?
+        loctionTv?.text = SharedPrefencesUtils.getParam(mContext, Contants.LOCTION, "点击左侧设置当前城市") as String?
+        weatherTv?.text = SharedPrefencesUtils.getParam(mContext, Contants.WEATHER, "点击左侧设置当前天气") as String?
     }
 
     override fun onClick(view: View) {
@@ -127,19 +127,19 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
             R.id.weatherTv -> showDialog(3)
             R.id.defaultPhoneTv -> {
                 phoneTv!!.text = android.os.Build.BRAND + " " + android.os.Build.MODEL
-                SharedPrefencesUtils.setParam(context, Contants.MODEL, phoneTv!!.text.toString())
+                SharedPrefencesUtils.setParam(mContext, Contants.MODEL, phoneTv!!.text.toString())
             }
             R.id.defaultLoctionTv -> {
-                loctionTv!!.text = SharedPrefencesUtils.getParam(context, Contants.CITY, "") as String?
-                SharedPrefencesUtils.setParam(context, Contants.LOCTION, loctionTv!!.text.toString())
+                loctionTv!!.text = SharedPrefencesUtils.getParam(mContext, Contants.CITY, "") as String?
+                SharedPrefencesUtils.setParam(mContext, Contants.LOCTION, loctionTv!!.text.toString())
             }
             R.id.defaultWeatherTv -> {
-                weatherTv!!.text = (SharedPrefencesUtils.getParam(context, Contants.TMP, "").toString() + "℃ "
-                        + SharedPrefencesUtils.getParam(context, Contants.TXT, ""))
-                SharedPrefencesUtils.setParam(context, Contants.WEATHER, weatherTv!!.text.toString())
+                weatherTv!!.text = (SharedPrefencesUtils.getParam(mContext, Contants.TMP, "").toString() + "℃ "
+                        + SharedPrefencesUtils.getParam(mContext, Contants.TXT, ""))
+                SharedPrefencesUtils.setParam(mContext, Contants.WEATHER, weatherTv!!.text.toString())
             }
             R.id.photoLayout -> {
-                if (ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                     CommonUtils.showShortSnackBar(photoLayout, "当前没有读写权限")
                     return
                 }
@@ -178,34 +178,34 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         colorList.add(R.color.orangeColorAccent)
         colorList.add(R.color.greyColorAccent)
 
-        val adapter = SelectColorAdapter(activity, txtList, colorList)
-        val dialog = AlertDialog.Builder(activity)
+        val adapter = SelectColorAdapter(activity!!, txtList, colorList)
+        val dialog = AlertDialog.Builder(activity!!)
                 .setSingleChoiceItems(adapter, 0) { dialog, which ->
                     dialog.dismiss()
-                    SharedPrefencesUtils.setParam(context, Contants.THEME, which)
-                    activity.recreate()
+                    SharedPrefencesUtils.setParam(mContext, Contants.THEME, which)
+                    activity?.recreate()
                 }.create()
         dialog.show()
         val window = dialog.window
         val lp = window!!.attributes
         lp.gravity = Gravity.CENTER
         lp.height = WindowManager.LayoutParams.WRAP_CONTENT
-        lp.width = CommonUtils.dp2px(context, 200f)
+        lp.width = CommonUtils.dp2px(mContext, 200f)
         //dialog.getWindow().setAttributes(lp);
 
     }
 
     private fun goToMarket() {
-        val uri = Uri.parse("market://details?id=" + context.packageName)
+        val uri = Uri.parse("market://details?id=" + mContext.packageName)
         val goToMarket = Intent(Intent.ACTION_VIEW, uri)
         try {
-            if (CommonUtils.isContains(context, "com.tencent.android.qqdownloader")) {
+            if (CommonUtils.isContains(mContext, "com.tencent.android.qqdownloader")) {
                 goToMarket.setPackage("com.tencent.android.qqdownloader")
             }
-            if (CommonUtils.isContains(context, "com.coolapk.market")) {
+            if (CommonUtils.isContains(mContext, "com.coolapk.market")) {
                 goToMarket.setPackage("com.coolapk.market")
             }
-            context.startActivity(goToMarket)
+            context?.startActivity(goToMarket)
         } catch (e: Exception) {
             e.printStackTrace()
             val intent = Intent(Intent.ACTION_VIEW)
@@ -217,7 +217,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun showActionSheet() {
-        ActionSheetDialog(activity).builder().setCancelable(true).setCanceledOnTouchOutside(true)
+        ActionSheetDialog(mContext).builder().setCancelable(true).setCanceledOnTouchOutside(true)
                 .setTitle("选择照片")
                 .addSheetItem("拍照", null, object : ActionSheetDialog.OnSheetItemClickListener {
                     override fun onClick(which: Int) {
@@ -236,29 +236,29 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         val titleView = LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null)
         val textView = titleView.findViewById<TextView>(R.id.dialogTitle)
         textView.text = "请输入"
-        textView.setTextColor(context.resources.getColor(CommonUtils.getTextColor(context)))
+        textView.setTextColor(mContext.resources.getColor(CommonUtils.getTextColor(mContext)))
 
-        val contentView = LayoutInflater.from(context).inflate(R.layout.item_edit_dialog, null)
+        val contentView = LayoutInflater.from(mContext).inflate(R.layout.item_edit_dialog, null)
         val editText = contentView.findViewById<EditText>(R.id.editText)
         val gradientDrawable = editText.background as GradientDrawable
-        gradientDrawable.setStroke(CommonUtils.dp2px(context, 1f), context.resources.getColor(CommonUtils.getBackColor(context)))
+        gradientDrawable.setStroke(CommonUtils.dp2px(mContext, 1f), ContextCompat.getColor(mContext,CommonUtils.getBackColor(mContext)))
 
-        AlertDialog.Builder(activity)
+        AlertDialog.Builder(activity!!)
                 .setCustomTitle(titleView)
                 .setView(contentView)
                 .setPositiveButton("确定") { dialogInterface, i ->
                     val s = editText.text.toString()
                     if (tag == 1) {
                         phoneTv?.text = s
-                        SharedPrefencesUtils.setParam(context, Contants.MODEL, phoneTv!!.text.toString())
+                        SharedPrefencesUtils.setParam(mContext, Contants.MODEL, phoneTv!!.text.toString())
                     }
                     if (tag == 2) {
                         loctionTv?.text = s
-                        SharedPrefencesUtils.setParam(context, Contants.LOCTION, loctionTv!!.text.toString())
+                        SharedPrefencesUtils.setParam(mContext, Contants.LOCTION, loctionTv!!.text.toString())
                     }
                     if (tag == 3) {
                         weatherTv?.text = s
-                        SharedPrefencesUtils.setParam(context, Contants.WEATHER, weatherTv!!.text.toString())
+                        SharedPrefencesUtils.setParam(mContext, Contants.WEATHER, weatherTv!!.text.toString())
                     }
                 }
                 .setNegativeButton("取消", null).show()
@@ -270,22 +270,22 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         val titleView = LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null)
         val textView = titleView.findViewById<TextView>(R.id.dialogTitle)
         textView.text = "是否保存水印照片"
-        textView.setTextColor(context.resources.getColor(CommonUtils.getTextColor(context)))
+        textView.setTextColor(mContext.resources.getColor(CommonUtils.getTextColor(mContext)))
 
-        val contentView = LayoutInflater.from(context).inflate(R.layout.item_img_dialog, null)
+        val contentView = LayoutInflater.from(mContext).inflate(R.layout.item_img_dialog, null)
         val imageView = contentView.findViewById<ImageView>(R.id.imgView)
-        Glide.with(context).load(bytes).into(imageView)
+        Glide.with(mContext).load(bytes).into(imageView)
 
         if (progressBar != null) {
             progressBar?.cancel()
             progressBar?.dismiss()
         }
-        AlertDialog.Builder(activity).setTitle("是否保存")
+        AlertDialog.Builder(activity!!).setTitle("是否保存")
                 .setCustomTitle(titleView)
                 .setView(contentView)
                 .setPositiveButton("确定") { _, _ ->
                     Thread(Runnable {
-                        val isSave = PhotoUtils.saveImageToGallery(context, bitmap!!)
+                        val isSave = PhotoUtils.saveImageToGallery(mContext, bitmap!!)
                         bitmap!!.recycle()
                         if (isSave) {
                             handler.sendEmptyMessage(SAVE_CODE)
@@ -306,7 +306,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         }
         out = File(strImgPath, filename!!)
         strImgPath += filename
-        imgUrl = PhotoUtils.getUriForFile(context, out!!)
+        imgUrl = PhotoUtils.getUriForFile(mContext, out!!)
         imageCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUrl)
         imageCaptureIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
         startActivityForResult(imageCaptureIntent, RESULT_PHOTO)
@@ -315,7 +315,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val contentResolver = context.contentResolver
+        val contentResolver = mContext.contentResolver
         bitmap = null
         when (requestCode) {
             RESULT_PHOTO//拍照
@@ -338,7 +338,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
 
         }
         if (bitmap != null) {
-            bitmap = CommonUtils.drawTextToRightBottom(context, bitmap!!, phoneTv!!.text.toString(), loctionTv!!.text.toString(), weatherTv!!.text.toString(),photoLayout)
+            bitmap = CommonUtils.drawTextToRightBottom(mContext, bitmap!!, phoneTv!!.text.toString(), loctionTv!!.text.toString(), weatherTv!!.text.toString(),photoLayout)
             progressBar = ProgressDialog.show(activity, null, "正在生成水印照片")
             Thread(Runnable {
                 val matrix = Matrix()

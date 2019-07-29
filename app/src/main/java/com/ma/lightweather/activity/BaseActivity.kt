@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
@@ -23,7 +24,7 @@ open class BaseActivity : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= 21) {
             val tDesc = ActivityManager.TaskDescription(getString(R.string.app_name),
                     BitmapFactory.decodeResource(resources, R.mipmap.weather),
-                    resources.getColor(CommonUtils.getBackColor(this)))
+                    ContextCompat.getColor(this,CommonUtils.getBackColor(this)))
             setTaskDescription(tDesc)
         }
     }

@@ -16,7 +16,7 @@ open class BaseFragment : Fragment() {
 
     val mContext=MyApplication.instance
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater!!.inflate(R.layout.frag_base, null)
     }
 

@@ -80,9 +80,9 @@ class WeatherFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         var view = inflater?.inflate(R.layout.frag_weather, null)
-        city = SharedPrefencesUtils.getParam(context, Contants.CITY, Contants.CITYNAME) as String
+        city = SharedPrefencesUtils.getParam(mContext, Contants.CITY, Contants.CITYNAME) as String
         if (isAdded) {
             initView(view)
             loadData(city)
@@ -99,7 +99,7 @@ class WeatherFragment : BaseFragment() {
                 Response.Listener { response ->
                     try {
                         //weatherList = Parse.parseWeather(response, weatherView, hourWeatherView, context)
-                        weatherList=Parse.parse(response, weatherView, hourWeatherView, context)
+                        weatherList=Parse.parse(response, weatherView, hourWeatherView, mContext)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
@@ -145,7 +145,7 @@ class WeatherFragment : BaseFragment() {
         uvTv = view?.findViewById(R.id.uvTextView)
 
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
-        swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(context))
+        swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
         swipeRefreshLayout?.setOnRefreshListener { loadData(city) }
     }
 
@@ -204,13 +204,13 @@ class WeatherFragment : BaseFragment() {
                             setLifeView(uvTv,s,"紫外线指数")
                         }
                     }
-                    SharedPrefencesUtils.setParam(context, Contants.CITY, weatherList!![i].basic.location)
-                    SharedPrefencesUtils.setParam(context, Contants.TMP, weatherList!![i].now.tmp)
-                    SharedPrefencesUtils.setParam(context, Contants.TXT, weatherList!![i].now.cond_txt)
+                    SharedPrefencesUtils.setParam(mContext, Contants.CITY, weatherList!![i].basic.location)
+                    SharedPrefencesUtils.setParam(mContext, Contants.TMP, weatherList!![i].now.tmp)
+                    SharedPrefencesUtils.setParam(mContext, Contants.TXT, weatherList!![i].now.cond_txt)
                     //CommonUtils.showShortToast(getC,"数据已更新");
-                    if (SharedPrefencesUtils.getParam(context, Contants.NOTIFY, false) as Boolean) {
-                        val it = Intent(context, WeatherService::class.java)
-                        context.startService(it)
+                    if (SharedPrefencesUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
+                        val it = Intent(mContext, WeatherService::class.java)
+                        mContext.startService(it)
                     }
                 }
             }
