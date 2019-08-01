@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import com.ma.lightweather.R
@@ -51,17 +52,17 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         outPointPaint.strokeWidth = outPointWidth.toFloat()
         outPointPaint.style = Paint.Style.STROKE
 
-        maxPaint.color = resources.getColor(R.color.temp_high)
+        maxPaint.color = ContextCompat.getColor(context,R.color.temp_high)
         maxPaint.isAntiAlias = true
         maxPaint.strokeWidth = lineWidth.toFloat()
         maxPaint.style = Paint.Style.STROKE
 
-        minPaint.color = resources.getColor(R.color.temp_low)
+        minPaint.color = ContextCompat.getColor(context,R.color.temp_low)
         minPaint.isAntiAlias = true
         minPaint.strokeWidth = lineWidth.toFloat()
         minPaint.style = Paint.Style.STROKE
 
-        textPaint.color = resources.getColor(R.color.text)
+        textPaint.color = ContextCompat.getColor(context,R.color.text)
         textPaint.isAntiAlias = true
         textPaint.textAlign = Paint.Align.CENTER
 
@@ -85,8 +86,8 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         minPath.reset()
         //最高温度折线
         for (i in maxList.indices) {
-            pointPaint.color = resources.getColor(R.color.temp_high)
-            outPointPaint.color = resources.getColor(R.color.temp_high)
+            pointPaint.color = ContextCompat.getColor(context,R.color.temp_high)
+            outPointPaint.color = ContextCompat.getColor(context,R.color.temp_high)
             //            if(i<maxList.size()-1){
             //                canvas.drawLine(getX(2*i+1),getY(i,maxList),
             //                        getX(2*i+3),getY(i+1,maxList),maxPaint);
@@ -129,8 +130,8 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         }
         //最低温度折线
         for (i in minList.indices) {
-            pointPaint.color = resources.getColor(R.color.temp_low)
-            outPointPaint.color = resources.getColor(R.color.temp_low)
+            pointPaint.color = ContextCompat.getColor(context,R.color.temp_low)
+            outPointPaint.color = ContextCompat.getColor(context,R.color.temp_low)
             //            if(i<minList.size()-1){
             //                canvas.drawLine((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,
             //                        (2*i+3)*xSpace,(max-minList.get(i+1))*ySpace+offsetHigh,minPaint);
@@ -194,11 +195,11 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
             txtList.clear()
             dirList.clear()
             for (daily in dailyList){
-                (maxList as ArrayList).add(daily.tmp_max!!.toInt())
-                (minList as ArrayList).add(daily.tmp_min!!.toInt())
-                daily.date?.let { (dateList as ArrayList).add(it) }
-                daily.cond_txt_d?.let { (txtList as ArrayList).add(it) }
-                daily.wind_dir?.let { (dirList as ArrayList).add(it) }
+                (maxList as ArrayList).add(daily.tmp_max.toInt())
+                (minList as ArrayList).add(daily.tmp_min.toInt())
+                daily.date.let { (dateList as ArrayList).add(it) }
+                daily.cond_txt_d.let { (txtList as ArrayList).add(it) }
+                daily.wind_dir.let { (dirList as ArrayList).add(it) }
             }
         }
         postInvalidate()
@@ -214,11 +215,11 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
 
     companion object {
 
-        private val lineWidth = 5
-        private val pointWidth = 3
-        private val outPointWidth = 3
-        private val pointRadius = 5
-        private val outPointRadius = 10
+        private const val lineWidth = 5
+        private const val pointWidth = 3
+        private const val outPointWidth = 3
+        private const val pointRadius = 5
+        private const val outPointRadius = 10
     }
 
 }

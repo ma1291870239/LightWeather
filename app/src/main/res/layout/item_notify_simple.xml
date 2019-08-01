@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="70dp"
     android:paddingLeft="15dp"
-    android:paddingRight="30dp"
+    android:paddingRight="20dp"
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
     <ImageView
@@ -18,7 +18,18 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@id/weatherImg"
-        android:textSize="18sp"
+        android:textSize="16sp"
+        android:textColor="@color/blacktext"
+        android:gravity="top"
+        android:text="洛阳"/>
+    <TextView
+        android:id="@+id/weatherTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_toRightOf="@id/weatherCity"
+        android:layout_alignBottom="@+id/weatherCity"
+        android:textSize="10sp"
         android:textColor="@color/blacktext"
         android:gravity="top"
         android:text="洛阳"/>
@@ -33,7 +44,31 @@
         android:textSize="14sp"
         android:textColor="@color/blacktext"
         android:gravity="bottom"
-        android:text="大雪 3℃ 东风"/>
+        android:text="大雪"/>
+    <TextView
+        android:id="@+id/weatherDir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/weatherWind"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/weatherCity"
+        android:textSize="14sp"
+        android:textColor="@color/blacktext"
+        android:gravity="bottom"
+        android:text="东风"/>
+    <TextView
+        android:id="@+id/weatherSc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/weatherDir"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/weatherCity"
+        android:textSize="14sp"
+        android:textColor="@color/blacktext"
+        android:gravity="bottom"
+        android:text="3-10级"/>
     <TextView
         android:id="@+id/weatherTmp"
         android:layout_width="wrap_content"
@@ -43,5 +78,15 @@
         android:textColor="@color/blacktext"
         android:gravity="center_vertical"
         android:text="洛阳"/>
+    <TextView
+        android:id="@+id/weatherQlit"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginRight="20dp"
+        android:layout_toLeftOf="@id/weatherTmp"
+        android:textSize="20sp"
+        android:textColor="@color/blacktext"
+        android:gravity="center_vertical"
+        android:text="严重污染"/>
 
 </RelativeLayout>

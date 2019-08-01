@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            app:layout_scrollFlags="enterAlwaysCollapsed|scroll">
+            app:layout_scrollFlags="enterAlways|scroll">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolBar"
                 android:layout_width="match_parent"
@@ -36,6 +36,7 @@
             app:tabTextColor="@color/grey"
             app:tabSelectedTextColor="@color/white"
             app:tabIndicatorColor="@color/white"
+            app:tabRippleColor="?attr/colorAccent"
             app:tabIndicatorHeight="0dp"/>
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.view.ViewPager
@@ -43,4 +44,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+    <android.support.design.widget.FloatingActionButton
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:id="@+id/floatbutton"
+        android:src="@mipmap/add"
+        android:clickable="true"
+        app:elevation="5dp"
+        app:borderWidth="0dp"
+        app:pressedTranslationZ="10dp"
+        app:backgroundTint="?attr/colorPrimary"
+        android:layout_marginBottom="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_height="wrap_content" />
 </android.support.design.widget.CoordinatorLayout>

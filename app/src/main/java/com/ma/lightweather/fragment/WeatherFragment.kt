@@ -5,14 +5,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Geocoder
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.location.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v4.widget.NestedScrollView
 import android.support.v4.widget.SwipeRefreshLayout
@@ -28,6 +24,7 @@ import com.ma.lightweather.R
 import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.app.WeatherService
+import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
@@ -63,12 +60,15 @@ class WeatherFragment : BaseFragment() {
     private var sportTv: TextView? = null
     private var travTv: TextView? = null
     private var uvTv: TextView? = null
+    private var pm25Tv: TextView? = null
+    private var pm10Tv: TextView? = null
     private var weatherLife: LinearLayout? = null
     private var scrollView: NestedScrollView? = null
     private var weatherView: WeatherView? = null
     private var hourWeatherView: HourWeatherView? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     private var weatherList: List<Weather>? = null
+    private var airList: List<Air>? = null
     private var city: String? = null
     private var locArea: String? = null
     private var locationManager:LocationManager? = null
@@ -77,81 +77,6 @@ class WeatherFragment : BaseFragment() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             updateData(msg.what)
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater?.inflate(R.layout.frag_weather, null)
-        city = SharedPrefencesUtils.getParam(mContext, Contants.CITY, Contants.CITYNAME) as String
-        if (isAdded) {
-            initView(view)
-            loadData(city)
-            requestLocationPermission()
-        }
-        return view
-    }
-
-    //加载上部数据
-    fun loadData(city: String?) {
-        this.city = city
-        val requestQueue = Volley.newRequestQueue(context)
-        val stringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city!!,
-                Response.Listener { response ->
-                    try {
-                        //weatherList = Parse.parseWeather(response, weatherView, hourWeatherView, context)
-                        weatherList=Parse.parse(response, weatherView, hourWeatherView, mContext)
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-                    if (weatherList!!.isNotEmpty()&& weatherList!![0].status == "ok") {
-                        handler.sendEmptyMessage(WEATHER_SUCCESE)
-                        (activity as MainActivity).refreshCity()
-                    } else if(weatherList!![0].status == "no more requests"){
-                        handler.sendEmptyMessage(WEATHER_NOMORE)
-                    } else if(weatherList!![0].status == "unknown location"){
-                        handler.sendEmptyMessage(WEATHER_NOLOCATION)
-                    } else{
-                        handler.sendEmptyMessage(WEATHER_ERROR)
-                    }
-                },
-                Response.ErrorListener {
-                    swipeRefreshLayout!!.isRefreshing = false
-                    handler.sendEmptyMessage(WEATHER_ERROR)
-                })
-        requestQueue.add(stringRequest)
-    }
-
-    private fun initView(view: View?) {
-        tmptv = view?.findViewById(R.id.weather_tmp)//温度
-        feeltv = view?.findViewById(R.id.weather_feel)//体感
-        humtv = view?.findViewById(R.id.weather_hum)//湿度
-        pcpntv = view?.findViewById(R.id.weather_pcpn)//降雨量
-        citytv = view?.findViewById(R.id.weather_city)//城市
-        windtv = view?.findViewById(R.id.weather_wind)//风向
-        pmtv = view?.findViewById(R.id.weather_pm)//PM2.5
-        prestv = view?.findViewById(R.id.weather_pres)//气压
-        vistv = view?.findViewById(R.id.weather_vis)//能见度
-        scrollView = view?.findViewById(R.id.weather_scroll)
-        weatherView = view?.findViewById(R.id.weather_view)
-        hourWeatherView = view?.findViewById(R.id.hourweather_view)
-        weatherLife = view?.findViewById(R.id.weather_life)
-        airTv = view?.findViewById(R.id.airTextView)
-        comfTv = view?.findViewById(R.id.comfTextView)
-        cwTv = view?.findViewById(R.id.cwTextView)
-        drsgTv = view?.findViewById(R.id.drsgTextView)
-        fluTv = view?.findViewById(R.id.fluTextView)
-        sportTv = view?.findViewById(R.id.sportTextView)
-        travTv = view?.findViewById(R.id.travTextView)
-        uvTv = view?.findViewById(R.id.uvTextView)
-
-        swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
-        swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
-        swipeRefreshLayout?.setOnRefreshListener { loadData(city) }
-    }
-
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
-        super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser && isResumed) {
         }
     }
 
@@ -166,10 +91,12 @@ class WeatherFragment : BaseFragment() {
                     humtv?.text = "　湿度：" + weatherList!![i].now.hum + " %"
                     pcpntv?.text = "　降雨：" + weatherList!![i].now.pcpn + " mm"
                     citytv?.text = weatherList!![i].basic.location + "　" + weatherList!![i].basic.cnty
-                    windtv?.text = weatherList!![i].now.cond_txt + "　" + weatherList!![i].now.wind_dir
+                    windtv?.text = weatherList!![i].now.cond_txt + "　" + weatherList!![i].now.wind_dir+ "　" + weatherList!![i].now.wind_sc+"级"
                     pmtv?.text = "　风速：" + weatherList!![i].now.wind_spd + " km/h"
                     prestv?.text = "　气压：" + weatherList!![i].now.pres + " Pa"
                     vistv?.text = "　能见：" + weatherList!![i].now.vis + " km"
+                    pm25Tv?.text = "　PM25：" + airList!![i].air_now_city.pm25 + " μg/m3"
+                    pm10Tv?.text = "　PM10：" + airList!![i].air_now_city.pm10 + " μg/m3"
                     if (weatherList!![i].lifestyle.isNotEmpty() && weatherList!![i].lifestyle.size  <=0) {
                         weatherLife?.visibility = View.GONE
                     } else {
@@ -180,28 +107,28 @@ class WeatherFragment : BaseFragment() {
                         val type = weather.lifestyle[j].type
                         val s = weather.lifestyle[j].brf+ "\n" + weather.lifestyle[j].txt
                         if (type == "air") {
-                            setLifeView(airTv,s,"空气指数")
+                            setLifeView(airTv,s,"空气指数 ")
                         }
                         if (type == "cw" ) {
-                            setLifeView(cwTv,s,"洗车指数")
+                            setLifeView(cwTv,s,"洗车指数 ")
                         }
                         if (type == "drsg") {
-                            setLifeView(drsgTv,s,"穿衣指数")
+                            setLifeView(drsgTv,s,"穿衣指数" )
                         }
                         if (type == "flu" ) {
-                            setLifeView(fluTv,s,"感冒指数")
+                            setLifeView(fluTv,s,"感冒指数 ")
                         }
                         if (type == "sport") {
-                            setLifeView(sportTv,s,"运动指数")
+                            setLifeView(sportTv,s,"运动指数 ")
                         }
                         if (type == "trav") {
-                            setLifeView(travTv,s,"旅游指数")
+                            setLifeView(travTv,s,"旅游指数 ")
                         }
                         if (type == "comf") {
-                            setLifeView(comfTv,s,"舒适度指数")
+                            setLifeView(comfTv,s,"舒适度指数 ")
                         }
                         if (type == "uv") {
-                            setLifeView(uvTv,s,"紫外线指数")
+                            setLifeView(uvTv,s,"紫外线指数 ")
                         }
                     }
                     SharedPrefencesUtils.setParam(mContext, Contants.CITY, weatherList!![i].basic.location)
@@ -218,7 +145,7 @@ class WeatherFragment : BaseFragment() {
             WEATHER_NOLOCATION -> CommonUtils.showShortSnackBar(swipeRefreshLayout, "未找到该城市")
             WEATHER_ERROR -> CommonUtils.showShortSnackBar(swipeRefreshLayout, "服务器错误")
             WEATHER_CHANGECITY->{
-                val builder=AlertDialog.Builder(mContext)
+                val builder=AlertDialog.Builder(activity)
                         .setTitle("提示")
                         .setMessage("")
                         .setPositiveButton("确定") { _, _ -> loadData(locArea) }
@@ -228,10 +155,123 @@ class WeatherFragment : BaseFragment() {
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.frag_weather, null)
+        city = SharedPrefencesUtils.getParam(mContext, Contants.CITY, Contants.CITYNAME) as String
+        if (isAdded) {
+            initView(view)
+            loadData(city)
+            //requestLocationPermission()
+        }
+        return view
+    }
+
+    //加载上部数据
+    fun loadData(city: String?) {
+        this.city = city
+        val requestQueue = Volley.newRequestQueue(mContext)
+        val stringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_AIR + city,
+                Response.Listener { response ->
+                    try {
+                        airList=Parse.parseAir(response, weatherView, hourWeatherView, mContext)
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                    if (airList!!.isNotEmpty()&& airList!![0].status == "ok") {
+                       getWeather(city)
+                    } else if(airList!![0].status == "no more requests"){
+                        handler.sendEmptyMessage(WEATHER_NOMORE)
+                    } else if(airList!![0].status == "unknown location"){
+                        handler.sendEmptyMessage(WEATHER_NOLOCATION)
+                    } else{
+                        handler.sendEmptyMessage(WEATHER_ERROR)
+                    }
+                },
+                Response.ErrorListener {
+                    swipeRefreshLayout?.isRefreshing = false
+                    handler.sendEmptyMessage(WEATHER_ERROR)
+                })
+        requestQueue.add(stringRequest)
+    }
+
+
+    private fun getWeather(city:String?){
+        val requestQueue = Volley.newRequestQueue(mContext)
+        val stringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
+                Response.Listener { response ->
+                    try {
+                        //weatherList = Parse.parseWeather(response, weatherView, hourWeatherView, context)
+                        weatherList=Parse.parseWeather(response, weatherView, hourWeatherView, mContext)
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                    if (weatherList!!.isNotEmpty()&& weatherList!![0].status == "ok") {
+                        handler.sendEmptyMessage(WEATHER_SUCCESE)
+                        (activity as MainActivity).refreshCity()
+                    } else if(weatherList!![0].status == "no more requests"){
+                        handler.sendEmptyMessage(WEATHER_NOMORE)
+                    } else if(weatherList!![0].status == "unknown location"){
+                        handler.sendEmptyMessage(WEATHER_NOLOCATION)
+                    } else{
+                        handler.sendEmptyMessage(WEATHER_ERROR)
+                    }
+                },
+                Response.ErrorListener {
+                    swipeRefreshLayout?.isRefreshing = false
+                    handler.sendEmptyMessage(WEATHER_ERROR)
+                })
+        requestQueue.add(stringRequest)
+
+    }
+
+    private fun initView(view: View?) {
+        tmptv = view?.findViewById(R.id.weather_tmp)//温度
+        feeltv = view?.findViewById(R.id.weather_feel)//体感
+        humtv = view?.findViewById(R.id.weather_hum)//湿度
+        pcpntv = view?.findViewById(R.id.weather_pcpn)//降雨量
+        citytv = view?.findViewById(R.id.weather_city)//城市
+        windtv = view?.findViewById(R.id.weather_wind)//风向
+        pmtv = view?.findViewById(R.id.weather_spd)//风速
+        prestv = view?.findViewById(R.id.weather_pres)//气压
+        vistv = view?.findViewById(R.id.weather_vis)//能见度
+        pm25Tv = view?.findViewById(R.id.weather_pm25)//气压
+        pm10Tv = view?.findViewById(R.id.weather_pm10)//能见度
+        scrollView = view?.findViewById(R.id.weather_scroll)
+        weatherView = view?.findViewById(R.id.weather_view)
+        hourWeatherView = view?.findViewById(R.id.hourweather_view)
+        weatherLife = view?.findViewById(R.id.weather_life)
+        airTv = view?.findViewById(R.id.airTextView)
+        comfTv = view?.findViewById(R.id.comfTextView)
+        cwTv = view?.findViewById(R.id.cwTextView)
+        drsgTv = view?.findViewById(R.id.drsgTextView)
+        fluTv = view?.findViewById(R.id.fluTextView)
+        sportTv = view?.findViewById(R.id.sportTextView)
+        travTv = view?.findViewById(R.id.travTextView)
+        uvTv = view?.findViewById(R.id.uvTextView)
+        travTv = view?.findViewById(R.id.travTextView)
+        uvTv = view?.findViewById(R.id.uvTextView)
+
+        swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
+        swipeRefreshLayout?.setOnRefreshListener { loadData(city) }
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser && isResumed) {
+            val isShow=SharedPrefencesUtils.getParam(activity, Contants.LIFE, true) as Boolean
+            if (isShow){
+                weatherLife?.visibility=View.VISIBLE
+            }else{
+                weatherLife?.visibility=View.GONE
+            }
+        }
+    }
+
     private fun setLifeView(view: TextView?, text:String ,type:String){
         if (text.isNotEmpty()){
             view?.visibility=View.VISIBLE
-            view?.text=type+"    "+text
+            view?.text=type+text
         }else{
             view?.visibility=View.GONE
             view?.text=""
@@ -239,7 +279,7 @@ class WeatherFragment : BaseFragment() {
     }
 
     private fun requestLocationPermission() {
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             CommonUtils.showShortSnackBar(downloadIv, "当前没有定位权限")
             return
         }
@@ -266,24 +306,15 @@ class WeatherFragment : BaseFragment() {
 
             }
         }
-
-        for (s in locationManager?.allProviders!!) {
-            if (s == LocationManager.NETWORK_PROVIDER) {
-            }
-        }
-
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return
-        }
-        locationManager?.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, locationListener, null)
+        val criteria = Criteria()
+        criteria.accuracy = Criteria.ACCURACY_FINE
+        criteria.isSpeedRequired = false
+        criteria.isAltitudeRequired = false
+        criteria.isBearingRequired = false
+        criteria.isCostAllowed = false
+        criteria.powerRequirement = Criteria.POWER_LOW
+        locationManager?.getBestProvider(criteria, true)
+        locationManager?.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, locationListener,null)
     }
 
     private fun getDistrictFromLocation(location: Location?) {

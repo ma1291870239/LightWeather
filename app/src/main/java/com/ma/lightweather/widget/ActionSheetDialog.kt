@@ -173,7 +173,7 @@ class ActionSheetDialog(private val context: Context) {
 
     fun show() {
         setSheetItems()
-        dialog!!.show()
+        dialog?.show()
     }
 
     interface OnSheetItemClickListener {

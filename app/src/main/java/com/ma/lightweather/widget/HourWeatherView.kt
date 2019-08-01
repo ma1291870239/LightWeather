@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Path
+import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
 import com.ma.lightweather.R
@@ -49,12 +50,12 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         outPointPaint.strokeWidth = outPointWidth.toFloat()
         outPointPaint.style = Paint.Style.STROKE
 
-        tmpPaint.color = resources.getColor(R.color.temp)
+        tmpPaint.color = ContextCompat.getColor(context,R.color.temp)
         tmpPaint.isAntiAlias = true
         tmpPaint.strokeWidth = lineWidth.toFloat()
         tmpPaint.style = Paint.Style.STROKE
 
-        textPaint.color = resources.getColor(R.color.text)
+        textPaint.color = ContextCompat.getColor(context,R.color.text)
         textPaint.isAntiAlias = true
         textPaint.textAlign = Paint.Align.CENTER
 
@@ -77,8 +78,8 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         path.reset()
         //实时温度折线
         for (i in tmpList.indices) {
-            pointPaint.color = resources.getColor(R.color.temp)
-            outPointPaint.color = resources.getColor(R.color.temp)
+            pointPaint.color = ContextCompat.getColor(context,R.color.temp)
+            outPointPaint.color = ContextCompat.getColor(context,R.color.temp)
             //            if(i<minList.size()-1){
             //                canvas.drawLine((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,
             //                        (2*i+3)*xSpace,(max-minList.get(i+1))*ySpace+offsetHigh,minPaint);
@@ -126,11 +127,11 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         }
         //天气状况
         for (i in txtList.indices) {
-            canvas.drawText(txtList[i], getX(2 * i + 1), (viewhigh - Math.ceil((fm.bottom - fm.leading).toDouble()).toInt()).toFloat(), textPaint)
+            canvas.drawText(txtList[i], getX(2 * i + 1), (viewhigh - ceil((fm.bottom - fm.leading).toDouble()).toInt()).toFloat(), textPaint)
         }
         //降水概率
         for (i in popList.indices) {
-            canvas.drawText(popList[i].toString() + "%", getX(2 * i + 1), (viewhigh - Math.ceil((fm.bottom - fm.leading).toDouble()).toInt() - texthigh).toFloat(), textPaint)
+            canvas.drawText(popList[i].toString() + "%", getX(2 * i + 1), (viewhigh - ceil((fm.bottom - fm.leading).toDouble()).toInt() - texthigh).toFloat(), textPaint)
         }
         //分割线
         for (i in 1 until dateList.size) {
@@ -146,11 +147,11 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
             txtList.clear()
             dirList.clear()
             for (hourly in hourlyList){
-                (tmpList as ArrayList).add(hourly.tmp!!.toInt())
-                (popList as ArrayList).add(hourly.pop!!.toInt())
-                hourly.time?.let { (dateList as ArrayList).add(it) }
-                hourly.cond_txt?.let { (txtList as ArrayList).add(it) }
-                hourly.wind_dir?.let { (dirList as ArrayList).add(it) }
+                (tmpList as ArrayList).add(hourly.tmp.toInt())
+                (popList as ArrayList).add(hourly.pop.toInt())
+                hourly.time.let { (dateList as ArrayList).add(it) }
+                hourly.cond_txt.let { (txtList as ArrayList).add(it) }
+                hourly.wind_dir.let { (dirList as ArrayList).add(it) }
             }
         }
         postInvalidate()
@@ -166,11 +167,11 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
 
     companion object {
 
-        private val lineWidth = 5
-        private val pointWidth = 3
-        private val outPointWidth = 3
-        private val pointRadius = 5
-        private val outPointRadius = 10
+        private const val lineWidth = 5
+        private const val pointWidth = 3
+        private const val outPointWidth = 3
+        private const val pointRadius = 5
+        private const val outPointRadius = 10
     }
 
 }

@@ -129,47 +129,33 @@ object CommonUtils {
 
     fun getBackColor(context: Context): Int {
         val themeTag = SharedPrefencesUtils.getParam(context, Contants.THEME, 0) as Int
-        if (themeTag == 0) {
-            return R.color.cyanColorPrimaryDark
-        } else if (themeTag == 1) {
-            return R.color.purpleColorPrimaryDark
-        } else if (themeTag == 2) {
-            return R.color.redColorPrimaryDark
-        } else if (themeTag == 3) {
-            return R.color.pinkColorPrimaryDark
-        } else if (themeTag == 4) {
-            return R.color.greenColorPrimaryDark
-        } else if (themeTag == 5) {
-            return R.color.blueColorPrimaryDark
-        } else if (themeTag == 6) {
-            return R.color.orangeColorPrimaryDark
-        } else if (themeTag == 7) {
-            return R.color.greyColorPrimaryDark
+        return when (themeTag) {
+            0 -> R.color.cyanColorPrimaryDark
+            1 -> R.color.purpleColorPrimaryDark
+            2 -> R.color.redColorPrimaryDark
+            3 -> R.color.pinkColorPrimaryDark
+            4 -> R.color.greenColorPrimaryDark
+            5 -> R.color.blueColorPrimaryDark
+            6 -> R.color.orangeColorPrimaryDark
+            7 -> R.color.greyColorPrimaryDark
+            else -> R.color.text
         }
-        return R.color.text
     }
 
 
     fun getTextColor(context: Context): Int {
         val themeTag = SharedPrefencesUtils.getParam(context, Contants.THEME, 0) as Int
-        if (themeTag == 0) {
-            return R.color.cyanColorAccent
-        } else if (themeTag == 1) {
-            return R.color.purpleColorAccent
-        } else if (themeTag == 2) {
-            return R.color.redColorAccent
-        } else if (themeTag == 3) {
-            return R.color.pinkColorAccent
-        } else if (themeTag == 4) {
-            return R.color.greenColorAccent
-        } else if (themeTag == 5) {
-            return R.color.blueColorAccent
-        } else if (themeTag == 6) {
-            return R.color.orangeColorAccent
-        } else if (themeTag == 7) {
-            return R.color.greyColorAccent
+        return when (themeTag) {
+            0 -> R.color.cyanColorAccent
+            1 -> R.color.purpleColorAccent
+            2 -> R.color.redColorAccent
+            3 -> R.color.pinkColorAccent
+            4 -> R.color.greenColorAccent
+            5 -> R.color.blueColorAccent
+            6 -> R.color.orangeColorAccent
+            7 -> R.color.greyColorAccent
+            else -> R.color.text
         }
-        return R.color.text
     }
 
     /**

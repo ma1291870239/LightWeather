@@ -1,7 +1,6 @@
 package com.ma.lightweather.utils
 
 import android.content.Context
-import android.content.SharedPreferences
 
 /**
  * Created by Aeolus on 2018/7/26.
@@ -19,25 +18,20 @@ object SharedPrefencesUtils {
      * @param key
      * @param object
      */
-    fun setParam(context: Context, key: String, `object`: Any) {
+    fun setParam(context: Context?, key: String, `object`: Any) {
 
         val type = `object`.javaClass.simpleName
-        val sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
-        val editor = sp.edit()
+        val sp = context?.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
+        val editor = sp?.edit()
 
-        if ("String" == type) {
-            editor.putString(key, `object` as String)
-        } else if ("Integer" == type) {
-            editor.putInt(key, `object` as Int)
-        } else if ("Boolean" == type) {
-            editor.putBoolean(key, `object` as Boolean)
-        } else if ("Float" == type) {
-            editor.putFloat(key, `object` as Float)
-        } else if ("Long" == type) {
-            editor.putLong(key, `object` as Long)
+        when (type) {
+            "String" -> editor?.putString(key, `object` as String)
+            "Integer" -> editor?.putInt(key, `object` as Int)
+            "Boolean" -> editor?.putBoolean(key, `object` as Boolean)
+            "Float" -> editor?.putFloat(key, `object` as Float)
+            "Long" -> editor?.putLong(key, `object` as Long)
         }
-
-        editor.apply()
+        editor?.apply()
     }
 
 
@@ -48,23 +42,19 @@ object SharedPrefencesUtils {
      * @param defaultObject
      * @return
      */
-    fun getParam(context: Context, key: String, defaultObject: Any): Any? {
+    fun getParam(context: Context?, key: String, defaultObject: Any): Any? {
         val type = defaultObject.javaClass.simpleName
-        val sp = context.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
+        val sp = context?.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
 
-        if ("String" == type) {
-            return sp.getString(key, defaultObject as String)
-        } else if ("Integer" == type) {
-            return sp.getInt(key, defaultObject as Int)
-        } else if ("Boolean" == type) {
-            return sp.getBoolean(key, defaultObject as Boolean)
-        } else if ("Float" == type) {
-            return sp.getFloat(key, defaultObject as Float)
-        } else if ("Long" == type) {
-            return sp.getLong(key, defaultObject as Long)
+        return when (type) {
+            "String" -> sp?.getString(key, defaultObject as String)
+            "Integer" -> sp?.getInt(key, defaultObject as Int)
+            "Boolean" -> sp?.getBoolean(key, defaultObject as Boolean)
+            "Float" -> sp?.getFloat(key, defaultObject as Float)
+            "Long" -> sp?.getLong(key, defaultObject as Long)
+            else -> null
         }
 
-        return null
     }
 
 

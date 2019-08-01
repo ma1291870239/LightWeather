@@ -2,8 +2,10 @@ package com.ma.lightweather.utils
 
 import android.content.ContentValues
 import android.content.Context
+import android.util.Log
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.db.MydataBaseHelper
+import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
 import java.util.*
 
@@ -27,17 +29,17 @@ object DbUtils {
                 weather.now.wind_dir = cursor.getString(cursor.getColumnIndex(Contants.DIR))
                 weather.now.wind_sc = cursor.getString(cursor.getColumnIndex(Contants.SC))
                 weather.update.loc=cursor.getString(cursor.getColumnIndex(Contants.DATE))
-                if (weather.basic.location != null) {
-                    weatherList.add(weather)
-                }
+                weather.qlty=cursor.getString(cursor.getColumnIndex(Contants.QLTY))
+                weatherList.add(weather)
             } while (cursor.moveToNext())
         }
         cursor.close()
         db.close()
+        Log.e("abc",weatherList.size.toString()+"---")
         return weatherList
     }
 
-    fun writeDb(context: Context, weatherList: List<Weather>) {
+    fun writeDb(context: Context, weatherList: List<Weather>,airList: List<Air>) {
         val dbHelper = MydataBaseHelper(context, Contants.WEATHERDB, null, 1)
         val db = dbHelper.writableDatabase
         db.beginTransaction()
@@ -49,6 +51,7 @@ object DbUtils {
             values.put(Contants.DIR, weatherList[i].now.wind_dir)
             values.put(Contants.SC, weatherList[i].now.wind_sc)
             values.put(Contants.DATE, weatherList[i].update.loc)
+            values.put(Contants.QLTY, airList[i].air_now_city.qlty)
             db.delete(Contants.WEATHER, "city = ?", arrayOf(weatherList[i].basic.location))
             db.insert(Contants.WEATHER, null, values)
         }

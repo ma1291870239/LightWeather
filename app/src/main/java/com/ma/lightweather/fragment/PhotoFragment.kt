@@ -81,7 +81,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater?.inflate(R.layout.frag_photo, null)
+        val view = inflater.inflate(R.layout.frag_photo, null)
         initView(view)
         return view
     }
@@ -217,7 +217,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun showActionSheet() {
-        ActionSheetDialog(mContext).builder().setCancelable(true).setCanceledOnTouchOutside(true)
+        ActionSheetDialog(activity!!).builder().setCancelable(true).setCanceledOnTouchOutside(true)
                 .setTitle("选择照片")
                 .addSheetItem("拍照", null, object : ActionSheetDialog.OnSheetItemClickListener {
                     override fun onClick(which: Int) {
@@ -246,7 +246,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         AlertDialog.Builder(activity!!)
                 .setCustomTitle(titleView)
                 .setView(contentView)
-                .setPositiveButton("确定") { dialogInterface, i ->
+                .setPositiveButton("确定") { _, _ ->
                     val s = editText.text.toString()
                     if (tag == 1) {
                         phoneTv?.text = s

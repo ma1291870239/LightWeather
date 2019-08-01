@@ -29,6 +29,8 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     private var downloadIv: ImageView? = null
     private var skipTv: TextView? = null
     private var countDownTimer: CountDownTimer? = null
+    private var mPermissionList = arrayListOf<String>()
+    private val permissions= arrayOf(WRITE_EXTERNAL_STORAGE, ACCESS_FINE_LOCATION)
     private val handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -71,18 +73,17 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
 
 
     private fun checkPermission() {
-        when {
-            ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-            ->{
-                ActivityCompat.requestPermissions(this, arrayOf(WRITE_EXTERNAL_STORAGE), PERMISSION_CODE_WRITE)
-                return
+        mPermissionList.clear()
+        for(permission in permissions){
+            if (ContextCompat.checkSelfPermission(this, permission)
+                    != PackageManager.PERMISSION_GRANTED){
+                mPermissionList.add(permission)
             }
-            ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-            -> {
-                ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), PERMISSION_CODE_LOCATION)
-                return
-            }
-            else -> initData()
+        }
+        if (mPermissionList.size>0){
+            ActivityCompat.requestPermissions(this,permissions, PERMISSION_CODE)
+        }else{
+            initData()
         }
     }
 
@@ -132,37 +133,27 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        var hasPermissionDismiss = false
         when (requestCode) {
-            PERMISSION_CODE_WRITE -> {
-                CommonUtils.showShortSnackBar(backIv,"读写权限已获取")
-                if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), PERMISSION_CODE_LOCATION)
-                    return
-                }else{
-                    initData()
-                    return
+            PERMISSION_CODE -> {
+                for (result in grantResults){
+                    if(result==-1){
+                        hasPermissionDismiss=true
+                    }
                 }
-            }
-            PERMISSION_CODE_LOCATION -> {
-                CommonUtils.showShortSnackBar(backIv,"定位权限已获取")
+                if (hasPermissionDismiss){
+                    CommonUtils.showShortSnackBar(backIv,"存在没有通过的权限")
+                }
                 initData()
-                return
             }
             else -> {
-                if(ContextCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(this, arrayOf(ACCESS_FINE_LOCATION), PERMISSION_CODE_LOCATION)
-                    return
-                }else{
-                    initData()
-                    return
-                }
+                initData()
             }
         }
     }
 
     companion object {
         private const val DOWNLOAD_CODE = 200
-        private const val PERMISSION_CODE_WRITE = 11
-        private const val PERMISSION_CODE_LOCATION = 12
+        private const val PERMISSION_CODE = 13
     }
 }

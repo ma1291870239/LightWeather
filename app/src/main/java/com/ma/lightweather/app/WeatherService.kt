@@ -13,6 +13,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ma.lightweather.R
+import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
@@ -21,6 +22,7 @@ import org.json.JSONException
 class WeatherService : Service() {
 
     private var weatherList: List<Weather>? = null
+    private var airList: List<Air>? = null
     private var channelId: String? = null
     private var channelName: String? = null
     private var remoteViews: RemoteViews? = null
@@ -63,10 +65,28 @@ class WeatherService : Service() {
     private fun initData() {
         val city = SharedPrefencesUtils.getParam(applicationContext, Contants.CITY, Contants.CITYNAME) as String
         val requestQueue = Volley.newRequestQueue(applicationContext)
+        val airStringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_AIR + city,
+                Response.Listener { response ->
+                    try {
+                        airList = Parse.parseAir(response, null, null, applicationContext)
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+
+                    if (airList!!.isNotEmpty()) {
+                        getWeather(city)
+                    }
+                },
+                Response.ErrorListener { })
+        requestQueue.add(airStringRequest)
+    }
+
+    private fun getWeather(city:String){
+        val requestQueue = Volley.newRequestQueue(applicationContext)
         val stringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
                 Response.Listener { response ->
                     try {
-                        weatherList = Parse.parse(response, null, null, applicationContext)
+                        weatherList = Parse.parseWeather(response, null, null, applicationContext)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
@@ -77,6 +97,7 @@ class WeatherService : Service() {
                 },
                 Response.ErrorListener { })
         requestQueue.add(stringRequest)
+
     }
 
     private fun creatNotify() {
@@ -103,8 +124,8 @@ class WeatherService : Service() {
 
     private fun setWeatherMsg(notification: NotificationCompat.Builder) {
         for (i in weatherList!!.indices) {
-            val condTxt=weatherList!![i].now?.cond_txt
-            if (condTxt?.contains("晴")!!) {
+            val condTxt=weatherList!![i].now.cond_txt
+            if (condTxt.contains("晴")) {
                 notification.setSmallIcon(R.mipmap.sunny)
                 remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sunny))
             }
@@ -137,11 +158,14 @@ class WeatherService : Service() {
                 remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sand))
             }
 
-            remoteViews!!.setTextViewText(R.id.weatherCity, weatherList!![i].basic?.location)
-            remoteViews!!.setTextViewText(R.id.weatherWind, weatherList!![i].now?.cond_txt + "　" + weatherList!![i].now?.wind_dir)
-            remoteViews!!.setTextViewText(R.id.weatherTmp, weatherList!![i].now?.tmp + "℃")
+            remoteViews?.setTextViewText(R.id.weatherCity, weatherList!![i].basic.location)
+            remoteViews?.setTextViewText(R.id.weatherTime, weatherList!![i].update.loc)
+            remoteViews?.setTextViewText(R.id.weatherWind, weatherList!![i].now.cond_txt)
+            remoteViews?.setTextViewText(R.id.weatherDir, weatherList!![i].now.wind_dir)
+            remoteViews?.setTextViewText(R.id.weatherSc, weatherList!![i].now.wind_sc+"级")
+            remoteViews?.setTextViewText(R.id.weatherTmp, weatherList!![i].now.tmp + "℃")
+            remoteViews?.setTextViewText(R.id.weatherQlit, airList!![i].air_now_city.qlty)
         }
-
     }
 
     private fun creatChannel() {
@@ -159,5 +183,6 @@ class WeatherService : Service() {
 
     companion object {
         private const val WEATHER_CODE = 200
+        private const val AIR_CODE = 300
     }
 }

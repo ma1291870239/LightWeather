@@ -36,6 +36,7 @@ class CityAdapter(private val context: Context, private val weatherList: List<We
         holder.dirTv.text=weatherList[i].now.wind_dir
         holder.scTv.text=weatherList[i].now.wind_sc+"级"
         holder.dateTv.text=weatherList[i].update.loc
+        holder.qltyTv.text=weatherList[i].qlty
         Glide.with(context).load(getWeatherIcon(weatherList[i].now.cond_txt)).into(holder.weatherIv)
         holder.weatherLayout.setOnClickListener {
             if (context is MainActivity) {
@@ -107,6 +108,7 @@ class CityAdapter(private val context: Context, private val weatherList: List<We
         val dirTv: TextView = itemView.findViewById(R.id.item_dir)
         val scTv: TextView = itemView.findViewById(R.id.item_sc)
         val dateTv: TextView = itemView.findViewById(R.id.item_date)
+        val qltyTv: TextView = itemView.findViewById(R.id.item_qlty)
         val weatherLayout: RelativeLayout = itemView.findViewById(R.id.item_weather)
         val iv: ImageView = itemView.findViewById(R.id.item_delete)
         val weatherIv: ImageView = itemView.findViewById(R.id.item_weathericon)

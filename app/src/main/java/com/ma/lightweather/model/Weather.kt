@@ -10,7 +10,8 @@ data class Weather(
         var update: UpdateWeather= UpdateWeather(),
         var daily_forecast: List<DailyWeather> = arrayListOf(),
         var hourly: ArrayList<HourlyWeather> = arrayListOf(),
-        var lifestyle: ArrayList<LifeWeather> = arrayListOf()
+        var lifestyle: ArrayList<LifeWeather> = arrayListOf(),
+        var qlty:String=""
 ) {
 
     data class NowWeather(

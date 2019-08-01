@@ -29,7 +29,7 @@ class CityFrgment : BaseFragment() {
     private var city: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater.inflate(R.layout.frag_city, null)
+        val view = inflater.inflate(R.layout.frag_city, null)
         if (isAdded) {
             initView(view)
             initData()
@@ -44,7 +44,7 @@ class CityFrgment : BaseFragment() {
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout?.isRefreshing = false
         }
-        if (cityAdapter == null) {
+        if (cityAdapter == null&&activity!=null) {
             cityAdapter = CityAdapter(activity!!, weatherList)
             recyclerView?.adapter = cityAdapter
         } else {
