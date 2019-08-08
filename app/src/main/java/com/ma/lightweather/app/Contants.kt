@@ -5,16 +5,15 @@ package com.ma.lightweather.app
  */
 object Contants {
 
-    //中国和全球付费
-    //public final static String BASE_URL="https://api.heweather.com/v5/";
-    //中国免费
-    private const val BASE_URL = "https://free-api.heweather.com/s6/"
-    //全部数据
-    const val WEATHER_ALL = BASE_URL + "weather?key=4ddad270cdb94639ae5f4cfe11aadf82&location="
-    //全部数据
+    //常规天气
+    const val WEATHER_ALL ="https://free-api.heweather.com/s6/weather?key=4ddad270cdb94639ae5f4cfe11aadf82&location="
+    //空气质量
     const val WEATHER_AIR = "https://free-api.heweather.net/s6/air/now?key=4ddad270cdb94639ae5f4cfe11aadf82&location="
+    //行政区域
+    const val AREAURL = "https://restapi.amap.com/v3/config/district?key=233dae1280c8b4c934e1a3928fdb1f10&subdistrict=3&extensions=base&keywords="
     //必应图片
     const val BINGURL = "http://area.sinaapp.com/bingImg/"
+
 
     const val CITY = "city"
     const val TMP = "tmp"

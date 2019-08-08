@@ -142,10 +142,10 @@
                         android:text="实时天气" />
                     <com.ma.lightweather.widget.HourWeatherView
                         android:layout_marginTop="15dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="10dp"
                         android:id="@+id/hourweather_view"
                         android:layout_width="match_parent"
-                        android:layout_height="170dp" />
+                        android:layout_height="200dp" />
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
@@ -161,7 +161,7 @@
                         android:text="未来七天" />
                     <com.ma.lightweather.widget.WeatherView
                         android:layout_marginTop="15dp"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="10dp"
                         android:id="@+id/weather_view"
                         android:layout_width="match_parent"
                         android:layout_height="200dp" />

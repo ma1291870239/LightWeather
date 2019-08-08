@@ -67,9 +67,9 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         textPaint.textSize = (viewwidth / 30).toFloat()
         val fm = textPaint.fontMetrics
         val texthigh = ceil((fm.bottom - fm.top).toDouble()).toInt()
-        offsetHigh = 4 * texthigh + 10
+        offsetHigh = 3 * texthigh + 10
         xSpace = viewwidth / 16
-        ySpace = (viewhigh - 4 * texthigh - 40) / 50
+        ySpace = (viewhigh - 8 * texthigh - 40) / 50
         if (tmpList.isNotEmpty()) {
             max = Collections.max(tmpList)
             min = Collections.min(tmpList)
@@ -127,15 +127,18 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         }
         //天气状况
         for (i in txtList.indices) {
-            canvas.drawText(txtList[i], getX(2 * i + 1), (viewhigh - ceil((fm.bottom - fm.leading).toDouble()).toInt()).toFloat(), textPaint)
+            canvas.drawText(txtList[i], getX(2 * i + 1), (viewhigh - ceil((fm.bottom - fm.leading).toDouble()).toInt()-3*texthigh).toFloat(), textPaint)
         }
+        //天气分割线
+        for (i in 1 until dateList.size) {
+            canvas.drawLine(getX(2 * i), 50f, getX(2 * i), (viewhigh - 4*texthigh).toFloat(), textPaint)
+        }
+        //降雨分割线
+        canvas.drawLine(getX(2 * 0), (viewhigh -2.5*texthigh).toFloat() , getX(2 * 8), (viewhigh -2.5*texthigh).toFloat(), textPaint)
+        canvas.drawText("降水概率", getX(2 *4), (viewhigh - ceil((fm.bottom - fm.leading).toDouble()).toInt() - texthigh).toFloat(), textPaint)
         //降水概率
         for (i in popList.indices) {
-            canvas.drawText(popList[i].toString() + "%", getX(2 * i + 1), (viewhigh - ceil((fm.bottom - fm.leading).toDouble()).toInt() - texthigh).toFloat(), textPaint)
-        }
-        //分割线
-        for (i in 1 until dateList.size) {
-            canvas.drawLine(getX(2 * i), 50f, getX(2 * i), (viewhigh - texthigh).toFloat(), textPaint)
+            canvas.drawText(popList[i].toString() + "%", getX(2 * i + 1), viewhigh.toFloat(), textPaint)
         }
     }
 

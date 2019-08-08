@@ -22,7 +22,7 @@ import com.ma.lightweather.utils.SharedPrefencesUtils
 /**
  * Created by Ma-PC on 2016/12/14.
  */
-class CityAdapter(private val context: Context, private val weatherList: List<Weather>?) : RecyclerView.Adapter<CityAdapter.CityHolder>() {
+class CityWeatherAdapter(private val context: Context, private val weatherList: List<Weather>?) : RecyclerView.Adapter<CityWeatherAdapter.CityHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CityHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_city, parent, false)

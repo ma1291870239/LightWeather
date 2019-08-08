@@ -1,8 +1,10 @@
 package com.ma.lightweather.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.os.IBinder
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.TabLayout
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentPagerAdapter
@@ -32,6 +34,7 @@ class MainActivity : BaseActivity() {
     private var viewPager: ViewPager? = null
     private var toolBar: android.support.v7.widget.Toolbar? = null
     private var tabLayout: TabLayout? = null
+    private var floatButton: FloatingActionButton? = null
     private val fragmentList = ArrayList<Fragment>()
     private val titleList = ArrayList<String>()
     private var clickTime: Long = 0
@@ -74,10 +77,15 @@ class MainActivity : BaseActivity() {
         toolBar = findViewById(R.id.toolBar)
         toolBar?.inflateMenu(R.menu.toolbar_menu)
         tabLayout = findViewById(R.id.tabLayout)
+        floatButton=findViewById(R.id.floatbutton)
         viewPager = findViewById(R.id.viewPager)
         viewPager?.offscreenPageLimit = 2
         viewPager?.currentItem = 0
         setSupportActionBar(toolBar)
+        floatButton?.setOnClickListener {
+            val intent=Intent()
+
+        }
     }
 
 

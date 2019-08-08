@@ -11,7 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ma.lightweather.R
-import com.ma.lightweather.adapter.CityAdapter
+import com.ma.lightweather.adapter.CityWeatherAdapter
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.DbUtils
@@ -25,7 +25,7 @@ class CityFrgment : BaseFragment() {
     private var recyclerView: RecyclerView? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     private val weatherList = ArrayList<Weather>()
-    private var cityAdapter: CityAdapter? = null
+    private var cityWeatherAdapter: CityWeatherAdapter? = null
     private var city: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,11 +44,11 @@ class CityFrgment : BaseFragment() {
         if (swipeRefreshLayout != null) {
             swipeRefreshLayout?.isRefreshing = false
         }
-        if (cityAdapter == null&&activity!=null) {
-            cityAdapter = CityAdapter(activity!!, weatherList)
-            recyclerView?.adapter = cityAdapter
+        if (cityWeatherAdapter == null&&activity!=null) {
+            cityWeatherAdapter = CityWeatherAdapter(activity!!, weatherList)
+            recyclerView?.adapter = cityWeatherAdapter
         } else {
-            cityAdapter?.notifyDataSetChanged()
+            cityWeatherAdapter?.notifyDataSetChanged()
         }
     }
 
