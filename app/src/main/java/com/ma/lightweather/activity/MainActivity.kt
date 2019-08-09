@@ -66,9 +66,9 @@ class MainActivity : BaseActivity() {
         fragmentList.add(weatherFrag!!)
         fragmentList.add(cityFrag!!)
         fragmentList.add(photoFrag!!)
-        titleList.add("天气")
-        titleList.add("城市")
-        titleList.add("拍照")
+        titleList.add(getString(R.string.main_weather_text))
+        titleList.add(getString(R.string.main_city_text))
+        titleList.add(getString(R.string.main_photo_text))
         viewPager?.adapter = ViewAdapter(supportFragmentManager)
         tabLayout?.setupWithViewPager(viewPager)
     }
@@ -105,10 +105,10 @@ class MainActivity : BaseActivity() {
         val item = menu.findItem(R.id.toolBarSearch)
         val searchView = item.actionView as SearchView
         val et = searchView.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)
-        et.textSize = 14f
-        et.hint = "请输入要查询的城市名字"
-        et.setHintTextColor(ContextCompat.getColor(this, R.color.text))
-        et.setTextColor(ContextCompat.getColor(this, R.color.text))
+        et.textSize = 15f
+        et.hint = getString(R.string.main_search_text)
+        et.setHintTextColor(ContextCompat.getColor(this, R.color.hint_black_text))
+        et.setTextColor(ContextCompat.getColor(this, R.color.primary_black_text))
         et.setBackgroundResource(R.drawable.bg_search_round_grey)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
@@ -151,7 +151,7 @@ class MainActivity : BaseActivity() {
 
     private fun exit() {
         if (System.currentTimeMillis() - clickTime > 2000) {
-            CommonUtils.showShortSnackBar(tabLayout, "再按一次退出程序")
+            CommonUtils.showShortSnackBar(tabLayout, getString(R.string.main_exit_text))
             clickTime = System.currentTimeMillis()
         } else {
             this.finish()

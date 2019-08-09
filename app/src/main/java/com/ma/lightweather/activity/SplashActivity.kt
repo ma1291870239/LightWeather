@@ -35,7 +35,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
             when (msg.what) {
-                DOWNLOAD_CODE -> CommonUtils.showShortSnackBar(downloadIv, "保存成功")
+                DOWNLOAD_CODE -> CommonUtils.showShortSnackBar(downloadIv, getString(R.string.splash_save_text))
             }
         }
     }
@@ -61,7 +61,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         Glide.with(this).load(Contants.BINGURL).into(backIv!!)
         countDownTimer = object : CountDownTimer(4000, 1000) {
             override fun onTick(l: Long) {
-                skipTv?.text = "跳过" + l / 1000 + "秒"
+                skipTv?.text = getString(R.string.splash_skip_text,l/1000)
             }
 
             override fun onFinish() {
@@ -91,7 +91,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         when (view.id) {
             R.id.downloadIv -> {
                 if (ContextCompat.checkSelfPermission(this, WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    CommonUtils.showShortSnackBar(downloadIv, "当前没有读写权限")
+                    CommonUtils.showShortSnackBar(downloadIv, getString(R.string.splash_read_permission_text))
                     return
                 }
                 Thread(Runnable {
@@ -142,7 +142,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                     }
                 }
                 if (hasPermissionDismiss){
-                    CommonUtils.showShortSnackBar(backIv,"存在没有通过的权限")
+                    CommonUtils.showShortSnackBar(backIv,getString(R.string.splash_nopass_permission_text))
                 }
                 initData()
             }

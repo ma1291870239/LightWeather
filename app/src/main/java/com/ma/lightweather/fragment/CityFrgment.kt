@@ -2,7 +2,6 @@ package com.ma.lightweather.fragment
 
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -62,7 +61,7 @@ class CityFrgment : BaseFragment() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = layoutManager
         val divider = DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL)
-        divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.bg_divider)!!)
+        //divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.bg_divider)!!)
         recyclerView?.addItemDecoration(divider)
     }
 

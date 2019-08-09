@@ -4,8 +4,8 @@
     tools:context="com.example.weather.MainActivity">
     <item
         android:id="@+id/toolBarSearch"
-        android:title="更新"
-        android:icon="@mipmap/search"
+        android:title="@string/menu_search_text"
+        android:icon="@drawable/ic_search_white_24dp"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 </menu>

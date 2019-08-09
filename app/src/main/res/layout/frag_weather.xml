@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <android.support.v4.widget.SwipeRefreshLayout
@@ -17,158 +18,92 @@
                 android:orientation="vertical">
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
-                    android:layout_margin="5dp"
+                    android:layout_height="240dp"
+                    android:layout_margin="@dimen/margin_16"
                     android:orientation="horizontal"
                     android:background="@drawable/bg_weather_round_grey">
                     <LinearLayout
-                        android:paddingLeft="15dp"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        style="@style/WeatherFragDetailLayout">
                         <TextView
                             android:id="@+id/weather_tmp"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             android:layout_weight="2"
                             android:gravity="center_vertical"
-                            android:textSize="50sp"
-                            android:textColor="@color/white"
-                            />
+                            android:textSize="@dimen/text_56"
+                            android:textColor="@color/primary_white_text"
+                            tools:ignore="Suspicious0dp" />
                         <TextView
+                            style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_feel"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
                             android:drawableLeft="@mipmap/feel"
-                            android:gravity="center_vertical"
-                            android:text=" 体感:"
-                            android:textColor="@color/white"/>
+                            android:gravity="center_vertical" />
                         <TextView
+                            style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_hum"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
                             android:drawableLeft="@mipmap/hum"
-                            android:gravity="center_vertical"
-                            android:text=" 湿度:"
-                            android:textColor="@color/white"/>
+                            android:gravity="center_vertical" />
                         <TextView
+                            style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_pcpn"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:drawableLeft="@mipmap/pcpn"
-                            android:gravity="center_vertical"
-                            android:text=" 降雨:"
-                            android:textColor="@color/white"/>
+                            android:drawableLeft="@mipmap/pcpn" />
                         <TextView
+                            style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_pm25"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:drawableLeft="@mipmap/pm25"
-                            android:gravity="center_vertical"
-                            android:text=" PM25:"
-                            android:textColor="@color/white"/>
+                            android:drawableLeft="@mipmap/pm25" />
                     </LinearLayout>
                     <LinearLayout
-                        android:paddingLeft="15dp"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                       style="@style/WeatherFragDetailLayout">
                         <TextView
-                            android:id="@+id/weather_city"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/white"/>
+                            style="@style/WeatherFragDetailText"
+                            android:id="@+id/weather_city" />
 
                         <TextView
-                            android:id="@+id/weather_wind"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:gravity="center_vertical"
-                            android:textColor="@color/white"/>
+                            style="@style/WeatherFragDetailText"
+                            android:id="@+id/weather_wind" />
                         <TextView
+                            style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_spd"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:drawableLeft="@mipmap/wind"
-                            android:gravity="center_vertical"
-                            android:text=" 风速:"
-                            android:textColor="@color/white"/>
+                            android:drawableLeft="@mipmap/wind" />
                         <TextView
+                            style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_pres"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:drawableLeft="@mipmap/pres"
-                            android:gravity="center_vertical"
-                            android:text=" 气压:"
-                            android:textColor="@color/white"/>
+                            android:drawableLeft="@mipmap/pres" />
                         <TextView
+                            style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_vis"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:drawableLeft="@mipmap/vis"
-                            android:gravity="center_vertical"
-                            android:text=" 能见:"
-                            android:textColor="@color/white"/>
+                            android:drawableLeft="@mipmap/vis" />
                         <TextView
+                            style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_pm10"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_weight="1"
-                            android:drawableLeft="@mipmap/pm10"
-                            android:gravity="center_vertical"
-                            android:text=" PM10:"
-                            android:textColor="@color/white"/>
+                            android:drawableLeft="@mipmap/pm10" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="vertical">
+                    style="@style/WeatherFragTitleLayout">
                     <TextView
                         style="@style/WeatherFragTitleText"
-                        android:text="实时天气" />
+                        android:text="@string/now_weather_text" />
                     <com.ma.lightweather.widget.HourWeatherView
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginBottom="@dimen/margin_8"
                         android:id="@+id/hourweather_view"
                         android:layout_width="match_parent"
                         android:layout_height="200dp" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/xiantiao"/>
+                    <include layout="@layout/item_horizontaldivider"/>
                 </LinearLayout>
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:orientation="vertical">
+                    style="@style/WeatherFragTitleLayout">
                     <TextView
                         style="@style/WeatherFragTitleText"
-                        android:text="未来七天" />
+                        android:text="@string/feture_weather_text" />
                     <com.ma.lightweather.widget.WeatherView
-                        android:layout_marginTop="15dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="@dimen/margin_8"
+                        android:layout_marginBottom="@dimen/margin_8"
                         android:id="@+id/weather_view"
                         android:layout_width="match_parent"
                         android:layout_height="200dp" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:background="@color/xiantiao"/>
+                    <include layout="@layout/item_horizontaldivider"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/weather_life"
@@ -179,29 +114,28 @@
                     <TextView
                         style="@style/WeatherFragTitleText"
                         android:text="生活指数" />
-                    <TextView
+                    <com.ma.lightweather.widget.CardTextView
                         android:id="@+id/airTextView"
                         style="@style/WeatherFragText"/>
-                    <TextView
+                    <com.ma.lightweather.widget.CardTextView
                         android:id="@+id/cwTextView"
                         style="@style/WeatherFragText"/>
-                    <TextView
+                    <com.ma.lightweather.widget.CardTextView
                         android:id="@+id/drsgTextView"
                         style="@style/WeatherFragText"/>
-                    <TextView
-                        android:layout_marginTop="10dp"
+                    <com.ma.lightweather.widget.CardTextView
                         android:id="@+id/fluTextView"
                         style="@style/WeatherFragText"/>
-                    <TextView
+                    <com.ma.lightweather.widget.CardTextView
                         android:id="@+id/sportTextView"
                         style="@style/WeatherFragText"/>
-                    <TextView
+                    <com.ma.lightweather.widget.CardTextView
                         android:id="@+id/travTextView"
                         style="@style/WeatherFragText"/>
-                    <TextView
+                    <com.ma.lightweather.widget.CardTextView
                         android:id="@+id/comfTextView"
                         style="@style/WeatherFragText"/>
-                    <TextView
+                    <com.ma.lightweather.widget.CardTextView
                         android:id="@+id/uvTextView"
                         style="@style/WeatherFragText"/>
 

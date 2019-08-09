@@ -90,39 +90,58 @@
         <item name="android:windowIsTranslucent">true</item>
     </style>
 
+    <style name="WeatherFragDetailLayout" >
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingLeft">@dimen/padding_16</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="WeatherFragDetailText" >
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/primary_white_text</item>
+    </style>
+
+    <style name="WeatherFragTitleLayout" >
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_margin">@dimen/padding_16</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
     <style name="WeatherFragTitleText" >
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingLeft">@dimen/padding_16</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textColor">@color/text</item>
+        <item name="android:textSize">@dimen/text_17</item>
+        <item name="android:textColor">@color/primary_black_text</item>
         <item name="android:background">@drawable/bg_wather_textview_grey</item>
     </style>
 
     <style name="WeatherFragText" >
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:padding">5dp</item>
-        <item name="android:lineSpacingExtra">5dp</item>
-        <item name="android:textColor">@color/text</item>
-        <item name="android:background">@drawable/bg_search_round_grey</item>
     </style>
 
     <style name="PhotoFragLayout" >
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
         <item name="android:background">@drawable/bg_search_round_grey</item>
     </style>
 
     <style name="SettingLayout" >
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:paddingLeft">10dp</item>
-        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
         <item name="android:background">@drawable/bg_setting_bottom_grey</item>
     </style>
 

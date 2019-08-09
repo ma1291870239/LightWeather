@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_background"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <android.support.design.widget.AppBarLayout
@@ -16,28 +17,26 @@
                 android:id="@+id/toolBar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:title="轻天气"
-                app:titleTextColor="@color/white">
+                android:background="?attr/colorPrimary">
                 <TextView
                     android:id="@+id/titlename"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
-                    android:text="轻天气"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:text="@string/app_name"
+                    android:textColor="@color/primary_white_text"
+                    android:textSize="@dimen/text_17"/>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
         <android.support.design.widget.TabLayout
             android:id="@+id/tabLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabTextColor="@color/grey"
-            app:tabSelectedTextColor="@color/white"
-            app:tabIndicatorColor="@color/white"
+            android:layout_height="@dimen/tab_height"
+            app:tabTextColor="@color/secondary_white_text"
+            app:tabSelectedTextColor="@color/primary_white_text"
+            app:tabIndicatorColor="@color/primary_white_text"
             app:tabRippleColor="?attr/colorAccent"
-            app:tabIndicatorHeight="0dp"/>
+            app:tabIndicatorHeight="@dimen/tab_indicator_height"/>
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.view.ViewPager
         android:id="@+id/viewPager"
@@ -46,15 +45,14 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
     <android.support.design.widget.FloatingActionButton
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:id="@+id/floatbutton"
-        android:src="@mipmap/add"
+        android:src="@drawable/ic_add_white_24dp"
         android:clickable="true"
-        app:elevation="5dp"
+        android:layout_margin="@dimen/margin_16"
+        app:elevation="@dimen/margin_8"
         app:borderWidth="0dp"
-        app:pressedTranslationZ="10dp"
-        app:backgroundTint="?attr/colorPrimary"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_height="wrap_content" />
+        app:pressedTranslationZ="@dimen/dp_8"
+        app:backgroundTint="?attr/colorPrimary" />
 </android.support.design.widget.CoordinatorLayout>

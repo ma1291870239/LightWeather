@@ -4,45 +4,55 @@
     <color name="cyanColorPrimaryDark">#0097A7</color>
     <color name="cyanColorAccent">#00BCD4</color>
 
-    <color name="purpleColorPrimary">#7E57C2</color>
-    <color name="purpleColorPrimaryDark">#5E35B1</color>
-    <color name="purpleColorAccent">#7E57C2</color>
+    <color name="purpleColorPrimary">#673AB7</color>
+    <color name="purpleColorPrimaryDark">#512DA8</color>
+    <color name="purpleColorAccent">#673AB7</color>
 
-    <color name="redColorPrimary">#EF5350</color>
-    <color name="redColorPrimaryDark">#E53935</color>
+    <color name="redColorPrimary">#F44336</color>
+    <color name="redColorPrimaryDark">#D32F2F</color>
     <color name="redColorAccent">#F44336</color>
 
-    <color name="pinkColorPrimary">#EC407A</color>
-    <color name="pinkColorPrimaryDark">#D81860</color>
-    <color name="pinkColorAccent">#EC407A</color>
+    <color name="pinkColorPrimary">#E91E63</color>
+    <color name="pinkColorPrimaryDark">#C2185B</color>
+    <color name="pinkColorAccent">#E91E63</color>
 
-    <color name="greenColorPrimary">#66BB6A</color>
-    <color name="greenColorPrimaryDark">#43A047</color>
-    <color name="greenColorAccent">#66BB6A</color>
+    <color name="greenColorPrimary">#4CAF50</color>
+    <color name="greenColorPrimaryDark">#388E3C</color>
+    <color name="greenColorAccent">#4CAF50</color>
 
-    <color name="blueColorPrimary">#42A5F5</color>
-    <color name="blueColorPrimaryDark">#1E88E5</color>
-    <color name="blueColorAccent">#42A5F5</color>
+    <color name="blueColorPrimary">#2196F3</color>
+    <color name="blueColorPrimaryDark">#1976D2</color>
+    <color name="blueColorAccent">#2196F3</color>
 
     <color name="orangeColorPrimary">#FF9800</color>
-    <color name="orangeColorPrimaryDark">#EF6C00</color>
+    <color name="orangeColorPrimaryDark">#F57C00</color>
     <color name="orangeColorAccent">#FF9800</color>
 
-    <color name="greyColorPrimary">#616161</color>
-    <color name="greyColorPrimaryDark">#424242</color>
-    <color name="greyColorAccent">#616161</color>
+    <color name="greyColorPrimary">#9E9E9E</color>
+    <color name="greyColorPrimaryDark">#616161</color>
+    <color name="greyColorAccent">#9E9E9E</color>
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="app_background">#FAFAFA</color>
     <color name="grey">#EEEEEE</color>
     <color name="xiantiao">#D9D9D9</color>
     <color name="hinttext">#BDBDBD</color>
-    <color name="temp_high">#F4511E</color>
-    <color name="temp_low">#039BE5</color>
+    <color name="temp_high">#FF5722</color>
+    <color name="temp_low">#3F51B5</color>
     <color name="search_bg">#ECEFF1</color>
-    <color name="splash_back">#80000000</color>
+    <color name="splash_back">#30000000</color>
     <color name="text">#607D8B</color>
     <color name="blacktext">#212121</color>
     <color name="temp">#757575</color>
+
+    <color name="primary_black_text">#87000000</color>
+    <color name="secondary_black_text">#54000000</color>
+    <color name="hint_black_text">#38000000</color>
+    <color name="divider_black_text">#12000000</color>
+    <color name="primary_white_text">#FFFFFF</color>
+    <color name="secondary_white_text">#70FFFFFF</color>
+    <color name="hint_white_text">#50FFFFFF</color>
+    <color name="divider_white_text">#12FFFFFF</color>
 
 </resources>

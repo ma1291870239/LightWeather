@@ -22,14 +22,14 @@
             android:gravity="center_vertical"
             android:text="通知栏开启"/>
         <TextView
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="8dp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="没有加入白名单,通知进程容易被杀掉"
             android:textColor="@color/hinttext"
-            android:textSize="10sp"/>
+            android:textSize="12sp"/>
         <Switch
             android:id="@+id/notifySwitch"
             android:layout_width="wrap_content"
@@ -46,14 +46,14 @@
             android:gravity="center_vertical"
             android:text="状态栏显示"/>
         <TextView
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="8dp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text="8.0及以上系统需要自行进入通知设置"
             android:textColor="@color/hinttext"
-            android:textSize="10sp"/>
+            android:textSize="12sp"/>
         <Switch
             android:id="@+id/statusSwitch"
             android:layout_width="wrap_content"
@@ -68,14 +68,14 @@
             android:gravity="center_vertical"
             android:text="生活信息指数"/>
         <TextView
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="8dp"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:text=""
             android:textColor="@color/hinttext"
-            android:textSize="10sp"/>
+            android:textSize="12sp"/>
         <Switch
             android:id="@+id/lifeSwitch"
             android:layout_width="wrap_content"

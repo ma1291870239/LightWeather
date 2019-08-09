@@ -29,6 +29,7 @@ import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.widget.CardTextView
 import com.ma.lightweather.widget.HourWeatherView
 import com.ma.lightweather.widget.WeatherView
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -52,16 +53,17 @@ class WeatherFragment : BaseFragment() {
     private var pmtv: TextView? = null
     private var prestv: TextView? = null
     private var vistv: TextView? = null
-    private var airTv: TextView? = null
-    private var comfTv: TextView? = null
-    private var cwTv: TextView? = null
-    private var drsgTv: TextView? = null
-    private var fluTv: TextView? = null
-    private var sportTv: TextView? = null
-    private var travTv: TextView? = null
-    private var uvTv: TextView? = null
     private var pm25Tv: TextView? = null
     private var pm10Tv: TextView? = null
+//    private var airTv: CardTextView? = null
+//    private var comfTv: CardTextView? = null
+//    private var cwTv: CardTextView? = null
+//    private var drsgTv: CardTextView? = null
+//    private var fluTv: CardTextView? = null
+//    private var sportTv: CardTextView? = null
+//    private var travTv: CardTextView? = null
+//    private var uvTv: CardTextView? = null
+
     private var weatherLife: LinearLayout? = null
     private var scrollView: NestedScrollView? = null
     private var weatherView: WeatherView? = null
@@ -106,30 +108,30 @@ class WeatherFragment : BaseFragment() {
                         val weather = weatherList!![i]
                         val type = weather.lifestyle[j].type
                         val s = weather.lifestyle[j].brf+ "\n" + weather.lifestyle[j].txt
-                        if (type == "air") {
-                            setLifeView(airTv,s,"空气指数 ")
-                        }
-                        if (type == "cw" ) {
-                            setLifeView(cwTv,s,"洗车指数 ")
-                        }
-                        if (type == "drsg") {
-                            setLifeView(drsgTv,s,"穿衣指数" )
-                        }
-                        if (type == "flu" ) {
-                            setLifeView(fluTv,s,"感冒指数 ")
-                        }
-                        if (type == "sport") {
-                            setLifeView(sportTv,s,"运动指数 ")
-                        }
-                        if (type == "trav") {
-                            setLifeView(travTv,s,"旅游指数 ")
-                        }
-                        if (type == "comf") {
-                            setLifeView(comfTv,s,"舒适度指数 ")
-                        }
-                        if (type == "uv") {
-                            setLifeView(uvTv,s,"紫外线指数 ")
-                        }
+//                        if (type == "air") {
+//                            setLifeView(airTv,s,"空气指数 ")
+//                        }
+//                        if (type == "cw" ) {
+//                            setLifeView(cwTv,s,"洗车指数 ")
+//                        }
+//                        if (type == "drsg") {
+//                            setLifeView(drsgTv,s,"穿衣指数" )
+//                        }
+//                        if (type == "flu" ) {
+//                            setLifeView(fluTv,s,"感冒指数 ")
+//                        }
+//                        if (type == "sport") {
+//                            setLifeView(sportTv,s,"运动指数 ")
+//                        }
+//                        if (type == "trav") {
+//                            setLifeView(travTv,s,"旅游指数 ")
+//                        }
+//                        if (type == "comf") {
+//                            setLifeView(comfTv,s,"舒适度指数 ")
+//                        }
+//                        if (type == "uv") {
+//                            setLifeView(uvTv,s,"紫外线指数 ")
+//                        }
                     }
                     SharedPrefencesUtils.setParam(mContext, Contants.CITY, weatherList!![i].basic.location)
                     SharedPrefencesUtils.setParam(mContext, Contants.TMP, weatherList!![i].now.tmp)
@@ -240,16 +242,16 @@ class WeatherFragment : BaseFragment() {
         weatherView = view?.findViewById(R.id.weather_view)
         hourWeatherView = view?.findViewById(R.id.hourweather_view)
         weatherLife = view?.findViewById(R.id.weather_life)
-        airTv = view?.findViewById(R.id.airTextView)
-        comfTv = view?.findViewById(R.id.comfTextView)
-        cwTv = view?.findViewById(R.id.cwTextView)
-        drsgTv = view?.findViewById(R.id.drsgTextView)
-        fluTv = view?.findViewById(R.id.fluTextView)
-        sportTv = view?.findViewById(R.id.sportTextView)
-        travTv = view?.findViewById(R.id.travTextView)
-        uvTv = view?.findViewById(R.id.uvTextView)
-        travTv = view?.findViewById(R.id.travTextView)
-        uvTv = view?.findViewById(R.id.uvTextView)
+//        airTv = view?.findViewById(R.id.airTextView)
+//        comfTv = view?.findViewById(R.id.comfTextView)
+//        cwTv = view?.findViewById(R.id.cwTextView)
+//        drsgTv = view?.findViewById(R.id.drsgTextView)
+//        fluTv = view?.findViewById(R.id.fluTextView)
+//        sportTv = view?.findViewById(R.id.sportTextView)
+//        travTv = view?.findViewById(R.id.travTextView)
+//        uvTv = view?.findViewById(R.id.uvTextView)
+//        travTv = view?.findViewById(R.id.travTextView)
+//        uvTv = view?.findViewById(R.id.uvTextView)
 
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
@@ -268,13 +270,13 @@ class WeatherFragment : BaseFragment() {
         }
     }
 
-    private fun setLifeView(view: TextView?, text:String ,type:String){
+    private fun setLifeView(view: CardTextView?, text:String ,type:String){
         if (text.isNotEmpty()){
             view?.visibility=View.VISIBLE
-            view?.text=type+text
+            view?.setText(type,text)
         }else{
             view?.visibility=View.GONE
-            view?.text=""
+            view?.setText("","")
         }
     }
 
