@@ -55,14 +55,14 @@ class WeatherFragment : BaseFragment() {
     private var vistv: TextView? = null
     private var pm25Tv: TextView? = null
     private var pm10Tv: TextView? = null
-//    private var airTv: CardTextView? = null
-//    private var comfTv: CardTextView? = null
-//    private var cwTv: CardTextView? = null
-//    private var drsgTv: CardTextView? = null
-//    private var fluTv: CardTextView? = null
-//    private var sportTv: CardTextView? = null
-//    private var travTv: CardTextView? = null
-//    private var uvTv: CardTextView? = null
+    private var airTv: CardTextView? = null
+    private var comfTv: CardTextView? = null
+    private var cwTv: CardTextView? = null
+    private var drsgTv: CardTextView? = null
+    private var fluTv: CardTextView? = null
+    private var sportTv: CardTextView? = null
+    private var travTv: CardTextView? = null
+    private var uvTv: CardTextView? = null
 
     private var weatherLife: LinearLayout? = null
     private var scrollView: NestedScrollView? = null
@@ -105,33 +105,33 @@ class WeatherFragment : BaseFragment() {
                         weatherLife?.visibility = View.VISIBLE
                     }
                     for (j in weatherList!![i].lifestyle.indices) {
-                        val weather = weatherList!![i]
-                        val type = weather.lifestyle[j].type
-                        val s = weather.lifestyle[j].brf+ "\n" + weather.lifestyle[j].txt
-//                        if (type == "air") {
-//                            setLifeView(airTv,s,"空气指数 ")
-//                        }
-//                        if (type == "cw" ) {
-//                            setLifeView(cwTv,s,"洗车指数 ")
-//                        }
-//                        if (type == "drsg") {
-//                            setLifeView(drsgTv,s,"穿衣指数" )
-//                        }
-//                        if (type == "flu" ) {
-//                            setLifeView(fluTv,s,"感冒指数 ")
-//                        }
-//                        if (type == "sport") {
-//                            setLifeView(sportTv,s,"运动指数 ")
-//                        }
-//                        if (type == "trav") {
-//                            setLifeView(travTv,s,"旅游指数 ")
-//                        }
-//                        if (type == "comf") {
-//                            setLifeView(comfTv,s,"舒适度指数 ")
-//                        }
-//                        if (type == "uv") {
-//                            setLifeView(uvTv,s,"紫外线指数 ")
-//                        }
+                        val lifeWeather = weatherList!![i].lifestyle[j]
+                        val type = lifeWeather.type
+                        if (type == getString(R.string.comf_en_text)) {
+                            setLifeView(comfTv,lifeWeather, getString(R.string.comf_ch_text))
+                        }
+                        if (type == getString(R.string.uv_en_text)) {
+                            setLifeView(uvTv,lifeWeather, getString(R.string.uv_ch_text))
+                        }
+                        if (type == getString(R.string.air_en_text)) {
+                            setLifeView(airTv,lifeWeather, getString(R.string.air_ch_text))
+                        }
+                        if (type == getString(R.string.cw_en_text)) {
+                            setLifeView(cwTv,lifeWeather, getString(R.string.cw_ch_text))
+                        }
+                        if (type == getString(R.string.drsg_en_text)) {
+                            setLifeView(drsgTv,lifeWeather, getString(R.string.drsg_ch_text))
+                        }
+                        if (type == getString(R.string.flu_en_text)) {
+                            setLifeView(fluTv,lifeWeather, getString(R.string.flu_ch_text))
+                        }
+                        if (type == getString(R.string.sport_en_text)) {
+                            setLifeView(sportTv,lifeWeather, getString(R.string.sport_ch_text))
+                        }
+                        if (type == getString(R.string.trav_en_text)) {
+                            setLifeView(travTv,lifeWeather, getString(R.string.trav_ch_text))
+                        }
+
                     }
                     SharedPrefencesUtils.setParam(mContext, Contants.CITY, weatherList!![i].basic.location)
                     SharedPrefencesUtils.setParam(mContext, Contants.TMP, weatherList!![i].now.tmp)
@@ -242,16 +242,16 @@ class WeatherFragment : BaseFragment() {
         weatherView = view?.findViewById(R.id.weather_view)
         hourWeatherView = view?.findViewById(R.id.hourweather_view)
         weatherLife = view?.findViewById(R.id.weather_life)
-//        airTv = view?.findViewById(R.id.airTextView)
-//        comfTv = view?.findViewById(R.id.comfTextView)
-//        cwTv = view?.findViewById(R.id.cwTextView)
-//        drsgTv = view?.findViewById(R.id.drsgTextView)
-//        fluTv = view?.findViewById(R.id.fluTextView)
-//        sportTv = view?.findViewById(R.id.sportTextView)
-//        travTv = view?.findViewById(R.id.travTextView)
-//        uvTv = view?.findViewById(R.id.uvTextView)
-//        travTv = view?.findViewById(R.id.travTextView)
-//        uvTv = view?.findViewById(R.id.uvTextView)
+        airTv = view?.findViewById(R.id.airTextView)
+        comfTv = view?.findViewById(R.id.comfTextView)
+        cwTv = view?.findViewById(R.id.cwTextView)
+        drsgTv = view?.findViewById(R.id.drsgTextView)
+        fluTv = view?.findViewById(R.id.fluTextView)
+        sportTv = view?.findViewById(R.id.sportTextView)
+        travTv = view?.findViewById(R.id.travTextView)
+        uvTv = view?.findViewById(R.id.uvTextView)
+        travTv = view?.findViewById(R.id.travTextView)
+        uvTv = view?.findViewById(R.id.uvTextView)
 
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
@@ -270,10 +270,11 @@ class WeatherFragment : BaseFragment() {
         }
     }
 
-    private fun setLifeView(view: CardTextView?, text:String ,type:String){
+    private fun setLifeView(view: CardTextView?, lifeWeather: Weather.LifeWeather ,text:String){
         if (text.isNotEmpty()){
             view?.visibility=View.VISIBLE
-            view?.setText(type,text)
+            val type=text+"  "+lifeWeather.brf
+            view?.setText(type,lifeWeather.txt)
         }else{
             view?.visibility=View.GONE
             view?.setText("","")

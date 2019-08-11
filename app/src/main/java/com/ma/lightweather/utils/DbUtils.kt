@@ -2,7 +2,6 @@ package com.ma.lightweather.utils
 
 import android.content.ContentValues
 import android.content.Context
-import android.util.Log
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.db.MydataBaseHelper
 import com.ma.lightweather.model.Air
@@ -35,7 +34,6 @@ object DbUtils {
         }
         cursor.close()
         db.close()
-        Log.e("abc",weatherList.size.toString()+"---")
         return weatherList
     }
 

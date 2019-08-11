@@ -2,8 +2,8 @@ package com.ma.lightweather.widget
 
 import android.content.Context
 import android.support.v7.widget.CardView
+import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.ma.lightweather.R
 
@@ -12,21 +12,19 @@ import com.ma.lightweather.R
  * Created by Aeolus on 2018/4/13.
  */
 
-class CardTextView(context: Context) : CardView(context) {
+class CardTextView(context: Context,attrs: AttributeSet) : CardView(context, attrs) {
 
-    var rootView:LinearLayout?=null
     var titleView:TextView?=null
     var textView:TextView?=null
 
     init {
-        initView()
+        initView(context)
     }
 
-    private fun initView() {
-        val cardTextView=LayoutInflater.from(context).inflate(R.layout.item_cardtextview,null)
-        rootView=cardTextView.findViewById<LinearLayout>(R.id.rootView)
-        titleView=cardTextView.findViewById<TextView>(R.id.titleView)
-        textView=cardTextView.findViewById<TextView>(R.id.textView)
+    private fun initView(context: Context) {
+        LayoutInflater.from(context).inflate(R.layout.item_cardtextview,this)
+        titleView=findViewById(R.id.titleView)
+        textView=findViewById(R.id.textView)
     }
 
     fun setText(title:String,text:String) {

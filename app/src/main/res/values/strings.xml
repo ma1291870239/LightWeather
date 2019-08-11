@@ -16,4 +16,21 @@
     <string name="now_weather_text">实时天气</string>
     <string name="feture_weather_text">未来七天</string>
     <string name="life_weaher_text">生活指数</string>
+    <string name="air_en_text">air</string>
+    <string name="air_ch_text">空气指数</string>
+    <string name="cw_en_text">cw</string>
+    <string name="cw_ch_text">洗车指数</string>
+    <string name="drsg_en_text">drsg</string>
+    <string name="drsg_ch_text">穿衣指数</string>
+    <string name="flu_en_text">flu</string>
+    <string name="flu_ch_text">感冒指数</string>
+    <string name="sport_en_text">sport</string>
+    <string name="sport_ch_text">运动指数</string>
+    <string name="trav_en_text">trav</string>
+    <string name="trav_ch_text">旅游指数</string>
+    <string name="comf_en_text">comf</string>
+    <string name="comf_ch_text">舒适度指数</string>
+    <string name="uv_en_text">uv</string>
+    <string name="uv_ch_text">紫外线指数</string>
+
 </resources>
