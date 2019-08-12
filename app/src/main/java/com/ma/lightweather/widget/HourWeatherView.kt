@@ -8,7 +8,6 @@ import android.graphics.Path
 import android.graphics.PathMeasure
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import com.ma.lightweather.model.Weather
 import java.util.*
@@ -27,6 +26,7 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     private val tmpPaint = Paint()
     private val path = Path()
     private var mDst=Path()
+    private var fm= Paint.FontMetrics()
     private var temPathMeasureSpec=PathMeasure()
 
 
@@ -39,9 +39,12 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     private var txtList: MutableList<String> = ArrayList()
     private var dirList: MutableList<String> = ArrayList()
 
+    private var viewHigh = 0
+    private var viewWidth = 0
     private var xSpace = 0
-    private var offsetHigh = 0
     private var ySpace = 0
+    private var offsetHigh = 0
+    private var textHigh = 0
     private var max= 0
     private var min = 0
     private var mLength= 0f
@@ -73,13 +76,10 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
         valueAnimator.addUpdateListener { valueAnimator ->
             mAnimatorValue = valueAnimator.animatedValue as Float
-            Log.e("abc---",mAnimatorValue.toString())
             invalidate()
         }
         valueAnimator.duration = 3000
-        valueAnimator.repeatCount = ValueAnimator.INFINITE
         valueAnimator.start()
-        path.reset()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -103,7 +103,6 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         }else{
             drawTmpBrokenLine(canvas)
         }
-
 
         //日期
         for (i in dateList.indices) {
@@ -163,9 +162,9 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
                 }
             }
 
-            canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
-        }
-        temPathMeasureSpec.setPath(path, true)
+                canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
+            }
+        temPathMeasureSpec.setPath(path, false)
         mLength = temPathMeasureSpec.length
         mDst.reset()
         mDst.lineTo(0f,0f)
