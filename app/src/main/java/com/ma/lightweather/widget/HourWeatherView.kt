@@ -98,7 +98,7 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         }
 
         //实时温度曲线
-        if(true) {
+        if(false) {
             drawTmpCurve(canvas)
         }else{
             drawTmpBrokenLine(canvas)
@@ -162,8 +162,8 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
                 }
             }
 
-                canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
-            }
+            canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
+        }
         temPathMeasureSpec.setPath(path, false)
         mLength = temPathMeasureSpec.length
         mDst.reset()
@@ -175,27 +175,32 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
     private fun drawTmpBrokenLine(canvas: Canvas){
-        path.reset()
         for (i in tmpList.indices) {
-            pointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
-            outPointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
-            //            if(i<minList.size()-1){
-            //                canvas.drawLine((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,
-            //                        (2*i+3)*xSpace,(max-minList.get(i+1))*ySpace+offsetHigh,minPaint);
-            //            }
-
-
-                //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),pointRadius,pointPaint);
-                //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),outPointRadius,outPointPaint);
-
-
-
-            canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
-
+//            pointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
+//            outPointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
+            when {
+                i == 0 -> {
+                    path.moveTo((2*i+1)*xSpace.toFloat(),
+                            (max- tmpList[i])*ySpace+offsetHigh.toFloat())
+                    path.lineTo((2*i+3)*xSpace.toFloat(),
+                            (max- tmpList[i+1])*ySpace+offsetHigh.toFloat())
+                }
+                i<tmpList.size-1 -> {
+                    path.lineTo((2*i+3)*xSpace.toFloat(),
+                            (max- tmpList[i+1])*ySpace+offsetHigh.toFloat())
+                }
+            }
             //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),pointRadius,pointPaint);
             //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),outPointRadius,outPointPaint);
-
+            canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
         }
+        temPathMeasureSpec.setPath(path, false)
+        mLength = temPathMeasureSpec.length
+        mDst.reset()
+        mDst.lineTo(0f,0f)
+        val stop = mLength * mAnimatorValue
+        temPathMeasureSpec.getSegment(0f,stop,mDst,true)
+        canvas.drawPath(mDst, tmpPaint)
     }
 
     fun loadViewData(hourlyList: List<Weather.HourlyWeather>?) {
