@@ -8,6 +8,7 @@ import android.graphics.Path
 import android.graphics.PathMeasure
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import com.ma.lightweather.model.Weather
 import java.util.*
@@ -26,7 +27,7 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     private val tmpPaint = Paint()
     private val path = Path()
     private var mDst=Path()
-    private var temPathMeasureSpec:PathMeasure?=null
+    private var temPathMeasureSpec=PathMeasure()
 
 
 
@@ -38,13 +39,13 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     private var txtList: MutableList<String> = ArrayList()
     private var dirList: MutableList<String> = ArrayList()
 
-    private var xSpace: Int = 0
-    private var offsetHigh: Int = 0
-    private var ySpace: Int = 0
-    private var max: Int = 0
-    private var min: Int = 0
-    private var mLength= 0.toFloat()
-    private var mAnimatorValue= 0.toFloat()
+    private var xSpace = 0
+    private var offsetHigh = 0
+    private var ySpace = 0
+    private var max= 0
+    private var min = 0
+    private var mLength= 0f
+    private var mAnimatorValue= 0f
 
     init {
         init()
@@ -72,12 +73,13 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
         valueAnimator.addUpdateListener { valueAnimator ->
             mAnimatorValue = valueAnimator.animatedValue as Float
+            Log.e("abc---",mAnimatorValue.toString())
             invalidate()
         }
-        valueAnimator.duration = 10000
+        valueAnimator.duration = 3000
         valueAnimator.repeatCount = ValueAnimator.INFINITE
         valueAnimator.start()
-
+        path.reset()
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -95,8 +97,13 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
             ySpace = (viewHigh - 8 * textHigh - 40) / (max - min)
         }
 
-        //实时温度折线
-        drawTmpLine(canvas)
+        //实时温度曲线
+        if(true) {
+            drawTmpCurve(canvas)
+        }else{
+            drawTmpBrokenLine(canvas)
+        }
+
 
         //日期
         for (i in dateList.indices) {
@@ -124,15 +131,10 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         }
     }
 
-    private fun drawTmpLine(canvas: Canvas){
-        path.reset()
+    private fun drawTmpCurve(canvas: Canvas){
         for (i in tmpList.indices) {
             pointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
             outPointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
-            //            if(i<minList.size()-1){
-            //                canvas.drawLine((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,
-            //                        (2*i+3)*xSpace,(max-minList.get(i+1))*ySpace+offsetHigh,minPaint);
-            //            }
             val x = getX(2 * i + 2)
             var k1 = 0f
             var k2 = 0f
@@ -145,26 +147,48 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
                     y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
                     path.moveTo(getX(2 * i + 1), getY(i, tmpList))
                     path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
-
                 }
                 i < tmpList.size - 2 -> {
                     k1 = (getY(i + 1, tmpList) - getY(i - 1, tmpList)) / getX(4)
                     k2 = (getY(i + 2, tmpList) - getY(i, tmpList)) / getX(4)
                     y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
                     y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
-                    path.moveTo(getX(2 * i + 1), getY(i, tmpList))
                     path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
                 }
                 i == tmpList.size - 2 -> {
                     k1 = (getY(i + 1, tmpList) - getY(i - 1, tmpList)) / getX(4)
                     y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
                     y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
-                    path.moveTo(getX(2 * i + 1), getY(i, tmpList))
                     path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
                 }
+            }
+
+            canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
+        }
+        temPathMeasureSpec.setPath(path, true)
+        mLength = temPathMeasureSpec.length
+        mDst.reset()
+        mDst.lineTo(0f,0f)
+        val stop = mLength * mAnimatorValue
+        temPathMeasureSpec.getSegment(0f,stop,mDst,true)
+        canvas.drawPath(mDst, tmpPaint)
+
+    }
+
+    private fun drawTmpBrokenLine(canvas: Canvas){
+        path.reset()
+        for (i in tmpList.indices) {
+            pointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
+            outPointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
+            //            if(i<minList.size()-1){
+            //                canvas.drawLine((2*i+1)*xSpace,(max-minList.get(i))*ySpace+offsetHigh,
+            //                        (2*i+3)*xSpace,(max-minList.get(i+1))*ySpace+offsetHigh,minPaint);
+            //            }
+
+
                 //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),pointRadius,pointPaint);
                 //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),outPointRadius,outPointPaint);
-            }
+
 
 
             canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
@@ -173,15 +197,6 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
             //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),outPointRadius,outPointPaint);
 
         }
-        temPathMeasureSpec=PathMeasure()
-        temPathMeasureSpec?.setPath(path, true)
-        mLength = temPathMeasureSpec?.length!!
-        mDst.reset()
-        mDst.lineTo(0f,0f)
-        val stop = mLength * mAnimatorValue
-        temPathMeasureSpec?.getSegment(0f,stop,mDst,true)
-        canvas.drawPath(mDst, tmpPaint)
-
     }
 
     fun loadViewData(hourlyList: List<Weather.HourlyWeather>?) {
