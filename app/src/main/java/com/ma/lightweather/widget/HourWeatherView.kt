@@ -9,9 +9,9 @@ import android.graphics.PathMeasure
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
+import com.ma.lightweather.R
 import com.ma.lightweather.model.Weather
 import java.util.*
-import kotlin.math.ceil
 
 
 /**
@@ -23,10 +23,10 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     private val pointPaint = Paint()
     private val outPointPaint = Paint()
     private val textPaint = Paint()
+    private val dividerPaint = Paint()
     private val tmpPaint = Paint()
     private val path = Path()
     private var mDst=Path()
-    private var fm= Paint.FontMetrics()
     private var temPathMeasureSpec=PathMeasure()
 
 
@@ -39,14 +39,16 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     private var txtList: MutableList<String> = ArrayList()
     private var dirList: MutableList<String> = ArrayList()
 
-    private var viewHigh = 0
-    private var viewWidth = 0
-    private var xSpace = 0
-    private var ySpace = 0
-    private var offsetHigh = 0
-    private var textHigh = 0
+    private var viewHigh = 0 //控件高度
+    private var viewWidth = 0 //控件宽度
+    private var xUnit = 0f //x轴单位长度
+    private var yUnit = 0f //y轴单位长度
+    private var xPart = 8f //x轴等分
+    private var textHigh = 0f //文字高度
+    private var textSpace = 0f //文字间隔
     private var max= 0
     private var min = 0
+    private var curvature=0.13f // 0<curvature<0.5
     private var mLength= 0f
     private var mAnimatorValue= 0f
 
@@ -56,22 +58,30 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
 
     private fun init() {
 
+        pointPaint.color = ContextCompat.getColor(context, R.color.primary_black_text)
         pointPaint.isAntiAlias = true
-        pointPaint.strokeWidth = pointWidth.toFloat()
+        pointPaint.strokeWidth = pointWidth
         pointPaint.style = Paint.Style.FILL
 
+
+        outPointPaint.color = ContextCompat.getColor(context, R.color.primary_black_text)
         outPointPaint.isAntiAlias = true
-        outPointPaint.strokeWidth = outPointWidth.toFloat()
+        outPointPaint.strokeWidth = outPointWidth
         outPointPaint.style = Paint.Style.STROKE
 
-        tmpPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
+        tmpPaint.color = ContextCompat.getColor(context, R.color.primary_black_text)
         tmpPaint.isAntiAlias = true
-        tmpPaint.strokeWidth = lineWidth.toFloat()
+        tmpPaint.strokeWidth = lineWidth
         tmpPaint.style = Paint.Style.STROKE
 
-        textPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.text)
+        textPaint.color = ContextCompat.getColor(context, R.color.primary_black_text)
         textPaint.isAntiAlias = true
         textPaint.textAlign = Paint.Align.CENTER
+
+        dividerPaint.color = ContextCompat.getColor(context, R.color.hint_black_text)
+        dividerPaint.isAntiAlias = true
+        dividerPaint.strokeMiter= dividerWidth
+        dividerPaint.textAlign = Paint.Align.CENTER
 
         val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
         valueAnimator.addUpdateListener { valueAnimator ->
@@ -83,86 +93,91 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
     override fun onDraw(canvas: Canvas) {
-        val viewHigh = measuredHeight
-        val viewWidth = measuredWidth
-        textPaint.textSize = (viewWidth / 30).toFloat()
+        viewHigh = measuredHeight
+        viewWidth = measuredWidth
+        textPaint.textSize = viewWidth / (4*xPart)//按每格4个字计算文字大小
         val fm = textPaint.fontMetrics
-        val textHigh = ceil((fm.bottom - fm.top).toDouble()).toInt()
-        offsetHigh = 3 * textHigh + 10
-        xSpace = viewWidth / 16
-        ySpace = (viewHigh - 8 * textHigh - 40) / 50
+        textHigh = fm.bottom - fm.top
+        textSpace=0.5f*textHigh
+        xUnit = viewWidth / (2*xPart)
+        yUnit = getY(5,7) / 50
         if (tmpList.isNotEmpty()) {
             max = Collections.max(tmpList)
             min = Collections.min(tmpList)
-            ySpace = (viewHigh - 8 * textHigh - 40) / (max - min)
+            yUnit = getY(5,7) / (max - min)
         }
 
         //实时温度曲线
-        if(false) {
-            drawTmpCurve(canvas)
-        }else{
-            drawTmpBrokenLine(canvas)
-        }
+        drawTmpCurve(canvas)
 
         //日期
         for (i in dateList.indices) {
             val data1 = dateList[i].split(" ".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-            canvas.drawText(data1[1], getX(2 * i + 1), textHigh.toFloat(), textPaint)
+            canvas.drawText(data1[1],  getBezierX(i), textHigh, textPaint)
         }
 
         //天气状况
         for (i in txtList.indices) {
-            canvas.drawText(txtList[i], getX(2 * i + 1), (viewHigh - ceil((fm.bottom - fm.leading).toDouble()).toInt()-3*textHigh).toFloat(), textPaint)
+            canvas.drawText(txtList[i], getBezierX(i), getY(2,4), textPaint)
         }
 
         //天气分割线
         for (i in 1 until dateList.size) {
-            canvas.drawLine(getX(2 * i), 50f, getX(2 * i), (viewHigh - 4*textHigh).toFloat(), textPaint)
+            canvas.drawLine(getBezierX(i)-xUnit, textHigh, getBezierX(i)-xUnit, getY(3,4), dividerPaint)
         }
 
         //降雨分割线
-        canvas.drawLine(getX(2 * 0), (viewHigh -2.5*textHigh).toFloat() , getX(2 * 8), (viewHigh -2.5*textHigh).toFloat(), textPaint)
-        canvas.drawText("降水概率", getX(2 *4), (viewHigh - ceil((fm.bottom - fm.leading).toDouble()).toInt() - textHigh).toFloat(), textPaint)
+        canvas.drawLine(0f,getY(2,3) , viewWidth.toFloat(), getY(2,3), dividerPaint)
+        canvas.drawText("降水概率", viewWidth/2f, getY(1,2), textPaint)
 
         //降水概率
         for (i in popList.indices) {
-            canvas.drawText(popList[i].toString() + "%", getX(2 * i + 1), viewHigh.toFloat(), textPaint)
+            canvas.drawText(popList[i].toString() + "%", getBezierX(i ),getY(0,1), textPaint)
         }
     }
 
     private fun drawTmpCurve(canvas: Canvas){
         for (i in tmpList.indices) {
-            pointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
-            outPointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
-            val x = getX(2 * i + 2)
-            var k1 = 0f
-            var k2 = 0f
+
+            var x1 = 0f
             var y1 = 0f
+
+            var x2 = 0f
             var y2 = 0f
-            when {
+
+            when{
                 i == 0 -> {
-                    k2 = (getY(i + 2, tmpList) - getY(i, tmpList)) / getX(4)
-                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
-                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
-                    path.moveTo(getX(2 * i + 1), getY(i, tmpList))
-                    path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
+                    x1=getBezierX(i)+(getBezierX(i + 1)-getBezierX(i))*curvature
+                    y1=getBezierY(i,tmpList)+(getBezierY(i + 1,tmpList)-getBezierY(i,tmpList))*curvature
+
+                    x2=getBezierX(i+1)-(getBezierX(i + 2)-getBezierX(i))*curvature
+                    y2=getBezierY(i+1,tmpList)-(getBezierY(i + 2,tmpList)-getBezierY(i,tmpList))*curvature
+
+                    path.moveTo(getBezierX(i), getBezierY(i, tmpList))
+                    path.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tmpList))
                 }
-                i < tmpList.size - 2 -> {
-                    k1 = (getY(i + 1, tmpList) - getY(i - 1, tmpList)) / getX(4)
-                    k2 = (getY(i + 2, tmpList) - getY(i, tmpList)) / getX(4)
-                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
-                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
-                    path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
+                i< tmpList.size - 2 -> {
+                    x1=getBezierX(i)+(getBezierX(i + 1)-getBezierX(i-1))*curvature
+                    y1=getBezierY(i,tmpList)+(getBezierY(i + 1,tmpList)-getBezierY(i-1,tmpList))*curvature
+
+                    x2=getBezierX(i+1)-(getBezierX(i + 2)-getBezierX(i))*curvature
+                    y2=getBezierY(i+1,tmpList)-(getBezierY(i + 2,tmpList)-getBezierY(i,tmpList))*curvature
+
+                    path.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tmpList))
+
                 }
                 i == tmpList.size - 2 -> {
-                    k1 = (getY(i + 1, tmpList) - getY(i - 1, tmpList)) / getX(4)
-                    y1 = (x - getX(2 * i + 1)) * k1 + getY(i, tmpList)
-                    y2 = (x - getX(2 * i + 3)) * k2 + getY(i + 1, tmpList)
-                    path.cubicTo(x, y1, x, y2, getX(2 * i + 3), getY(i + 1, tmpList))
+                    x1=getBezierX(i)+(getBezierX(i + 1)-getBezierX(i-1))*curvature
+                    y1=getBezierY(i,tmpList)+(getBezierY(i + 1,tmpList)-getBezierY(i-1,tmpList))*curvature
+
+                    x2=getBezierX(i+1)-(getBezierX(i + 1)-getBezierX(i))*curvature
+                    y2=getBezierY(i+1,tmpList)-(getBezierY(i + 1,tmpList)-getBezierY(i,tmpList))*curvature
+
+                    path.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tmpList))
+
                 }
             }
-
-            canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
+            canvas.drawText(tmpList[i].toString() + "°", getBezierX(i), getBezierY(i, tmpList)-textSpace, textPaint)
         }
         temPathMeasureSpec.setPath(path, false)
         mLength = temPathMeasureSpec.length
@@ -174,25 +189,21 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
 
     }
 
+
     private fun drawTmpBrokenLine(canvas: Canvas){
         for (i in tmpList.indices) {
-//            pointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
-//            outPointPaint.color = ContextCompat.getColor(context, com.ma.lightweather.R.color.temp)
             when {
                 i == 0 -> {
-                    path.moveTo((2*i+1)*xSpace.toFloat(),
-                            (max- tmpList[i])*ySpace+offsetHigh.toFloat())
-                    path.lineTo((2*i+3)*xSpace.toFloat(),
-                            (max- tmpList[i+1])*ySpace+offsetHigh.toFloat())
+                    path.moveTo(getBezierX(2*i+1), getBezierY(i,tmpList))
+                    path.lineTo(getBezierX(2*i+3), getBezierY(i,tmpList))
                 }
                 i<tmpList.size-1 -> {
-                    path.lineTo((2*i+3)*xSpace.toFloat(),
-                            (max- tmpList[i+1])*ySpace+offsetHigh.toFloat())
+                    path.lineTo(getBezierX(2*i+3), getBezierY(i,tmpList))
                 }
             }
-            //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),pointRadius,pointPaint);
-            //            canvas.drawCircle(getX(2*i+1),getY(i,tmpList),outPointRadius,outPointPaint);
-            canvas.drawText(tmpList[i].toString() + "°", getX(2 * i + 1), getY(i, tmpList) - 20, textPaint)
+            //            canvas.drawCircle(getBezierX(2*i+1),getBezierY(i,tmpList),pointRadius,pointPaint);
+            //            canvas.drawCircle(getBezierX(2*i+1),getBezierY(i,tmpList),outPointRadius,outPointPaint);
+            canvas.drawText(tmpList[i].toString() + "°", getBezierX(2 * i + 1), getBezierY(i, tmpList) - 20, textPaint)
         }
         temPathMeasureSpec.setPath(path, false)
         mLength = temPathMeasureSpec.length
@@ -218,23 +229,30 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
                 hourly.wind_dir.let { (dirList as ArrayList).add(it) }
             }
         }
+        invalidate()
     }
 
-    private fun getX(i: Int): Float {
-        return (i * xSpace).toFloat()
+    private fun getBezierX(i: Int): Float {
+        return (2*i+1) * xUnit
     }
 
-    private fun getY(i: Int, list: List<Int>): Float {
-        return ((max - list[i]) * ySpace + offsetHigh).toFloat()
+    private fun getBezierY(i: Int, list: List<Int>): Float {
+        return (max - list[i]) * yUnit + 2 * textHigh+2*textSpace
     }
+
+    private fun getY(i1: Int,i2:Int): Float {
+        return viewHigh - (i1 * textHigh+i2*textSpace)
+    }
+
 
     companion object {
 
-        private const val lineWidth = 5
-        private const val pointWidth = 3
-        private const val outPointWidth = 3
-        private const val pointRadius = 5
-        private const val outPointRadius = 10
+        private const val dividerWidth = 1f
+        private const val lineWidth = 5f
+        private const val pointWidth = 3f
+        private const val outPointWidth = 3f
+        private const val pointRadius = 5f
+        private const val outPointRadius = 10f
     }
 
 }
