@@ -114,6 +114,7 @@
                         style="@style/WeatherFragTitleText"
                         android:text="生活指数" />
                     <com.ma.lightweather.widget.CardTextView
+                        android:layout_marginTop="@dimen/margin_8"
                         android:id="@+id/airTextView"
                         style="@style/WeatherFragText"/>
                     <com.ma.lightweather.widget.CardTextView

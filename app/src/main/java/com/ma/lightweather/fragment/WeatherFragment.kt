@@ -92,7 +92,7 @@ class WeatherFragment : BaseFragment() {
                     feeltv?.text = "　体感：" + weatherList!![i].now.fl + " ℃"
                     humtv?.text = "　湿度：" + weatherList!![i].now.hum + " %"
                     pcpntv?.text = "　降雨：" + weatherList!![i].now.pcpn + " mm"
-                    citytv?.text = weatherList!![i].basic.location + "　" + weatherList!![i].basic.cnty
+                    citytv?.text = weatherList!![i].basic.location + "　" + airList!![i].air_now_city.qlty+ "　" + airList!![i].air_now_city.aqi
                     windtv?.text = weatherList!![i].now.cond_txt + "　" + weatherList!![i].now.wind_dir+ "　" + weatherList!![i].now.wind_sc+"级"
                     pmtv?.text = "　风速：" + weatherList!![i].now.wind_spd + " km/h"
                     prestv?.text = "　气压：" + weatherList!![i].now.pres + " Pa"

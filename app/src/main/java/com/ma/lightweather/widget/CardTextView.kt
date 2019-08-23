@@ -1,9 +1,9 @@
 package com.ma.lightweather.widget
 
 import android.content.Context
-import android.support.v7.widget.CardView
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.ma.lightweather.R
 
@@ -12,7 +12,7 @@ import com.ma.lightweather.R
  * Created by Aeolus on 2018/4/13.
  */
 
-class CardTextView(context: Context,attrs: AttributeSet) : CardView(context, attrs) {
+class CardTextView(context: Context,attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     var titleView:TextView?=null
     var textView:TextView?=null
