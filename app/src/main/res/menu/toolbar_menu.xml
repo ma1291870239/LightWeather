@@ -5,7 +5,7 @@
     <item
         android:id="@+id/toolBarSearch"
         android:title="@string/menu_search_text"
-        android:icon="@drawable/ic_search_white_24dp"
+        android:icon="@drawable/ic_main_search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="android.support.v7.widget.SearchView" />
 </menu>

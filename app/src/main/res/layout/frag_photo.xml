@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="8dp">
+    android:paddingHorizontal="@dimen/padding_8">
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -15,167 +15,82 @@
                 style="@style/PhotoFragLayout">
                 <TextView
                     android:id="@+id/defaultPhoneTv"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="设备型号"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
+                    style="@style/PhotoFragTitle"/>
                 <TextView
                     android:id="@+id/phoneTv"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="Surface Lumia"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical|right"
-                    android:textSize="14sp"/>
+                    style="@style/PhotoFragText"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/loctionLayout"
                 style="@style/PhotoFragLayout">
                 <TextView
                     android:id="@+id/defaultLoctionTv"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="地点位置"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
+                    style="@style/PhotoFragTitle"/>
                 <TextView
                     android:id="@+id/loctionTv"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="M78星云"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical|right"
-                    android:textSize="14sp"/>
+                    style="@style/PhotoFragText"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/weatherLayout"
                 style="@style/PhotoFragLayout">
                 <TextView
                     android:id="@+id/defaultWeatherTv"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="天气状况"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
+                    style="@style/PhotoFragTitle"/>
                 <TextView
                     android:id="@+id/weatherTv"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="100℃ 台风地震"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical|right"
-                    android:textSize="14sp"/>
+                    style="@style/PhotoFragText"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/photoLayout"
                 style="@style/PhotoFragLayout">
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="水印照片"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
+                    style="@style/PhotoFragTitle"/>
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text=""
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical|right"
-                    android:textSize="14sp"/>
+                    style="@style/PhotoFragText"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/themeLayout"
                 style="@style/PhotoFragLayout">
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="切换主题"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
+                    style="@style/PhotoFragTitle"/>
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text=""
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical|right"
-                    android:textSize="14sp"/>
+                    style="@style/PhotoFragText"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/settingLayout"
                 style="@style/PhotoFragLayout">
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="实验功能"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
+                    style="@style/PhotoFragTitle"/>
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text=""
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical|right"
-                    android:textSize="14sp"/>
+                    style="@style/PhotoFragText"/>
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/scoreLayout"
                 style="@style/PhotoFragLayout">
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="评分鼓励"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
+                    style="@style/PhotoFragTitle"/>
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text=""
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical|right"
-                    android:textSize="14sp"/>
+                    style="@style/PhotoFragText"/>
             </LinearLayout>
             <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/shareLayout"
                 style="@style/PhotoFragLayout">
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
                     android:text="分享软件"
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical"
-                    android:textSize="16sp"/>
+                    style="@style/PhotoFragTitle"/>
                 <TextView
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="match_parent"
-                    android:text=""
-                    android:textColor="@color/text"
-                    android:gravity="center_vertical|right"
-                    android:textSize="14sp"/>
+                    style="@style/PhotoFragText"/>
             </LinearLayout>
             <ImageView
                 android:visibility="gone"

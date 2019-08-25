@@ -15,17 +15,10 @@
             app:layout_scrollFlags="enterAlways|scroll">
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary">
+                style="@style/AppToolbar">
                 <TextView
                     android:id="@+id/titlename"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="@string/app_name"
-                    android:textColor="@color/primary_white_text"
-                    android:textSize="@dimen/text_17"/>
+                    style="@style/AppToolbarText"/>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
         <android.support.design.widget.TabLayout
@@ -35,7 +28,7 @@
             app:tabTextColor="@color/secondary_white_text"
             app:tabSelectedTextColor="@color/primary_white_text"
             app:tabIndicatorColor="@color/primary_white_text"
-            app:tabRippleColor="?attr/colorAccent"
+            app:tabRippleColor="?attr/colorPrimary"
             app:tabIndicatorHeight="@dimen/tab_indicator_height"/>
     </android.support.design.widget.AppBarLayout>
     <android.support.v4.view.ViewPager
@@ -48,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:id="@+id/floatbutton"
-        android:src="@drawable/ic_add_white_24dp"
+        android:src="@drawable/ic_main_add"
         android:clickable="true"
         android:layout_margin="@dimen/margin_16"
         app:elevation="@dimen/margin_8"

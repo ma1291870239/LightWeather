@@ -13,23 +13,23 @@
     <TextView
         android:id="@+id/skipTv"
         android:layout_width="wrap_content"
-        android:layout_height="@dimen/btn_height"
+        android:layout_height="36dp"
         android:layout_margin="@dimen/margin_16"
-        android:paddingHorizontal="@dimen/padding_16"
+        android:paddingHorizontal="@dimen/padding_8"
         android:layout_alignParentRight="true"
-        android:textSize="@dimen/text_15"
+        android:textSize="@dimen/text_13"
         android:textColor="@color/primary_white_text"
         android:gravity="center"
-        android:background="@drawable/bg_splash_textview_black"/>
+        android:background="@drawable/bg_splash_tv_solid_black"/>
     <ImageView
         android:id="@+id/downloadIv"
-        android:layout_width="@dimen/btn_width"
-        android:layout_height="@dimen/btn_height"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:layout_margin="@dimen/margin_16"
-        android:padding="@dimen/margin_8"
-        android:src="@drawable/ic_file_download_white_48dp"
+        android:padding="@dimen/padding_8"
+        android:src="@drawable/ic_spalsh_download"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/bg_splash_textview_black"/>
+        android:background="@drawable/bg_splash_tv_solid_black"/>
 
 </RelativeLayout>

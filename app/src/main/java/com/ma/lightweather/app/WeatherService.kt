@@ -3,18 +3,21 @@ package com.ma.lightweather.app
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.BitmapFactory
 import android.os.*
 import android.provider.Settings
+import android.support.graphics.drawable.VectorDrawableCompat
 import android.support.v4.app.NotificationCompat
+import android.support.v4.content.ContextCompat
 import android.widget.RemoteViews
 import android.widget.Toast
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ma.lightweather.R
+import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
+import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
 import org.json.JSONException
@@ -50,7 +53,7 @@ class WeatherService : Service() {
         super.onDestroy()
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         initData()
         val manager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val spaceTime = 8 * 60 * 60 * 1000
@@ -113,53 +116,33 @@ class WeatherService : Service() {
             }
         }
         remoteViews = RemoteViews(this.packageName, R.layout.item_notify_simple)
-        val notification = NotificationCompat.Builder(this, channelId!!)
+        val notificationBuilder = NotificationCompat.Builder(this, channelId!!)
                 .setContent(remoteViews)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.weather)
-
-        setWeatherMsg(notification)
-        startForeground(111, notification.build())
+                .setSmallIcon(R.drawable.ic_app_launcher)
+        setWeatherMsg(notificationBuilder)
+        val notification=notificationBuilder.build()
+        val intent=Intent(this,MainActivity::class.java)
+        val pendingIntent=PendingIntent.getActivity(applicationContext,1,intent,PendingIntent.FLAG_CANCEL_CURRENT)
+        notification.contentIntent=pendingIntent
+        startForeground(111, notification)
     }
 
     private fun setWeatherMsg(notification: NotificationCompat.Builder) {
         for (i in weatherList!!.indices) {
-            val condTxt=weatherList!![i].now.cond_txt
-            if (condTxt.contains("晴")) {
-                notification.setSmallIcon(R.mipmap.sunny)
-                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sunny))
-            }
-            if (condTxt.contains("云")) {
-                notification.setSmallIcon(R.mipmap.cloudy)
-                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.cloudy))
-            }
-            if (condTxt.contains("阴")) {
-                notification.setSmallIcon(R.mipmap.shade)
-                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.shade))
-            }
-            if (condTxt.contains("雨")) {
-                notification.setSmallIcon(R.mipmap.rain)
-                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.rain))
-            }
-            if (condTxt.contains("雪")) {
-                notification.setSmallIcon(R.mipmap.snow)
-                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.snow))
-            }
-            if (condTxt.contains("雾")) {
-                notification.setSmallIcon(R.mipmap.smog)
-                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.smog))
-            }
-            if (condTxt.contains("霾")) {
-                notification.setSmallIcon(R.mipmap.smog)
-                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.smog))
-            }
-            if (condTxt.contains("沙")) {
-                notification.setSmallIcon(R.mipmap.sand)
-                remoteViews?.setImageViewBitmap(R.id.weatherImg, BitmapFactory.decodeResource(resources, R.mipmap.sand))
+            val icon=CommonUtils.getWeatherIcon(weatherList!![i].now.cond_txt)
+            val vectorDrawableCompat=VectorDrawableCompat.create(resources,icon,theme)
+            vectorDrawableCompat?.setTint(ContextCompat.getColor(applicationContext,R.color.primary_black_text))
+            notification.setSmallIcon(icon)
+            remoteViews?.setImageViewResource(R.id.weatherImg, icon)
+            remoteViews?.setTextViewText(R.id.weatherCity, weatherList!![i].basic.location)
+            val date1 =weatherList!![i].update.loc.split(" |\\-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            if(date1.size>=3){
+                remoteViews?.setTextViewText(R.id.weatherTime, date1[date1.size-3]+"/"+date1[date1.size-2]+" "+date1[date1.size-1])
+            }else{
+                remoteViews?.setTextViewText(R.id.weatherTime, weatherList!![i].update.loc)
             }
 
-            remoteViews?.setTextViewText(R.id.weatherCity, weatherList!![i].basic.location)
-            remoteViews?.setTextViewText(R.id.weatherTime, weatherList!![i].update.loc)
             remoteViews?.setTextViewText(R.id.weatherWind, weatherList!![i].now.cond_txt)
             remoteViews?.setTextViewText(R.id.weatherDir, weatherList!![i].now.wind_dir)
             remoteViews?.setTextViewText(R.id.weatherSc, weatherList!![i].now.wind_sc+"级")

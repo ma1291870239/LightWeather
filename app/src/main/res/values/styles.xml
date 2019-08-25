@@ -6,7 +6,7 @@
         <item name="colorPrimary">@color/cyanColorPrimary</item>
         <item name="colorPrimaryDark">@color/cyanColorPrimaryDark</item>
         <item name="colorAccent">@color/cyanColorAccent</item>
-        <item name="android:windowBackground">@color/grey</item>
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
@@ -14,8 +14,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/purpleColorPrimary</item>
         <item name="colorPrimaryDark">@color/purpleColorPrimaryDark</item>
-        <item name="colorAccent">@color/purpleColorPrimary</item>
-        <item name="android:windowBackground">@color/grey</item>
+        <item name="colorAccent">@color/purpleColorAccent</item>
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
@@ -23,8 +23,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/redColorPrimary</item>
         <item name="colorPrimaryDark">@color/redColorPrimaryDark</item>
-        <item name="colorAccent">@color/redColorPrimary</item>
-        <item name="android:windowBackground">@color/grey</item>
+        <item name="colorAccent">@color/redColorAccent</item>
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
@@ -32,8 +32,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/pinkColorPrimary</item>
         <item name="colorPrimaryDark">@color/pinkColorPrimaryDark</item>
-        <item name="colorAccent">@color/pinkColorPrimary</item>
-        <item name="android:windowBackground">@color/grey</item>
+        <item name="colorAccent">@color/pinkColorAccent</item>
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
@@ -41,8 +41,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/greenColorPrimary</item>
         <item name="colorPrimaryDark">@color/greenColorPrimaryDark</item>
-        <item name="colorAccent">@color/greenColorPrimary</item>
-        <item name="android:windowBackground">@color/grey</item>
+        <item name="colorAccent">@color/greenColorAccent</item>
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
@@ -50,8 +50,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/orangeColorPrimary</item>
         <item name="colorPrimaryDark">@color/orangeColorPrimaryDark</item>
-        <item name="colorAccent">@color/orangeColorPrimary</item>
-        <item name="android:windowBackground">@color/grey</item>
+        <item name="colorAccent">@color/orangeColorAccent</item>
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
@@ -59,8 +59,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/blueColorPrimary</item>
         <item name="colorPrimaryDark">@color/blueColorPrimaryDark</item>
-        <item name="colorAccent">@color/blueColorPrimary</item>
-        <item name="android:windowBackground">@color/grey</item>
+        <item name="colorAccent">@color/blueColorAccent</item>
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
@@ -68,8 +68,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/greyColorPrimary</item>
         <item name="colorPrimaryDark">@color/greyColorPrimaryDark</item>
-        <item name="colorAccent">@color/greyColorPrimary</item>
-        <item name="android:windowBackground">@color/grey</item>
+        <item name="colorAccent">@color/greyColorAccent</item>
+        <item name="android:windowBackground">@color/app_background</item>
         <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
@@ -98,11 +98,28 @@
         <item name="android:orientation">vertical</item>
     </style>
 
+    <style name="AppToolbar" >
+        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="AppToolbarText" >
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_17</item>
+        <item name="android:textColor">@color/primary_white_text</item>
+        <item name="android:text">@string/app_name</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
     <style name="WeatherFragDetailText" >
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_13</item>
         <item name="android:textColor">@color/primary_white_text</item>
     </style>
 
@@ -120,7 +137,7 @@
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/text_17</item>
         <item name="android:textColor">@color/primary_black_text</item>
-        <item name="android:background">@drawable/bg_wather_textview_grey</item>
+        <item name="android:background">@drawable/bg_weather_tv_line_theme</item>
     </style>
 
     <style name="WeatherFragText" >
@@ -131,18 +148,61 @@
     <style name="PhotoFragLayout" >
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_marginTop">8dp</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
-        <item name="android:background">@drawable/bg_search_round_grey</item>
+        <item name="android:layout_marginTop">@dimen/margin_8</item>
+        <item name="android:paddingLeft">@dimen/margin_8</item>
+        <item name="android:paddingRight">@dimen/margin_8</item>
+        <item name="android:background">@drawable/bg_photo_layout_line_theme</item>
+    </style>
+
+    <style name="PhotoFragTitle" >
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:ems">5</item>
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textColor">@color/primary_black_text</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="PhotoFragText" >
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/primary_black_text</item>
+        <item name="android:gravity">center_vertical|right</item>
     </style>
 
     <style name="SettingLayout" >
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
-        <item name="android:background">@drawable/bg_setting_bottom_grey</item>
+        <item name="android:layout_marginLeft">@dimen/margin_8</item>
+        <item name="android:layout_marginRight">@dimen/margin_8</item>
+        <item name="android:paddingLeft">@dimen/padding_8</item>
+        <item name="android:background">@drawable/bg_setting_layout_line_theme</item>
+    </style>
+
+    <style name="SettingTitle" >
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:ems">5</item>
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textColor">@color/primary_black_text</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="SettingText" >
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginLeft">@dimen/margin_8</item>
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/secondary_black_text</item>
+        <item name="android:gravity">center_vertical|right</item>
+    </style>
+
+    <style name="SettingSwitch" >
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
     </style>
 
 </resources>

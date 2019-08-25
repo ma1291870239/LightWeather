@@ -42,6 +42,7 @@
     <color name="temp_low">#3F51B5</color>
     <color name="search_bg">#ECEFF1</color>
     <color name="splash_back">#30000000</color>
+    <color name="cover_back">#90FFFFFF</color>
     <color name="text">#607D8B</color>
     <color name="blacktext">#212121</color>
     <color name="temp">#757575</color>

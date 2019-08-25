@@ -19,11 +19,12 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <LinearLayout
+                    android:id="@+id/weatherLayout"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:layout_margin="@dimen/margin_16"
                     android:orientation="horizontal"
-                    android:background="@drawable/bg_weather_round_grey">
+                    android:background="@drawable/bg_weather_layout_solid_theme">
                     <LinearLayout
                         style="@style/WeatherFragDetailLayout">
                         <TextView
@@ -38,21 +39,25 @@
                         <TextView
                             style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_feel"
-                            android:drawableLeft="@mipmap/feel"
+                            android:drawableLeft="@drawable/ic_weather_feel"
                             android:gravity="center_vertical" />
                         <TextView
                             style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_hum"
-                            android:drawableLeft="@mipmap/hum"
+                            android:drawableLeft="@drawable/ic_weather_hum"
                             android:gravity="center_vertical" />
                         <TextView
                             style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_pcpn"
-                            android:drawableLeft="@mipmap/pcpn" />
+                            android:drawableLeft="@drawable/ic_weather_pcpn" />
                         <TextView
                             style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_pm25"
-                            android:drawableLeft="@mipmap/pm25" />
+                            android:drawableLeft="@drawable/ic_weather_pm25" />
+                        <TextView
+                            style="@style/WeatherFragDetailText"
+                            android:id="@+id/weather_aqi"
+                            android:drawableLeft="@drawable/ic_weather_aqi" />
                     </LinearLayout>
                     <LinearLayout
                        style="@style/WeatherFragDetailLayout">
@@ -66,19 +71,23 @@
                         <TextView
                             style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_spd"
-                            android:drawableLeft="@mipmap/wind" />
+                            android:drawableLeft="@drawable/ic_weather_spd" />
                         <TextView
                             style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_pres"
-                            android:drawableLeft="@mipmap/pres" />
+                            android:drawableLeft="@drawable/ic_weather_pres" />
                         <TextView
                             style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_vis"
-                            android:drawableLeft="@mipmap/vis" />
+                            android:drawableLeft="@drawable/ic_weather_vis" />
                         <TextView
                             style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_pm10"
-                            android:drawableLeft="@mipmap/pm10" />
+                            android:drawableLeft="@drawable/ic_weather_pm10" />
+                        <TextView
+                            style="@style/WeatherFragDetailText"
+                            android:id="@+id/weather_main"
+                            android:drawableLeft="@drawable/ic_weather_main" />
                     </LinearLayout>
                 </LinearLayout>
                 <LinearLayout

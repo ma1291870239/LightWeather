@@ -1,7 +1,6 @@
 package com.ma.lightweather.activity
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.os.IBinder
 import android.support.design.widget.FloatingActionButton
@@ -54,6 +53,7 @@ class MainActivity : BaseActivity() {
             }
             fragmentTransaction.commitAllowingStateLoss()
         } catch (e: Exception) {
+            CommonUtils.showShortSnackBar(tabLayout,"切换主题失败，请重试")
         }
 
         super.recreate()
@@ -83,8 +83,7 @@ class MainActivity : BaseActivity() {
         viewPager?.currentItem = 0
         setSupportActionBar(toolBar)
         floatButton?.setOnClickListener {
-            val intent=Intent()
-
+            CommonUtils.showShortSnackBar(floatButton,"功能开发中")
         }
     }
 
@@ -109,7 +108,7 @@ class MainActivity : BaseActivity() {
         et.hint = getString(R.string.main_search_text)
         et.setHintTextColor(ContextCompat.getColor(this, R.color.hint_black_text))
         et.setTextColor(ContextCompat.getColor(this, R.color.primary_black_text))
-        et.setBackgroundResource(R.drawable.bg_search_round_grey)
+        et.setBackgroundResource(R.drawable.bg_weather_sv_solid_grey)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 refresh(query, true)

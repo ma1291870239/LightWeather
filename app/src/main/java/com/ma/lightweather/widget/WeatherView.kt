@@ -243,7 +243,7 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
     companion object {
 
         private const val dividerWidth = 1f
-        private const val lineWidth = 5f
+        private const val lineWidth = 4f
         private const val pointWidth = 3f
         private const val outPointWidth = 3f
         private const val pointRadius = 5f

@@ -8,7 +8,6 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
-import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -169,14 +168,14 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         txtList.add("灰")
 
         val colorList:MutableList<Int> = ArrayList()
-        colorList.add(R.color.cyanColorAccent)
-        colorList.add(R.color.purpleColorAccent)
-        colorList.add(R.color.redColorAccent)
-        colorList.add(R.color.pinkColorAccent)
-        colorList.add(R.color.greenColorAccent)
-        colorList.add(R.color.blueColorAccent)
-        colorList.add(R.color.orangeColorAccent)
-        colorList.add(R.color.greyColorAccent)
+        colorList.add(R.color.cyanColorPrimary)
+        colorList.add(R.color.purpleColorPrimary)
+        colorList.add(R.color.redColorPrimary)
+        colorList.add(R.color.pinkColorPrimary)
+        colorList.add(R.color.greenColorPrimary)
+        colorList.add(R.color.blueColorPrimary)
+        colorList.add(R.color.orangeColorPrimary)
+        colorList.add(R.color.greyColorPrimary)
 
         val adapter = SelectColorAdapter(activity!!, txtList, colorList)
         val dialog = AlertDialog.Builder(activity!!)
@@ -236,12 +235,9 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         val titleView = LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null)
         val textView = titleView.findViewById<TextView>(R.id.dialogTitle)
         textView.text = "请输入"
-        textView.setTextColor(mContext.resources.getColor(CommonUtils.getTextColor(mContext)))
 
-        val contentView = LayoutInflater.from(mContext).inflate(R.layout.item_edit_dialog, null)
+        val contentView = LayoutInflater.from(context).inflate(R.layout.item_edit_dialog, null)
         val editText = contentView.findViewById<EditText>(R.id.editText)
-        val gradientDrawable = editText.background as GradientDrawable
-        gradientDrawable.setStroke(CommonUtils.dp2px(mContext, 1f), ContextCompat.getColor(mContext,CommonUtils.getBackColor(mContext)))
 
         AlertDialog.Builder(activity!!)
                 .setCustomTitle(titleView)
@@ -270,7 +266,6 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         val titleView = LayoutInflater.from(context).inflate(R.layout.item_title_dialog, null)
         val textView = titleView.findViewById<TextView>(R.id.dialogTitle)
         textView.text = "是否保存水印照片"
-        textView.setTextColor(mContext.resources.getColor(CommonUtils.getTextColor(mContext)))
 
         val contentView = LayoutInflater.from(mContext).inflate(R.layout.item_img_dialog, null)
         val imageView = contentView.findViewById<ImageView>(R.id.imgView)
@@ -280,7 +275,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
             progressBar?.cancel()
             progressBar?.dismiss()
         }
-        AlertDialog.Builder(activity!!).setTitle("是否保存")
+        AlertDialog.Builder(activity!!)
                 .setCustomTitle(titleView)
                 .setView(contentView)
                 .setPositiveButton("确定") { _, _ ->

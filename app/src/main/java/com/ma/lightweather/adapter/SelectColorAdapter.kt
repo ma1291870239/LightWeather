@@ -2,6 +2,7 @@ package com.ma.lightweather.adapter
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
+import android.support.v4.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,7 +45,7 @@ class SelectColorAdapter(private val context: Context, private val textList: Lis
         }
         holder.txtTextView!!.text = textList!![position]
         val gradientDrawable = holder.colorTextView!!.background as GradientDrawable
-        gradientDrawable.setColor(context.resources.getColor(colorList[position]))
+        gradientDrawable.setColor(ContextCompat.getColor(context,colorList[position]))
         return convertView
     }
 

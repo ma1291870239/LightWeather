@@ -4,24 +4,20 @@
     android:layout_height="wrap_content"
     android:background="@color/white"
     android:orientation="vertical"
-    android:padding="8dp" >
+    android:padding="@dimen/padding_8" >
 
     <TextView
         android:id="@+id/txt_title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:gravity="center"
         android:minHeight="48dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textSize="14sp"
+        android:paddingTop="@dimen/padding_8"
+        android:paddingBottom="@dimen/padding_8"
+        android:textSize="@dimen/text_15"
+        android:textColor="@color/primary_black_text"
         android:visibility="gone" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/xiantiao"/>
+    <include layout="@layout/item_horizontaldivider"/>
 
     <ScrollView
         android:id="@+id/sLayout_content"
@@ -36,18 +32,16 @@
         </LinearLayout>
     </ScrollView>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="@color/xiantiao"/>
+    <include layout="@layout/item_horizontaldivider"/>
+
     <TextView
         android:id="@+id/txt_cancel"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginTop="8dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="@dimen/padding_8"
         android:gravity="center"
         android:text="取消"
-        android:textColor="@color/text"
-        android:textSize="14sp" />
+        android:textColor="@color/primary_black_text"
+        android:textSize="@dimen/text_15" />
 
 </LinearLayout>

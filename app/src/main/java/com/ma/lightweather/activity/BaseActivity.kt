@@ -23,7 +23,7 @@ open class BaseActivity : AppCompatActivity() {
     private fun setTaskDescriptionBar() {
         if (Build.VERSION.SDK_INT >= 21) {
             val tDesc = ActivityManager.TaskDescription(getString(R.string.app_name),
-                    BitmapFactory.decodeResource(resources, R.mipmap.weather),
+                    BitmapFactory.decodeResource(resources, R.drawable.ic_app_launcher),
                     ContextCompat.getColor(this,CommonUtils.getBackColor(this)))
             setTaskDescription(tDesc)
         }

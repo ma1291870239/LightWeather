@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import com.bumptech.glide.Glide
 import com.ma.lightweather.R
 import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.app.Contants
@@ -35,9 +34,14 @@ class CityWeatherAdapter(private val context: Context, private val weatherList: 
         holder.txtTv.text = weatherList[i].now.cond_txt
         holder.dirTv.text=weatherList[i].now.wind_dir
         holder.scTv.text=weatherList[i].now.wind_sc+"级"
-        holder.dateTv.text=weatherList[i].update.loc
+        val date1 =weatherList[i].update.loc.split(" |\\-".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+        if(date1.size>=3){
+            holder.dateTv.text=date1[date1.size-3]+"/"+date1[date1.size-2]+" "+date1[date1.size-1]
+        }else{
+            holder.dateTv.text=weatherList[i].update.loc
+        }
         holder.qltyTv.text=weatherList[i].qlty
-        Glide.with(context).load(getWeatherIcon(weatherList[i].now.cond_txt)).into(holder.weatherIv)
+        holder.weatherIv.setImageResource(CommonUtils.getWeatherIcon(weatherList[i].now.cond_txt))
         holder.weatherLayout.setOnClickListener {
             if (context is MainActivity) {
                 context.refresh(weatherList[i].basic.location, true)
@@ -73,33 +77,7 @@ class CityWeatherAdapter(private val context: Context, private val weatherList: 
         return weatherList?.size ?: 0
     }
 
-    private fun getWeatherIcon(condTxt:String):Int {
-        if (condTxt.contains("晴")) {
-            return R.mipmap.sunny
-        }
-        if (condTxt.contains("云")) {
-            return R.mipmap.cloudy
-        }
-        if (condTxt.contains("阴")) {
-            return R.mipmap.shade
-        }
-        if (condTxt.contains("雨")) {
-            return R.mipmap.rain
-        }
-        if (condTxt.contains("雪")) {
-            return R.mipmap.snow
-        }
-        if (condTxt.contains("雾")) {
-            return R.mipmap.smog
-        }
-        if (condTxt.contains("霾")) {
-            return R.mipmap.smog
-        }
-        if (condTxt.contains("沙")) {
-            return R.mipmap.sand
-        }
-        return R.mipmap.sunny
-    }
+
 
     inner class CityHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cityTv: TextView = itemView.findViewById(R.id.item_city)

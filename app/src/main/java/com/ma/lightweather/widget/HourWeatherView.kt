@@ -248,7 +248,7 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     companion object {
 
         private const val dividerWidth = 1f
-        private const val lineWidth = 5f
+        private const val lineWidth = 4f
         private const val pointWidth = 3f
         private const val outPointWidth = 3f
         private const val pointRadius = 5f

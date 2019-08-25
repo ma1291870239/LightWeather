@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
+import android.support.v4.content.ContextCompat
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.LinearLayout.LayoutParams
@@ -64,7 +65,6 @@ class ActionSheetDialog(private val context: Context) {
         showTitle = true
         txt_title!!.visibility = View.VISIBLE
         txt_title!!.text = title
-        txt_title!!.setTextColor(context.resources.getColor(R.color.text))
         return this
     }
 
@@ -150,7 +150,7 @@ class ActionSheetDialog(private val context: Context) {
 
             // 字体颜色
             if (color == null) {
-                textView.setTextColor(context.resources.getColor(CommonUtils.getTextColor(context)))
+                textView.setTextColor(ContextCompat.getColor(context,CommonUtils.getTextColor(context)))
             } else {
                 textView.setTextColor(Color.parseColor(color.name))
             }

@@ -138,7 +138,7 @@ object CommonUtils {
             5 -> R.color.blueColorPrimaryDark
             6 -> R.color.orangeColorPrimaryDark
             7 -> R.color.greyColorPrimaryDark
-            else -> R.color.text
+            else -> R.color.cyanColorPrimaryDark
         }
     }
 
@@ -146,16 +146,48 @@ object CommonUtils {
     fun getTextColor(context: Context): Int {
         val themeTag = SharedPrefencesUtils.getParam(context, Contants.THEME, 0) as Int
         return when (themeTag) {
-            0 -> R.color.cyanColorAccent
-            1 -> R.color.purpleColorAccent
-            2 -> R.color.redColorAccent
-            3 -> R.color.pinkColorAccent
-            4 -> R.color.greenColorAccent
-            5 -> R.color.blueColorAccent
-            6 -> R.color.orangeColorAccent
-            7 -> R.color.greyColorAccent
-            else -> R.color.text
+            0 -> R.color.cyanColorPrimary
+            1 -> R.color.purpleColorPrimary
+            2 -> R.color.redColorPrimary
+            3 -> R.color.pinkColorPrimary
+            4 -> R.color.greenColorPrimary
+            5 -> R.color.blueColorPrimary
+            6 -> R.color.orangeColorPrimary
+            7 -> R.color.greyColorPrimary
+            else -> R.color.primary_black_text
         }
+    }
+
+
+    fun getWeatherIcon(condTxt:String):Int {
+        if (condTxt.contains("云")) {
+            return R.drawable.ic_cloudy
+        }
+        if (condTxt.contains("阴")) {
+            return R.drawable.ic_shade
+        }
+        if (condTxt.contains("雨")) {
+            return R.drawable.ic_rain
+        }
+        if (condTxt.contains("雪")) {
+            return R.drawable.ic_snow
+        }
+        if (condTxt.contains("雾")) {
+            return R.drawable.ic_fog
+        }
+        if (condTxt.contains("霾")) {
+            return R.drawable.ic_smog
+        }
+        if (condTxt.contains("风")) {
+            return R.drawable.ic_wind
+        }
+        if (condTxt.contains("晴")||condTxt.contains("静")) {
+            return R.drawable.ic_sunny
+        }
+        if (condTxt.contains("沙")||condTxt.contains("尘")) {
+            return R.drawable.ic_sand
+        }
+        return R.drawable.ic_unknow
     }
 
     /**

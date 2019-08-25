@@ -61,7 +61,6 @@ class CityFrgment : BaseFragment() {
         layoutManager.orientation = LinearLayoutManager.VERTICAL
         recyclerView?.layoutManager = layoutManager
         val divider = DividerItemDecoration(mContext, DividerItemDecoration.VERTICAL)
-        //divider.setDrawable(ContextCompat.getDrawable(mContext, R.drawable.bg_divider)!!)
         recyclerView?.addItemDecoration(divider)
     }
 

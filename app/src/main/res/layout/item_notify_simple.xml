@@ -9,42 +9,40 @@
     android:paddingBottom="8dp">
     <ImageView
         android:id="@+id/weatherImg"
-        android:layout_width="32dp"
-        android:layout_height="match_parent"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitXY"/>
     <TextView
-        android:id="@+id/weatherCity"
+        android:id="@+id/weatherTmp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@id/weatherImg"
-        android:textSize="16sp"
-        android:textColor="@color/blacktext"
-        android:gravity="top"
-        android:text="洛阳"/>
+        android:textSize="@dimen/text_21"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center_vertical" />
     <TextView
-        android:id="@+id/weatherTime"
+        android:id="@+id/weatherQlit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
-        android:layout_toRightOf="@id/weatherCity"
-        android:layout_alignBottom="@+id/weatherCity"
-        android:textSize="12sp"
-        android:textColor="@color/blacktext"
-        android:gravity="top"
-        android:text="洛阳"/>
+        android:layout_toRightOf="@id/weatherTmp"
+        android:layout_alignTop="@id/weatherTmp"
+        android:layout_alignBottom="@+id/weatherTmp"
+        android:textSize="@dimen/text_13"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center_vertical" />
     <TextView
         android:id="@+id/weatherWind"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_toRightOf="@id/weatherImg"
-        android:layout_alignParentBottom="true"
+        android:layout_height="match_parent"
+        android:layout_alignLeft="@id/weatherTmp"
         android:layout_below="@id/weatherCity"
-        android:textSize="14sp"
-        android:textColor="@color/blacktext"
-        android:gravity="bottom"
-        android:text="大雪"/>
+        android:textSize="@dimen/text_15"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center_vertical" />
     <TextView
         android:id="@+id/weatherDir"
         android:layout_width="wrap_content"
@@ -53,10 +51,9 @@
         android:layout_toRightOf="@id/weatherWind"
         android:layout_alignParentBottom="true"
         android:layout_below="@id/weatherCity"
-        android:textSize="14sp"
-        android:textColor="@color/blacktext"
-        android:gravity="bottom"
-        android:text="东风"/>
+        android:textSize="@dimen/text_15"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center_vertical"/>
     <TextView
         android:id="@+id/weatherSc"
         android:layout_width="wrap_content"
@@ -64,29 +61,29 @@
         android:layout_marginLeft="8dp"
         android:layout_toRightOf="@id/weatherDir"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/weatherCity"
-        android:textSize="14sp"
-        android:textColor="@color/blacktext"
-        android:gravity="bottom"
-        android:text="3-10级"/>
+        android:layout_below="@id/weatherTmp"
+        android:textSize="@dimen/text_15"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center_vertical" />
     <TextView
-        android:id="@+id/weatherTmp"
+        android:id="@+id/weatherCity"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:textSize="20sp"
-        android:textColor="@color/blacktext"
-        android:gravity="center_vertical"
-        android:text="洛阳"/>
+        android:layout_alignTop="@id/weatherTmp"
+        android:layout_alignBottom="@id/weatherTmp"
+        android:textSize="@dimen/text_13"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center_vertical" />
     <TextView
-        android:id="@+id/weatherQlit"
+        android:id="@+id/weatherTime"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginRight="16dp"
-        android:layout_toLeftOf="@id/weatherTmp"
-        android:textSize="20sp"
-        android:textColor="@color/blacktext"
-        android:gravity="center_vertical"
-        android:text="严重污染"/>
+        android:layout_alignRight="@id/weatherCity"
+        android:layout_alignTop="@id/weatherWind"
+        android:layout_alignBottom="@id/weatherWind"
+        android:textSize="@dimen/text_13"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center_vertical" />
 
 </RelativeLayout>

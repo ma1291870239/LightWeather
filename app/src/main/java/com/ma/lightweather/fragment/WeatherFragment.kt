@@ -55,6 +55,8 @@ class WeatherFragment : BaseFragment() {
     private var vistv: TextView? = null
     private var pm25Tv: TextView? = null
     private var pm10Tv: TextView? = null
+    private var aqiTv: TextView? = null
+    private var mainTv: TextView? = null
     private var airTv: CardTextView? = null
     private var comfTv: CardTextView? = null
     private var cwTv: CardTextView? = null
@@ -63,6 +65,7 @@ class WeatherFragment : BaseFragment() {
     private var sportTv: CardTextView? = null
     private var travTv: CardTextView? = null
     private var uvTv: CardTextView? = null
+    private var weatherLayout: LinearLayout? = null
 
     private var weatherLife: LinearLayout? = null
     private var scrollView: NestedScrollView? = null
@@ -92,13 +95,15 @@ class WeatherFragment : BaseFragment() {
                     feeltv?.text = "　体感：" + weatherList!![i].now.fl + " ℃"
                     humtv?.text = "　湿度：" + weatherList!![i].now.hum + " %"
                     pcpntv?.text = "　降雨：" + weatherList!![i].now.pcpn + " mm"
-                    citytv?.text = weatherList!![i].basic.location + "　" + airList!![i].air_now_city.qlty+ "　" + airList!![i].air_now_city.aqi
+                    citytv?.text = weatherList!![i].basic.location + "　" + airList!![i].air_now_city.qlty
                     windtv?.text = weatherList!![i].now.cond_txt + "　" + weatherList!![i].now.wind_dir+ "　" + weatherList!![i].now.wind_sc+"级"
                     pmtv?.text = "　风速：" + weatherList!![i].now.wind_spd + " km/h"
                     prestv?.text = "　气压：" + weatherList!![i].now.pres + " Pa"
                     vistv?.text = "　能见：" + weatherList!![i].now.vis + " km"
                     pm25Tv?.text = "　PM25：" + airList!![i].air_now_city.pm25 + " μg/m3"
                     pm10Tv?.text = "　PM10：" + airList!![i].air_now_city.pm10 + " μg/m3"
+                    aqiTv?.text = "　空气质量：" + airList!![i].air_now_city.aqi
+                    mainTv?.text = "　主要污染：" + airList!![i].air_now_city.main
                     if (weatherList!![i].lifestyle.isNotEmpty() && weatherList!![i].lifestyle.size  <=0) {
                         weatherLife?.visibility = View.GONE
                     } else {
@@ -108,28 +113,28 @@ class WeatherFragment : BaseFragment() {
                         val lifeWeather = weatherList!![i].lifestyle[j]
                         val type = lifeWeather.type
                         if (type == getString(R.string.comf_en_text)) {
-                            setLifeView(comfTv,lifeWeather, getString(R.string.comf_ch_text))
+                            setLifeView(R.drawable.ic_comf_index,comfTv,lifeWeather, getString(R.string.comf_ch_text))
                         }
                         if (type == getString(R.string.uv_en_text)) {
-                            setLifeView(uvTv,lifeWeather, getString(R.string.uv_ch_text))
+                            setLifeView(R.drawable.ic_uv_index,uvTv,lifeWeather, getString(R.string.uv_ch_text))
                         }
                         if (type == getString(R.string.air_en_text)) {
-                            setLifeView(airTv,lifeWeather, getString(R.string.air_ch_text))
+                            setLifeView(R.drawable.ic_air_index,airTv,lifeWeather, getString(R.string.air_ch_text))
                         }
                         if (type == getString(R.string.cw_en_text)) {
-                            setLifeView(cwTv,lifeWeather, getString(R.string.cw_ch_text))
+                            setLifeView(R.drawable.ic_cw_index,cwTv,lifeWeather, getString(R.string.cw_ch_text))
                         }
                         if (type == getString(R.string.drsg_en_text)) {
-                            setLifeView(drsgTv,lifeWeather, getString(R.string.drsg_ch_text))
+                            setLifeView(R.drawable.ic_drsg_index,drsgTv,lifeWeather, getString(R.string.drsg_ch_text))
                         }
                         if (type == getString(R.string.flu_en_text)) {
-                            setLifeView(fluTv,lifeWeather, getString(R.string.flu_ch_text))
+                            setLifeView(R.drawable.ic_flu_index,fluTv,lifeWeather, getString(R.string.flu_ch_text))
                         }
                         if (type == getString(R.string.sport_en_text)) {
-                            setLifeView(sportTv,lifeWeather, getString(R.string.sport_ch_text))
+                            setLifeView(R.drawable.ic_sport_index,sportTv,lifeWeather, getString(R.string.sport_ch_text))
                         }
                         if (type == getString(R.string.trav_en_text)) {
-                            setLifeView(travTv,lifeWeather, getString(R.string.trav_ch_text))
+                            setLifeView(R.drawable.ic_trav_index,travTv,lifeWeather, getString(R.string.trav_ch_text))
                         }
 
                     }
@@ -236,8 +241,10 @@ class WeatherFragment : BaseFragment() {
         pmtv = view?.findViewById(R.id.weather_spd)//风速
         prestv = view?.findViewById(R.id.weather_pres)//气压
         vistv = view?.findViewById(R.id.weather_vis)//能见度
-        pm25Tv = view?.findViewById(R.id.weather_pm25)//气压
-        pm10Tv = view?.findViewById(R.id.weather_pm10)//能见度
+        pm25Tv = view?.findViewById(R.id.weather_pm25)//PM2.5
+        pm10Tv = view?.findViewById(R.id.weather_pm10)//PM10
+        aqiTv = view?.findViewById(R.id.weather_aqi)//空气
+        mainTv= view?.findViewById(R.id.weather_main)//污染
         scrollView = view?.findViewById(R.id.weather_scroll)
         weatherView = view?.findViewById(R.id.weather_view)
         hourWeatherView = view?.findViewById(R.id.hourweather_view)
@@ -252,9 +259,11 @@ class WeatherFragment : BaseFragment() {
         uvTv = view?.findViewById(R.id.uvTextView)
         travTv = view?.findViewById(R.id.travTextView)
         uvTv = view?.findViewById(R.id.uvTextView)
-
+        weatherLayout=view?.findViewById(R.id.weatherLayout)
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
+        weatherLayout?.setBackgroundResource(CommonUtils.getBackColor(mContext))
         swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
+
         swipeRefreshLayout?.setOnRefreshListener { loadData(city) }
     }
 
@@ -270,14 +279,14 @@ class WeatherFragment : BaseFragment() {
         }
     }
 
-    private fun setLifeView(view: CardTextView?, lifeWeather: Weather.LifeWeather ,text:String){
+    private fun setLifeView(icon:Int,view: CardTextView?, lifeWeather: Weather.LifeWeather ,text:String){
         if (text.isNotEmpty()){
             view?.visibility=View.VISIBLE
             val type=text+"  "+lifeWeather.brf
-            view?.setText(type,lifeWeather.txt)
+            view?.setText(icon,type,lifeWeather.txt)
         }else{
             view?.visibility=View.GONE
-            view?.setText("","")
+            view?.setText(0,"","")
         }
     }
 

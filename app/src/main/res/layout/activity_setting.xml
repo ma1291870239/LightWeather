@@ -8,79 +8,47 @@
     tools:context="com.ma.lightweather.activity.SettingActivity">
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolBar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:layout_scrollFlags="scroll|enterAlways"
-        app:title="轻天气"
-        app:titleTextColor="@color/white"/>
+        style="@style/AppToolbar">
+        <TextView
+            android:id="@+id/titlename"
+            style="@style/AppToolbarText"/>
+    </android.support.v7.widget.Toolbar>
     <LinearLayout
         style="@style/SettingLayout">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="通知栏开启"/>
+            style="@style/SettingTitle"
+            android:text="通知栏"/>
         <TextView
-            android:layout_marginLeft="8dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="没有加入白名单,通知进程容易被杀掉"
-            android:textColor="@color/hinttext"
-            android:textSize="12sp"/>
+            style="@style/SettingText"
+            android:text=""/>
         <Switch
             android:id="@+id/notifySwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            style="@style/SettingSwitch"/>
     </LinearLayout>
 
     <LinearLayout
         android:visibility="gone"
         style="@style/SettingLayout">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
+            style="@style/SettingTitle"
             android:text="状态栏显示"/>
         <TextView
-            android:layout_marginLeft="8dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="8.0及以上系统需要自行进入通知设置"
-            android:textColor="@color/hinttext"
-            android:textSize="12sp"/>
+            style="@style/SettingText"/>
         <Switch
             android:id="@+id/statusSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            style="@style/SettingSwitch"/>
     </LinearLayout>
     <LinearLayout
         style="@style/SettingLayout">
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text="生活信息指数"/>
+            style="@style/SettingTitle"
+            android:text="生活指数"/>
         <TextView
-            android:layout_marginLeft="8dp"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:text=""
-            android:textColor="@color/hinttext"
-            android:textSize="12sp"/>
+            style="@style/SettingText"
+            android:text=""/>
         <Switch
             android:id="@+id/lifeSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            style="@style/SettingSwitch"/>
     </LinearLayout>
 
 </LinearLayout>
