@@ -89,7 +89,7 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
         valueAnimator.addUpdateListener { valueAnimator ->
             mAnimatorValue = valueAnimator.animatedValue as Float
-            invalidate()
+            postInvalidate()
         }
         valueAnimator.duration = 3000
         valueAnimator.start()
@@ -112,8 +112,10 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         }
 
         //最高温度折线
+        maxPath.reset()
         drawTmpCurve(canvas,maxList,true)
         //最低温度折线
+        minPath.reset()
         drawTmpCurve(canvas,minList,false)
         //日期
         for (i in dateList.indices) {
@@ -224,8 +226,15 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
                 daily.cond_txt_d.let { (txtList as ArrayList).add(it) }
                 daily.wind_dir.let { (dirList as ArrayList).add(it) }
             }
+            val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
+            valueAnimator.addUpdateListener { valueAnimator ->
+                mAnimatorValue = valueAnimator.animatedValue as Float
+                postInvalidate()
+            }
+            valueAnimator.duration = 3000
+            valueAnimator.start()
         }
-        postInvalidate()
+
     }
 
     private fun getBezierX(i: Int): Float {

@@ -83,13 +83,7 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
         dividerPaint.strokeMiter= dividerWidth
         dividerPaint.textAlign = Paint.Align.CENTER
 
-        val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
-        valueAnimator.addUpdateListener { valueAnimator ->
-            mAnimatorValue = valueAnimator.animatedValue as Float
-            invalidate()
-        }
-        valueAnimator.duration = 3000
-        valueAnimator.start()
+
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -137,6 +131,7 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
     }
 
     private fun drawTmpCurve(canvas: Canvas){
+        path.reset()
         for (i in tmpList.indices) {
 
             var x1 = 0f
@@ -228,8 +223,14 @@ class HourWeatherView(context: Context, attrs: AttributeSet) : View(context, att
                 hourly.cond_txt.let { (txtList as ArrayList).add(it) }
                 hourly.wind_dir.let { (dirList as ArrayList).add(it) }
             }
+            val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
+            valueAnimator.addUpdateListener { valueAnimator ->
+                mAnimatorValue = valueAnimator.animatedValue as Float
+                postInvalidate()
+            }
+            valueAnimator.duration = 3000
+            valueAnimator.start()
         }
-        invalidate()
     }
 
     private fun getBezierX(i: Int): Float {
