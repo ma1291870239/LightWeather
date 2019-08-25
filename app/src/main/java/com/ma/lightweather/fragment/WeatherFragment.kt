@@ -261,7 +261,7 @@ class WeatherFragment : BaseFragment() {
         uvTv = view?.findViewById(R.id.uvTextView)
         weatherLayout=view?.findViewById(R.id.weatherLayout)
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
-        weatherLayout?.setBackgroundResource(CommonUtils.getBackColor(mContext))
+        weatherLayout?.setBackgroundResource(CommonUtils.getTextColor(mContext))
         swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
 
         swipeRefreshLayout?.setOnRefreshListener { loadData(city) }
