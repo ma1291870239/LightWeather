@@ -121,7 +121,7 @@
                     style="@style/WeatherFragTitleLayout">
                     <TextView
                         style="@style/WeatherFragTitleText"
-                        android:text="生活指数" />
+                        android:text="@string/life_weaher_text" />
                     <com.ma.lightweather.widget.CardTextView
                         android:layout_marginTop="@dimen/margin_8"
                         android:id="@+id/airTextView"

@@ -77,7 +77,7 @@ class WeatherView(context: Context, attrs: AttributeSet) : View(context, attrs) 
         minPaint.strokeWidth = lineWidth
         minPaint.style = Paint.Style.STROKE
 
-        textPaint.color = ContextCompat.getColor(context,R.color.text)
+        textPaint.color = ContextCompat.getColor(context,R.color.primary_black_text)
         textPaint.isAntiAlias = true
         textPaint.textAlign = Paint.Align.CENTER
 

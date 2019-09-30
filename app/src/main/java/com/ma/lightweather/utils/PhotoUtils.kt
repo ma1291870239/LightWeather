@@ -1,22 +1,14 @@
 package com.ma.lightweather.utils
 
-import android.Manifest
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
-import android.support.v4.content.ContextCompat
 import android.support.v4.content.FileProvider
-
-import com.ma.lightweather.activity.SplashActivity
-
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -125,11 +117,7 @@ object PhotoUtils {
             //保存图片后发送广播通知更新数据库
             val uri = Uri.fromFile(file)
             context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, uri))
-            return if (isSuccess) {
-                true
-            } else {
-                false
-            }
+            return isSuccess
         } catch (e: IOException) {
             e.printStackTrace()
         }

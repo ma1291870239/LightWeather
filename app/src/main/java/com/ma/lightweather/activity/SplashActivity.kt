@@ -15,12 +15,17 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.TextView
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.PhotoUtils
+import com.ma.lightweather.utils.SharedPrefencesUtils
 import java.util.concurrent.ExecutionException
 
 class SplashActivity : BaseActivity(), View.OnClickListener {
@@ -46,7 +51,20 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_splash)
         initView()
+        getBingImg()
         checkPermission()
+    }
+
+    private fun getBingImg() {
+        val requestQueue = Volley.newRequestQueue(this)
+        val stringRequest = StringRequest(Request.Method.GET, Contants.BINGURL,
+                Response.Listener { response ->
+                    SharedPrefencesUtils.setParam(SplashActivity@this, Contants.BING, response)
+                },
+                Response.ErrorListener {
+
+                })
+        requestQueue.add(stringRequest)
     }
 
     private fun initView() {
@@ -58,7 +76,10 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        Glide.with(this).load(Contants.BINGURL).into(backIv!!)
+        Glide.with(SplashActivity@this)
+                .load(SharedPrefencesUtils.getParam(SplashActivity@this, Contants.BING, ""))
+                .error(R.mipmap.splash)
+                .into(backIv!!)
         countDownTimer = object : CountDownTimer(4000, 1000) {
             override fun onTick(l: Long) {
                 skipTv?.text = getString(R.string.splash_skip_text,l/1000)

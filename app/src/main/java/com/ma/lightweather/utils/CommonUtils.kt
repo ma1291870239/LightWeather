@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.support.design.widget.Snackbar
 import android.view.View
-import android.widget.Toast
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import java.util.*
@@ -23,8 +22,8 @@ object CommonUtils {
         if (mSnackbar == null) {
             mSnackbar = Snackbar.make(view!!,content,Snackbar.LENGTH_SHORT)
         } else {
-            mSnackbar!!.setText(content)
-            mSnackbar!!.duration = Toast.LENGTH_SHORT
+            mSnackbar?.setText(content)
+            mSnackbar?.duration = Snackbar.LENGTH_SHORT
         }
         mSnackbar!!.show()
     }
@@ -41,12 +40,16 @@ object CommonUtils {
 
         val w = bitmap.width
         val h = bitmap.height
-        val offset = h / 50
+        var textSize = (h / 8).toFloat()
+        var offset = h / 50
+        if (w>h){
+            textSize=(w / 8).toFloat()
+            offset = w / 50
+        }
         var phoneSpace = 0
         var loctionSpace = 0
         val paddingLeft = w - offset
         val paddingTop = h - offset
-        val textSize = (h / 10).toFloat()
 
         //间隔大小
         if (!phoneText.isEmpty()) {

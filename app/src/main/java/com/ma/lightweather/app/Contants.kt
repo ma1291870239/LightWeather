@@ -12,7 +12,7 @@ object Contants {
     //行政区域
     const val AREAURL = "https://restapi.amap.com/v3/config/district?key=233dae1280c8b4c934e1a3928fdb1f10&subdistrict=3&extensions=base&keywords="
     //必应图片
-    const val BINGURL = "http://area.sinaapp.com/bingImg/"
+    const val BINGURL = "http://guolin.tech/api/bing_pic"
 
 
     const val CITY = "city"
@@ -31,4 +31,5 @@ object Contants {
     const val NOTIFY = "notify"
     const val STATUS = "status"
     const val LIFE = "life"
+    const val BING = "bing"
 }
