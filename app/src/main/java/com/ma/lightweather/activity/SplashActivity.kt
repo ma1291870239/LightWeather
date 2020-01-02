@@ -58,8 +58,8 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     private fun getBingImg() {
         val requestQueue = Volley.newRequestQueue(this)
         val stringRequest = StringRequest(Request.Method.GET, Contants.BINGURL,
-                Response.Listener { response ->
-                    SharedPrefencesUtils.setParam(SplashActivity@this, Contants.BING, response)
+                Response.Listener<String> { response ->
+                    SharedPrefencesUtils.setParam(this@SplashActivity, Contants.BING, response)
                 },
                 Response.ErrorListener {
 
@@ -76,8 +76,8 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        Glide.with(SplashActivity@this)
-                .load(SharedPrefencesUtils.getParam(SplashActivity@this, Contants.BING, ""))
+        Glide.with(this@SplashActivity)
+                .load(SharedPrefencesUtils.getParam(this@SplashActivity, Contants.BING, ""))
                 .error(R.mipmap.splash)
                 .into(backIv!!)
         countDownTimer = object : CountDownTimer(4000, 1000) {
@@ -115,11 +115,15 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                     CommonUtils.showShortSnackBar(downloadIv, getString(R.string.splash_read_permission_text))
                     return
                 }
+                var url:String=SharedPrefencesUtils.getParam(this@SplashActivity, Contants.BING, "") as String
+                if(url.isNullOrEmpty()){
+                    return
+                }
                 Thread(Runnable {
                     var bitmap: Bitmap? = null
                     try {
                         bitmap = Glide.with(this@SplashActivity)
-                                .load(Contants.BINGURL)
+                                .load(url)
                                 .asBitmap()
                                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                                 .get()
