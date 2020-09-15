@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.provider.Settings
-import android.support.graphics.drawable.VectorDrawableCompat
-import android.support.v4.app.NotificationCompat
-import android.support.v4.content.ContextCompat
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import android.widget.RemoteViews
 import android.widget.Toast
 import com.android.volley.Response
@@ -20,6 +20,7 @@ import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.widget.HourWeatherView
 import org.json.JSONException
 
 class WeatherService : Service() {
@@ -71,7 +72,8 @@ class WeatherService : Service() {
         val airStringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_AIR + city,
                 Response.Listener { response ->
                     try {
-                        airList = Parse.parseAir(response, null, null, applicationContext)
+                        var hourWeatherView: HourWeatherView? =null
+                        airList = Parse.parseAir(response, null, hourWeatherView, applicationContext)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }
@@ -89,7 +91,8 @@ class WeatherService : Service() {
         val stringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_ALL + city,
                 Response.Listener { response ->
                     try {
-                        weatherList = Parse.parseWeather(response, null, null, applicationContext)
+                        var hourWeatherView: HourWeatherView? =null
+                        weatherList = Parse.parseWeather(response, null, hourWeatherView, applicationContext)
                     } catch (e: JSONException) {
                         e.printStackTrace()
                     }

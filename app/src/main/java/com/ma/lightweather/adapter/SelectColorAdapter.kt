@@ -2,7 +2,7 @@ package com.ma.lightweather.adapter
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,21 +32,21 @@ class SelectColorAdapter(private val context: Context, private val textList: Lis
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        var convertView = convertView
+        var view = convertView
         val holder: ViewHolder
-        if (convertView == null) {
+        if (view == null) {
             holder = ViewHolder()
-            convertView = LayoutInflater.from(context).inflate(R.layout.item_selectcolor_dialog, null)
-            holder.txtTextView = convertView!!.findViewById(R.id.txtTextView)
-            holder.colorTextView = convertView.findViewById(R.id.colorTextView)
-            convertView.tag = holder
+            view = LayoutInflater.from(context).inflate(R.layout.item_selectcolor_dialog, null)
+            holder.txtTextView = view!!.findViewById(R.id.txtTextView)
+            holder.colorTextView = view.findViewById(R.id.colorTextView)
+            view.tag = holder
         } else {
-            holder = convertView.tag as ViewHolder
+            holder = view.tag as ViewHolder
         }
         holder.txtTextView!!.text = textList!![position]
         val gradientDrawable = holder.colorTextView!!.background as GradientDrawable
         gradientDrawable.setColor(ContextCompat.getColor(context,colorList[position]))
-        return convertView
+        return view
     }
 
     class ViewHolder {

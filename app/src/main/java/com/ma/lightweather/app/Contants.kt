@@ -14,7 +14,8 @@ object Contants {
     //必应图片
     const val BINGURL = "http://guolin.tech/api/bing_pic"
 
-
+    const val WEATHER_JSON = "weather_json"
+    const val WEATHER_AQI_JSON = "weather_aqi_json"
     const val CITY = "city"
     const val TMP = "tmp"
     const val TXT = "txt"

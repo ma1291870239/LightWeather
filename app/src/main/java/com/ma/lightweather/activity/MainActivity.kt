@@ -1,65 +1,70 @@
 package com.ma.lightweather.activity
 
+import android.app.Activity
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.TabLayout
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentPagerAdapter
-import android.support.v4.content.ContextCompat
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.SearchView
-import android.view.KeyEvent
-import android.view.Menu
-import android.view.MotionEvent
-import android.view.View
+import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentPagerAdapter
+import com.google.android.material.navigation.NavigationView
+import com.google.android.material.tabs.TabLayout
 import com.ma.lightweather.R
-import com.ma.lightweather.fragment.CityFrgment
-import com.ma.lightweather.fragment.PhotoFragment
-import com.ma.lightweather.fragment.WeatherFragment
+import com.ma.lightweather.fragment.*
 import com.ma.lightweather.utils.CommonUtils
+import com.ma.lightweather.widget.WeatherViewPager
 import java.util.*
 import kotlin.system.exitProcess
 
 
 class MainActivity : BaseActivity() {
 
+
+    private var frogWeatherFrag: FrogWeatherFragment? = null
+    private var futureDaysFrag: FutureDaysFragment? = null
     private var weatherFrag: WeatherFragment? = null
     private var cityFrag: CityFrgment? = null
     private var photoFrag: PhotoFragment? = null
-    private var viewPager: ViewPager? = null
-    private var toolBar: android.support.v7.widget.Toolbar? = null
+    private var viewPager:WeatherViewPager? = null
+    private var toolBar: Toolbar? = null
+    private var searchView:SearchView?=null
     private var tabLayout: TabLayout? = null
-    private var floatButton: FloatingActionButton? = null
     private val fragmentList = ArrayList<Fragment>()
     private val titleList = ArrayList<String>()
     private var clickTime: Long = 0
+    private var navigationView: NavigationView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
-        initData()
+        //setSearch()
+        //initOldData()
+        initNewData()
     }
 
     override fun recreate() {
-        try {//避免重启太快 恢复
-            val fragmentTransaction = supportFragmentManager.beginTransaction()
-            for (fragment in fragmentList) {
-                fragmentTransaction.remove(fragment)
-            }
-            fragmentTransaction.commitAllowingStateLoss()
-        } catch (e: Exception) {
-            CommonUtils.showShortSnackBar(tabLayout,"切换主题失败，请重试")
-        }
+//        try {//避免重启太快 恢复
+//            val fragmentTransaction = supportFragmentManager.beginTransaction()
+//            for (fragment in fragmentList) {
+//                fragmentTransaction.remove(fragment)
+//            }
+//            fragmentTransaction.commitAllowingStateLoss()
+//        } catch (e: Exception) {
+//            CommonUtils.showShortSnackBar(tabLayout,"切换主题失败，请重试")
+//        }
 
         super.recreate()
     }
 
-    private fun initData() {
+    private fun initOldData() {
         weatherFrag = WeatherFragment()
         cityFrag = CityFrgment()
         photoFrag = PhotoFragment()
@@ -71,20 +76,53 @@ class MainActivity : BaseActivity() {
         titleList.add(getString(R.string.main_photo_text))
         viewPager?.adapter = ViewAdapter(supportFragmentManager)
         tabLayout?.setupWithViewPager(viewPager)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
+    }
+
+    private fun initNewData() {
+        frogWeatherFrag= FrogWeatherFragment()
+        futureDaysFrag= FutureDaysFragment()
+        fragmentList.add(frogWeatherFrag!!)
+        fragmentList.add(futureDaysFrag!!)
+        titleList.add(getString(R.string.main_weather_text))
+        titleList.add(getString(R.string.main_future_text))
+        viewPager?.adapter = ViewAdapter(supportFragmentManager)
+        tabLayout?.setupWithViewPager(viewPager)
+        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun initView() {
         toolBar = findViewById(R.id.toolBar)
         toolBar?.inflateMenu(R.menu.toolbar_menu)
         tabLayout = findViewById(R.id.tabLayout)
-        floatButton=findViewById(R.id.floatbutton)
         viewPager = findViewById(R.id.viewPager)
         viewPager?.offscreenPageLimit = 2
         viewPager?.currentItem = 0
         setSupportActionBar(toolBar)
-        floatButton?.setOnClickListener {
-            CommonUtils.showShortSnackBar(floatButton,"功能开发中")
-        }
+    }
+
+    private fun setSearch(){
+        searchView = findViewById(R.id.toolBarSearch)
+        val et = searchView?.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)
+        et?.textSize = 15f
+        et?.hint = getString(R.string.main_search_text)
+        et?.setHintTextColor(ContextCompat.getColor(this, R.color.hint_black_text))
+        et?.setTextColor(ContextCompat.getColor(this, R.color.primary_black_text))
+        et?.setBackgroundResource(R.drawable.bg_weather_sv_solid_grey)
+        searchView?.onActionViewExpanded()
+        searchView?.clearFocus()
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String): Boolean {
+                refresh(query, true)
+                searchView?.clearFocus()
+                searchView?.setQuery("", false)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                return false
+            }
+        })
     }
 
 
@@ -99,32 +137,40 @@ class MainActivity : BaseActivity() {
         cityFrag?.initData()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        val item = menu.findItem(R.id.toolBarSearch)
-        val searchView = item.actionView as SearchView
-        val et = searchView.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)
-        et.textSize = 15f
-        et.hint = getString(R.string.main_search_text)
-        et.setHintTextColor(ContextCompat.getColor(this, R.color.hint_black_text))
-        et.setTextColor(ContextCompat.getColor(this, R.color.primary_black_text))
-        et.setBackgroundResource(R.drawable.bg_weather_sv_solid_grey)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                refresh(query, true)
-                searchView.clearFocus()
-                searchView.setQuery("", false)
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-                return false
-            }
-        })
-        return super.onCreateOptionsMenu(menu)
+    fun setWeatherBack(cond:String) {
+        var color=CommonUtils.getColorWeatherTheme(cond)
+        toolBar?.setBackgroundColor(ContextCompat.getColor(this,color))
+        tabLayout?.setBackgroundColor(ContextCompat.getColor(this,color))
+        setStatusColor(color)
     }
 
-    internal inner class ViewAdapter(fm: android.support.v4.app.FragmentManager) : FragmentPagerAdapter(fm) {
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        menuInflater.inflate(R.menu.toolbar_menu, menu)
+//        val item = menu.findItem(R.id.toolBarSearch)
+//        val searchView = item.actionView as SearchView
+//        val et = searchView.findViewById<SearchView.SearchAutoComplete>(R.id.search_src_text)
+//        et.textSize = 15f
+//        et.hint = getString(R.string.main_search_text)
+//        et.setHintTextColor(ContextCompat.getColor(this, R.color.hint_black_text))
+//        et.setTextColor(ContextCompat.getColor(this, R.color.primary_black_text))
+//        et.setBackgroundResource(R.drawable.bg_weather_sv_solid_grey)
+//        searchView.isIconified=false
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String): Boolean {
+//                refresh(query, true)
+//                searchView.clearFocus()
+//                searchView.setQuery("", false)
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String): Boolean {
+//                return false
+//            }
+//        })
+//        return super.onCreateOptionsMenu(menu)
+//    }
+
+    internal inner class ViewAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
             return fragmentList[position]
@@ -197,4 +243,21 @@ class MainActivity : BaseActivity() {
         }
     }
 
+
+    fun setStatusColor(color: Int) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //6.0以上版本
+            // 设置状态栏底色颜色
+            val window: Window = window
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            window.statusBarColor =ContextCompat.getColor(this,color)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //5.0以上版本
+            val window: Window = window
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+            //6.0以下设置默认黑色状态栏
+            window.statusBarColor = ContextCompat.getColor(this,color)
+        }
+    }
 }

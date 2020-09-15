@@ -99,28 +99,40 @@
     </style>
 
     <style name="AppToolbar" >
-        <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="android:layout_height">35dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">?attr/colorPrimary</item>
     </style>
 
-    <style name="AppToolbarText" >
+    <style name="ToolBarSearch" >
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/margin_8</item>
+        <item name="android:layout_marginBottom">@dimen/margin_8</item>
+        <item name="android:layout_marginLeft">@dimen/search_border</item>
+        <item name="android:layout_marginRight">@dimen/search_border</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/text_17</item>
         <item name="android:textColor">@color/primary_white_text</item>
         <item name="android:text">@string/app_name</item>
-        <item name="android:layout_centerInParent">true</item>
     </style>
 
     <style name="WeatherFragDetailText" >
-        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_height">25dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:textSize">@dimen/text_13</item>
-        <item name="android:textColor">@color/primary_white_text</item>
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textColor">@color/primary_black_text</item>
+    </style>
+
+    <style name="WeatherFragDetailTextValue" >
+        <item name="android:layout_height">25dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_15</item>
+        <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="WeatherFragTitleLayout" >
@@ -203,6 +215,15 @@
     <style name="SettingSwitch" >
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_width">wrap_content</item>
+    </style>
+
+
+    <style name="SunnyTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/weather_back_sunny</item>
+        <item name="colorPrimaryDark">@color/aqi_1</item>
+        <item name="colorAccent">@color/weather_back_sunny</item>
+        <item name="android:windowBackground">@color/app_background</item>
+        <item name="android:textColorSecondary">@android:color/white</item>
     </style>
 
 </resources>

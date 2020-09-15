@@ -9,6 +9,8 @@
     <string name="splash_skip_text">跳过%1$d秒</string>
     <string name="main_exit_text">再按一次退出程序</string>
     <string name="main_search_text">请输入要查询的城市名字</string>
+    <string name="main_frog_text">青蛙</string>
+    <string name="main_future_text">未来</string>
     <string name="main_weather_text">天气</string>
     <string name="main_city_text">列表</string>
     <string name="main_photo_text">照片</string>

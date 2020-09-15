@@ -9,9 +9,9 @@ import android.location.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.support.v4.content.ContextCompat
-import android.support.v4.widget.NestedScrollView
-import android.support.v4.widget.SwipeRefreshLayout
+import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -300,7 +300,7 @@ class WeatherFragment : BaseFragment() {
             override fun onLocationChanged(location: Location) {
                 getDistrictFromLocation(location)
                 if (locationManager != null) {
-                    locationManager?.removeUpdates(locationListener)
+                    locationListener?.let { locationManager?.removeUpdates(it) }
                     locationManager = null
                     locationListener = null
                 }
@@ -326,7 +326,7 @@ class WeatherFragment : BaseFragment() {
         criteria.isCostAllowed = false
         criteria.powerRequirement = Criteria.POWER_LOW
         locationManager?.getBestProvider(criteria, true)
-        locationManager?.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, locationListener,null)
+        locationManager?.requestSingleUpdate(LocationManager.PASSIVE_PROVIDER, locationListener as LocationListener,null)
     }
 
     private fun getDistrictFromLocation(location: Location?) {

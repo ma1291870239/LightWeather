@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlLayout"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+    <RelativeLayout
+        android:layout_margin="@dimen/margin_16"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/future_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/text_15"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/future_weather"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/future_date"
+            android:textSize="@dimen/text_15" />
+
+        <TextView
+            android:id="@+id/future_high"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textSize="@dimen/text_15"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:id="@+id/future_low"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/future_high"
+            android:textSize="@dimen/text_15" />
+
+        <ImageView
+            android:id="@+id/future_icon"
+            android:layout_marginRight="@dimen/margin_24"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toLeftOf="@id/future_high"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

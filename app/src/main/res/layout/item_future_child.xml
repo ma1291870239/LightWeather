@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_margin="@dimen/margin_16"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                style="@style/WeatherFragDetailText"
+                android:text="风况"/>
+            <TextView
+                style="@style/WeatherFragDetailText"
+                android:text="湿度"/>
+            <TextView
+                style="@style/WeatherFragDetailText"
+                android:text="能见度"/>
+            <TextView
+                style="@style/WeatherFragDetailText"
+                android:text="降水概率"/>
+            <TextView
+                style="@style/WeatherFragDetailText"
+                android:text="紫外线强度"/>
+            <TextView
+                style="@style/WeatherFragDetailText"
+                android:text="日出/日落"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_24"
+            android:orientation="vertical">
+            <TextView
+                style="@style/WeatherFragDetailTextValue"
+                android:id="@+id/future_wind" />
+
+            <TextView
+                style="@style/WeatherFragDetailTextValue"
+                android:id="@+id/future_hum" />
+            <TextView
+                style="@style/WeatherFragDetailTextValue"
+                android:id="@+id/future_vis" />
+            <TextView
+                style="@style/WeatherFragDetailTextValue"
+                android:id="@+id/future_pop" />
+            <TextView
+                style="@style/WeatherFragDetailTextValue"
+                android:id="@+id/future_uv" />
+            <TextView
+                style="@style/WeatherFragDetailTextValue"
+                android:id="@+id/future_sun" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

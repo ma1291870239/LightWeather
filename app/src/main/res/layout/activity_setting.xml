@@ -6,13 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.ma.lightweather.activity.SettingActivity">
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolBar"
         style="@style/AppToolbar">
-        <TextView
-            android:id="@+id/titlename"
-            style="@style/AppToolbarText"/>
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
     <LinearLayout
         style="@style/SettingLayout">
         <TextView

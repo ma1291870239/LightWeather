@@ -62,7 +62,11 @@ data class Weather(
             var wind_deg: String="",
             var wind_dir: String="",
             var wind_sc: String="",
-            var wind_spd: String=""
+            var wind_spd: String="",
+            var sr: String="",
+            var ss: String="",
+            var mr: String="",
+            var ms: String=""
     )
 
     data class HourlyWeather(
