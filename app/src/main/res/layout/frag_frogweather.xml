@@ -8,8 +8,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+        android:layout_height="wrap_content">
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
@@ -26,7 +25,7 @@
                     android:id="@+id/relativeLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="@dimen/padding_16"
+                    android:paddingTop="@dimen/padding_8"
                     android:background="?attr/colorPrimary"
                     app:layout_collapseMode="pin">
                     <TextView
@@ -113,6 +112,12 @@
                         android:layout_toRightOf="@id/weather_tmp"
                         android:layout_alignTop="@id/weather_tmp"
                         android:layout_alignBottom="@id/weather_tmp"/>
+                    <ImageView
+                        android:id="@+id/weather_iv_bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/weather_tmp"
+                        android:adjustViewBounds="true" />
                     <TextView
                         android:id="@+id/weather_feel"
                         android:layout_width="match_parent"
@@ -149,12 +154,6 @@
                         android:layout_alignRight="@id/weather_iv_top"
                         android:layout_alignTop="@id/weather_feel"
                         android:layout_alignBottom="@id/weather_feel"/>
-                    <ImageView
-                        android:id="@+id/weather_iv_bottom"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/weather_feel"
-                        android:adjustViewBounds="true" />
 
                 </RelativeLayout>
 
@@ -166,13 +165,10 @@
                     <TextView
                         android:id="@+id/weather_tv"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/margin_8" />
+                        android:layout_height="wrap_content" />
 
                     <com.ma.lightweather.widget.HourFrogWeatherView
                         android:id="@+id/hourweather_view"
-                        android:layout_marginTop="@dimen/margin_8"
-                        android:layout_marginBottom="@dimen/margin_8"
                         android:layout_below="@id/weather_tv"
                         android:layout_width="match_parent"
                         android:layout_height="250dp" />

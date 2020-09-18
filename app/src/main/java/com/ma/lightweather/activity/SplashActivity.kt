@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.view.View
@@ -23,9 +24,12 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
+import com.ma.lightweather.fragment.FrogWeatherFragment
 import com.ma.lightweather.utils.CommonUtils
+import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.PhotoUtils
 import com.ma.lightweather.utils.SharedPrefencesUtils
+import org.json.JSONException
 import java.util.concurrent.ExecutionException
 
 class SplashActivity : BaseActivity(), View.OnClickListener {
@@ -36,6 +40,9 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     private var countDownTimer: CountDownTimer? = null
     private var mPermissionList = arrayListOf<String>()
     private val permissions= arrayOf(WRITE_EXTERNAL_STORAGE, ACCESS_FINE_LOCATION)
+
+    private val DOWNLOAD_CODE = 200
+    private val PERMISSION_CODE = 13
     private val handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -52,6 +59,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_splash)
         initView()
         getBingImg()
+        loadData()
         checkPermission()
     }
 
@@ -59,7 +67,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         val requestQueue = Volley.newRequestQueue(this)
         val stringRequest = StringRequest(Request.Method.GET, Contants.BINGURL,
                 Response.Listener<String> { response ->
-                    SharedPrefencesUtils.setParam(this@SplashActivity, Contants.BING, response)
+                    SharedPrefencesUtils.setParam(this, Contants.BING, response)
                 },
                 Response.ErrorListener {
 
@@ -76,8 +84,8 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initData() {
-        Glide.with(this@SplashActivity)
-                .load(SharedPrefencesUtils.getParam(this@SplashActivity, Contants.BING, ""))
+        Glide.with(this)
+                .load(SharedPrefencesUtils.getParam(this, Contants.BING, ""))
                 .error(R.mipmap.splash)
                 .into(backIv!!)
         countDownTimer = object : CountDownTimer(4000, 1000) {
@@ -115,14 +123,14 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                     CommonUtils.showShortSnackBar(downloadIv, getString(R.string.splash_read_permission_text))
                     return
                 }
-                var url:String=SharedPrefencesUtils.getParam(this@SplashActivity, Contants.BING, "") as String
+                var url:String=SharedPrefencesUtils.getParam(this, Contants.BING, "") as String
                 if(url.isNullOrEmpty()){
                     return
                 }
                 Thread(Runnable {
                     var bitmap: Bitmap? = null
                     try {
-                        bitmap = Glide.with(this@SplashActivity)
+                        bitmap = Glide.with(this)
                                 .load(url)
                                 .asBitmap()
                                 .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
@@ -133,7 +141,7 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                         e.printStackTrace()
                     }
 
-                    val isSave = PhotoUtils.saveImageToGallery(this@SplashActivity, bitmap!!)
+                    val isSave = PhotoUtils.saveImageToGallery(this, bitmap!!)
                     if (isSave) {
                         handler.sendEmptyMessage(DOWNLOAD_CODE)
                     }
@@ -147,9 +155,46 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
     }
 
     fun toMain() {
-        val it= Intent(this@SplashActivity, MainActivity::class.java)
+        val it= Intent(this, MainActivity::class.java)
         startActivity(it)
         finish()
+    }
+
+
+    //加载上部数据
+    fun loadData() {
+        val city=SharedPrefencesUtils.getParam(this, Contants.CITY, Contants.CITYNAME) as String
+        val requestQueue = Volley.newRequestQueue(this)
+        val stringRequest = StringRequest(Request.Method.GET, Contants.WEATHER_AIR + city,
+                Response.Listener { response ->
+                    try {
+                        SharedPrefencesUtils.setParam(this, Contants.WEATHER_AQI_JSON, response)
+                        getWeather(city)
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                Response.ErrorListener {
+
+                })
+        requestQueue.add(stringRequest)
+    }
+
+
+    private fun getWeather(city:String?){
+        val requestQueue = Volley.newRequestQueue(this)
+        val stringRequest = StringRequest(Request.Method.GET, Contants.WEATHER_ALL + city,
+                Response.Listener { response ->
+                    try {
+                        SharedPrefencesUtils.setParam(this, Contants.WEATHER_JSON, response)
+                    } catch (e: JSONException) {
+                        e.printStackTrace()
+                    }
+                },
+                Response.ErrorListener {
+                })
+        requestQueue.add(stringRequest)
+
     }
 
     override fun onDestroy() {
@@ -175,10 +220,5 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
                 initData()
             }
         }
-    }
-
-    companion object {
-        private const val DOWNLOAD_CODE = 200
-        private const val PERMISSION_CODE = 13
     }
 }

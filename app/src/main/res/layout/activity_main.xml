@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@color/app_background"
     android:orientation="vertical">
     <LinearLayout
@@ -12,6 +13,9 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolBar"
             style="@style/AppToolbar">
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/toolBarSearch"
+                style="@style/ToolBarSearch" />
         </androidx.appcompat.widget.Toolbar>
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabLayout"
@@ -34,7 +38,9 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/nav_header">
+
 
     </com.google.android.material.navigation.NavigationView>
 </androidx.drawerlayout.widget.DrawerLayout>

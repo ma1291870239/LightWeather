@@ -2,13 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-    <ExpandableListView
-        android:id="@+id/expand_lv"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:dividerHeight="0.1dp"
-        android:divider="@color/divider_white_text"
-        android:groupIndicator="@null"/>
+        android:layout_height="match_parent">
+        <ExpandableListView
+            android:id="@+id/expand_lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="0.1dp"
+            android:divider="@color/divider_white_text"
+            android:scrollbars="none"
+            android:groupIndicator="@null"/>
 
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </LinearLayout>

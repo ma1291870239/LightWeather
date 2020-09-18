@@ -29,6 +29,7 @@ import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.CardTextView
 import com.ma.lightweather.widget.HourWeatherView
 import com.ma.lightweather.widget.WeatherView
@@ -261,8 +262,8 @@ class WeatherFragment : BaseFragment() {
         uvTv = view?.findViewById(R.id.uvTextView)
         weatherLayout=view?.findViewById(R.id.weatherLayout)
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
-        weatherLayout?.setBackgroundResource(CommonUtils.getTextColor(mContext))
-        swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
+        weatherLayout?.setBackgroundResource(WeatherUtils.getTextColor(mContext))
+        swipeRefreshLayout?.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
 
         swipeRefreshLayout?.setOnRefreshListener { loadData(city) }
     }

@@ -17,6 +17,7 @@ import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.DbUtils
 import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.WeatherUtils
 
 /**
  * Created by Ma-PC on 2016/12/14.
@@ -41,7 +42,7 @@ class CityWeatherAdapter(private val context: Context, private val weatherList: 
             holder.dateTv.text=weatherList[i].update.loc
         }
         holder.qltyTv.text=weatherList[i].qlty
-        holder.weatherIv.setImageResource(CommonUtils.getWeatherIcon(weatherList[i].now.cond_txt))
+        holder.weatherIv.setImageResource(WeatherUtils.getWeatherIcon(weatherList[i].now.cond_txt))
         holder.weatherLayout.setOnClickListener {
             if (context is MainActivity) {
                 context.refresh(weatherList[i].basic.location, true)

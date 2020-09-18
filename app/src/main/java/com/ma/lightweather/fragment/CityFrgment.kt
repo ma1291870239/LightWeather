@@ -14,6 +14,7 @@ import com.ma.lightweather.adapter.CityWeatherAdapter
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.DbUtils
+import com.ma.lightweather.utils.WeatherUtils
 import java.util.*
 
 /**
@@ -54,7 +55,7 @@ class CityFrgment : BaseFragment() {
     private fun initView(view: View?) {
         recyclerView = view?.findViewById(R.id.recyclerView)
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
-        swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
+        swipeRefreshLayout?.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
         swipeRefreshLayout?.setOnRefreshListener { initData() }
 
         val layoutManager = LinearLayoutManager(mContext)

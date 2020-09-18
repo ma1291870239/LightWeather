@@ -1,24 +1,33 @@
 package com.ma.lightweather.activity
 
-import android.app.Activity
+import android.app.ActivityManager
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.view.*
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
+import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.ma.lightweather.R
+import com.ma.lightweather.adapter.CityWeatherAdapter
+import com.ma.lightweather.adapter.NavCityAdapter
 import com.ma.lightweather.fragment.*
+import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
+import com.ma.lightweather.utils.DbUtils
+import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.WeatherViewPager
 import java.util.*
 import kotlin.system.exitProcess
@@ -36,16 +45,23 @@ class MainActivity : BaseActivity() {
     private var toolBar: Toolbar? = null
     private var searchView:SearchView?=null
     private var tabLayout: TabLayout? = null
+    private var navigationView: NavigationView? = null
+    private var navHeaderLayout:RelativeLayout? = null
+    private var navImgView: ImageView? = null
+    private var navTextView: TextView? = null
+    private var recyclerView: RecyclerView? = null
     private val fragmentList = ArrayList<Fragment>()
     private val titleList = ArrayList<String>()
+    private val weatherList = ArrayList<Weather>()
+    private var navCityAdapter:NavCityAdapter? = null
     private var clickTime: Long = 0
-    private var navigationView: NavigationView? = null
+    private val backTime: Long = 2000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
-        //setSearch()
+        setSearch()
         //initOldData()
         initNewData()
     }
@@ -96,9 +112,20 @@ class MainActivity : BaseActivity() {
         toolBar?.inflateMenu(R.menu.toolbar_menu)
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
+        navigationView=findViewById(R.id.navigation_view)
+        navHeaderLayout=navigationView?.getHeaderView(0)?.findViewById(R.id.nav_layout)
+        navImgView=navigationView?.getHeaderView(0)?.findViewById(R.id.nav_iv)
+        navTextView=navigationView?.getHeaderView(0)?.findViewById(R.id.nav_text)
+        recyclerView=navigationView?.getHeaderView(0)?.findViewById(R.id.nav_recyclerView)
         viewPager?.offscreenPageLimit = 2
         viewPager?.currentItem = 0
         setSupportActionBar(toolBar)
+
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = LinearLayoutManager.VERTICAL
+        recyclerView?.layoutManager = layoutManager
+        val divider = DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
+        recyclerView?.addItemDecoration(divider)
     }
 
     private fun setSearch(){
@@ -131,19 +158,41 @@ class MainActivity : BaseActivity() {
             viewPager?.currentItem = 0
         }
         weatherFrag?.loadData(city)
+        frogWeatherFrag?.loadData(city)
     }
 
     fun refreshCity() {
         cityFrag?.initData()
+        getNavCity()
     }
 
     fun setWeatherBack(cond:String) {
-        var color=CommonUtils.getColorWeatherTheme(cond)
+        var color= WeatherUtils.getColorWeatherTheme(cond)
         toolBar?.setBackgroundColor(ContextCompat.getColor(this,color))
         tabLayout?.setBackgroundColor(ContextCompat.getColor(this,color))
+        navHeaderLayout?.setBackgroundColor(ContextCompat.getColor(this,WeatherUtils.getColorWeatherBack(cond)))
+        navImgView?.setImageResource(WeatherUtils.getColorWeatherIcon(cond))
+        navTextView?.text=cond
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            val tDesc = ActivityManager.TaskDescription(getString(R.string.app_name),
+                    BitmapFactory.decodeResource(resources, R.drawable.ic_app_launcher),
+                    ContextCompat.getColor(this,color))
+            setTaskDescription(tDesc)
+        }
         setStatusColor(color)
     }
 
+    fun getNavCity() {
+        weatherList.clear()
+        weatherList.addAll(DbUtils.queryDb(this))
+        if (navCityAdapter == null) {
+            navCityAdapter = NavCityAdapter(this, weatherList)
+            recyclerView?.adapter = navCityAdapter
+        } else {
+            navCityAdapter?.notifyDataSetChanged()
+        }
+    }
 //    override fun onCreateOptionsMenu(menu: Menu): Boolean {
 //        menuInflater.inflate(R.menu.toolbar_menu, menu)
 //        val item = menu.findItem(R.id.toolBarSearch)
@@ -195,7 +244,7 @@ class MainActivity : BaseActivity() {
     }
 
     private fun exit() {
-        if (System.currentTimeMillis() - clickTime > 2000) {
+        if (System.currentTimeMillis() - clickTime > backTime) {
             CommonUtils.showShortSnackBar(tabLayout, getString(R.string.main_exit_text))
             clickTime = System.currentTimeMillis()
         } else {
@@ -207,7 +256,6 @@ class MainActivity : BaseActivity() {
 
     // 获取点击事件
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        // TODO Auto-generated method stub
         if (ev.action == MotionEvent.ACTION_DOWN) {
             val view = currentFocus
             if (isHideInput(view, ev)) {

@@ -36,27 +36,27 @@ class SettingActivity : BaseActivity(), CompoundButton.OnCheckedChangeListener {
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
         when (buttonView.id) {
             R.id.notifySwitch -> {
-                SharedPrefencesUtils.setParam(this@SettingActivity, Contants.NOTIFY, isChecked)
+                SharedPrefencesUtils.setParam(this, Contants.NOTIFY, isChecked)
                 if (isChecked) {
-                    val it = Intent(this@SettingActivity, WeatherService::class.java)
+                    val it = Intent(this, WeatherService::class.java)
                     startService(it)
                 } else {
-                    val it  = Intent(this@SettingActivity, WeatherService::class.java)
+                    val it  = Intent(this, WeatherService::class.java)
                     stopService(it)
                 }
             }
             R.id.statusSwitch -> {
-                SharedPrefencesUtils.setParam(this@SettingActivity, Contants.STATUS, isChecked)
+                SharedPrefencesUtils.setParam(this, Contants.STATUS, isChecked)
                 if (isChecked) {
-                    val it = Intent(this@SettingActivity, WeatherService::class.java)
+                    val it = Intent(this, WeatherService::class.java)
                     startService(it)
                 } else {
-                    val it  = Intent(this@SettingActivity, WeatherService::class.java)
+                    val it  = Intent(this, WeatherService::class.java)
                     stopService(it)
                 }
             }
             R.id.lifeSwitch -> {
-                SharedPrefencesUtils.setParam(this@SettingActivity, Contants.LIFE, isChecked)
+                SharedPrefencesUtils.setParam(this, Contants.LIFE, isChecked)
                 if (isChecked) {
 
                 } else {

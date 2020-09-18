@@ -20,6 +20,7 @@ import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.HourWeatherView
 import org.json.JSONException
 
@@ -133,7 +134,7 @@ class WeatherService : Service() {
 
     private fun setWeatherMsg(notification: NotificationCompat.Builder) {
         for (i in weatherList!!.indices) {
-            val icon=CommonUtils.getWeatherIcon(weatherList!![i].now.cond_txt)
+            val icon=WeatherUtils.getWeatherIcon(weatherList!![i].now.cond_txt)
             val vectorDrawableCompat=VectorDrawableCompat.create(resources,icon,theme)
             vectorDrawableCompat?.setTint(ContextCompat.getColor(applicationContext,R.color.primary_black_text))
             notification.setSmallIcon(icon)

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="ColorPrimary">#00000000</color>
+    <color name="ColorPrimaryDark">#00000000</color>
+    <color name="ColorAccent">#00000000</color>
+
     <color name="cyanColorPrimary">#00BCD4</color>
     <color name="cyanColorPrimaryDark">#0097A7</color>
     <color name="cyanColorAccent">#00BCD4</color>
@@ -70,6 +74,7 @@
     <color name="weather_back_snow">#A8A7AC</color>
     <color name="weather_back_wind">#42B8DD</color>
     <color name="weather_back_fog">#A79C98</color>
+    <color name="weather_back_unknow">#9CABA1</color>
 
     <color name="weather_theme_sunny">#1498cb</color>
     <color name="weather_theme_cloud">#59a0c5</color>
@@ -78,4 +83,5 @@
     <color name="weather_theme_snow">#909095</color>
     <color name="weather_theme_wind">#3f9dbc</color>
     <color name="weather_theme_fog">#908784</color>
+    <color name="weather_theme_unknow">#87938c</color>
 </resources>

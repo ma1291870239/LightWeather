@@ -9,6 +9,7 @@ import android.location.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -35,6 +36,7 @@ import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.CardTextView
 import com.ma.lightweather.widget.HourFrogWeatherView
 import com.ma.lightweather.widget.WeatherView
@@ -65,7 +67,6 @@ class FrogWeatherFragment: BaseFragment() {
     private var aqiLevelTv: TextView? = null
     private var aqimainTv: TextView? = null
     private var airTv: TextView? = null
-    private var weatherLayout: TextView? = null
     private var sunriseTv: TextView? = null
     private var sunsetTv: TextView? = null
     private var suntimeTv: TextView? = null
@@ -106,16 +107,18 @@ class FrogWeatherFragment: BaseFragment() {
                 swipeRefreshLayout?.isRefreshing = false
                 scrollView?.scrollTo(0, 0)
                 for (i in weatherList!!.indices) {
-                    timetv?.text=CommonUtils.changeTimeFormat(weatherList!![i].update.loc)
+                    val dates=CommonUtils.changeTimeFormat(weatherList!![i].update.loc)
+                    timetv?.text=dates[1]+"月"+dates[2]+"日"+" "+""+dates[3]+":"+dates[4]
                     maxmintmptv?.text="白天气温："+weatherList!![i].daily_forecast[0].tmp_max+ "℃ · "+
                             "夜晚气温："+weatherList!![i].daily_forecast[0].tmp_min+ "℃"
                     tmptv?.text = weatherList!![i].now.tmp
                     feeltv?.text ="体感温度：" +weatherList!![i].now.fl+ "℃"
-                    val cond=weatherList!![i].now.cond_txt
+                    var cond=weatherList!![i].now.cond_txt
+                    //cond="阴"
                     condtv?.text =cond
-                    ivTop?.setImageResource(CommonUtils.getColorWeatherIcon(cond))
-                    ivBottom?.setImageResource(CommonUtils.getColorWeatherBack(cond))
-                    relativeLayout1?.setBackgroundColor(ContextCompat.getColor(context!!,CommonUtils.getColorWeatherBackColor(cond)))
+                    ivTop?.setImageResource(WeatherUtils.getColorWeatherIcon(cond))
+                    ivBottom?.setImageResource(WeatherUtils.getColorWeatherImg(cond))
+                    relativeLayout1?.setBackgroundColor(ContextCompat.getColor(context!!,WeatherUtils.getColorWeatherBack(cond)))
                     (activity as MainActivity).setWeatherBack(cond)
                     humtv?.text = "" + weatherList!![i].now.hum + " %"
                     pcpntv?.text = "日降水总量  " + weatherList!![i].now.pcpn + " 毫米"
@@ -208,11 +211,23 @@ class FrogWeatherFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.frag_frogweather, null)
-        city = SharedPrefencesUtils.getParam(mContext, Contants.CITY, Contants.CITYNAME) as String
+        val weatherJson = SharedPrefencesUtils.getParam(context, Contants.WEATHER_JSON, "") as String
+        val weatherAqiJson = SharedPrefencesUtils.getParam(context, Contants.WEATHER_AQI_JSON, "") as String
+        if (weatherJson.isEmpty()||weatherAqiJson.isEmpty()) {
+            return view
+        }
         if (isAdded) {
             initView(view)
             setViewHeight()
-            loadData("广州")
+            airList= Parse.parseAir(weatherAqiJson, weatherView, hourWeatherView, mContext)
+            weatherList = Parse.parseWeather(weatherJson, weatherView, hourWeatherView, mContext)
+            handler.sendEmptyMessage(WEATHER_SUCCESE)
+            (activity as MainActivity).refreshCity()
+            if (SharedPrefencesUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
+                val it = Intent(mContext, WeatherService::class.java)
+                mContext.startService(it)
+            }
+            //loadData(city)
             //requestLocationPermission()
         }
         return view
@@ -223,11 +238,11 @@ class FrogWeatherFragment: BaseFragment() {
 //        val height:Int=metrics.bounds.height()
         val display: Display = (activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val width :Int=display.width
-        val height:Int=display.height
-        relativeLayout1?.layoutParams?.height=height-CommonUtils.dp2px(activity!!,83f)
-        relativeLayout2?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,217f)
-        textView?.layoutParams?.height=height-CommonUtils.dp2px(activity!!,83f)
-        appBarLayout?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,217f)
+        val height:Int=display.height-CommonUtils.getStatusBarHeight(activity!!)-CommonUtils.dp2px(activity!!,50f+40f)
+        relativeLayout1?.layoutParams?.height=height
+        relativeLayout2?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,250f)
+        textView?.layoutParams?.height=height
+        appBarLayout?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,250f)
         val lp = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
         lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
         ivBottom?.layoutParams=lp
@@ -235,7 +250,7 @@ class FrogWeatherFragment: BaseFragment() {
 
     fun setLayourEnable(verticalOffset: Int?) {
         swipeRefreshLayout?.isEnabled = verticalOffset!! >=0
-        var offset=(300+CommonUtils.px2dp(activity!!,verticalOffset.toFloat()))/300f
+        var offset=(250+CommonUtils.px2dp(activity!!,verticalOffset.toFloat()))/250f
         if(0<offset&&offset<1) {
             ivBottom?.alpha = offset
         }
@@ -262,6 +277,7 @@ class FrogWeatherFragment: BaseFragment() {
                     } else{
                         handler.sendEmptyMessage(WEATHER_ERROR)
                     }
+                    Log.e("abc4",""+System.currentTimeMillis())
                 },
                 Response.ErrorListener {
                     swipeRefreshLayout?.isRefreshing = false
@@ -324,7 +340,6 @@ class FrogWeatherFragment: BaseFragment() {
         hourWeatherView = view?.findViewById(R.id.hourweather_view)
         weatherLife = view?.findViewById(R.id.weather_life)
         airTv = view?.findViewById(R.id.airTextView)
-        weatherLayout=view?.findViewById(R.id.weatherLayout)
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
         appBarLayout=view?.findViewById(R.id.appBarLayout)
         relativeLayout1=view?.findViewById(R.id.relativeLayout1)
@@ -344,8 +359,7 @@ class FrogWeatherFragment: BaseFragment() {
         windManager.orientation=LinearLayoutManager.HORIZONTAL
         popRv?.layoutManager=popManager
         windRv?.layoutManager=windManager
-        weatherLayout?.setBackgroundResource(CommonUtils.getTextColor(mContext))
-        swipeRefreshLayout?.setColorSchemeResources(CommonUtils.getBackColor(mContext))
+        swipeRefreshLayout?.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
         appBarLayout?.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener { _, p1 -> setLayourEnable(p1) })
         swipeRefreshLayout?.setOnRefreshListener { loadData(city) }
     }

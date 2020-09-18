@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/item_weather"
+    android:padding="@dimen/padding_8">
+
+    <ImageView
+        android:id="@+id/item_weathericon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitXY" />
+
+    <TextView
+        android:id="@+id/item_tmp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/margin_16"
+        android:layout_marginLeft="@dimen/margin_16"
+        android:layout_toRightOf="@+id/item_weathericon"
+        android:textSize="@dimen/text_21"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center_vertical"/>
+    <TextView
+        android:layout_marginRight="16dp"
+        android:id="@+id/item_city"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/text_13"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center_vertical"/>
+    <TextView
+        android:id="@+id/item_date"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@id/item_city"
+        android:layout_alignParentRight="true"
+        android:textSize="@dimen/text_13"
+        android:textColor="@color/primary_black_text"
+        android:gravity="center"/>
+
+</RelativeLayout>

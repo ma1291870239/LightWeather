@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import com.ma.lightweather.R
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
+import com.ma.lightweather.utils.WeatherUtils
 
 class FutureDaysAdapter(private val context: Context, private val futureList: List<Weather.DailyWeather>) :BaseExpandableListAdapter(){
     override fun getGroup(p0: Int): Any {
@@ -34,12 +35,13 @@ class FutureDaysAdapter(private val context: Context, private val futureList: Li
         val futerweLowTv: TextView? =view?.findViewById(R.id.future_low)
         val futerweImgIv: ImageView? =view?.findViewById(R.id.future_icon)
         val rlLayout: RelativeLayout? =view?.findViewById(R.id.rlLayout)
-        futerweDateTv?.text=CommonUtils.changeTimeFormat(futureList[p0].date)
+        val dates=CommonUtils.changeTimeFormat(futureList[p0].date)
+        futerweDateTv?.text==dates[1]+"月"+dates[2]+"日"+" "+""+dates[3]+":"+dates[4]
         futerweWeatherTv?.text=futureList[p0].cond_txt_d
         futerweHighTv?.text=futureList[p0].tmp_max+"℃"
         futerweLowTv?.text=futureList[p0].tmp_min+"℃"
-        futerweImgIv?.setImageResource(CommonUtils.getColorWeatherIcon(futureList[p0].cond_txt_d))
-        rlLayout?.setBackgroundColor(ContextCompat.getColor(context!!,CommonUtils.getColorWeatherBackColor(futureList[p0].cond_txt_d)))
+        futerweImgIv?.setImageResource(WeatherUtils.getColorWeatherIcon(futureList[p0].cond_txt_d))
+        rlLayout?.setBackgroundColor(ContextCompat.getColor(context!!,WeatherUtils.getColorWeatherBack(futureList[p0].cond_txt_d)))
         return view
     }
 

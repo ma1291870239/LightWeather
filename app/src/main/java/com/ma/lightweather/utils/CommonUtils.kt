@@ -1,15 +1,15 @@
 package com.ma.lightweather.utils
 
 import android.content.Context
+import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.ma.lightweather.R
-import com.ma.lightweather.app.Contants
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -132,180 +132,6 @@ object CommonUtils {
         return false
     }
 
-    fun getBackColor(context: Context): Int {
-        val themeTag = SharedPrefencesUtils.getParam(context, Contants.THEME, 0) as Int
-        return when (themeTag) {
-            0 -> R.color.cyanColorPrimaryDark
-            1 -> R.color.purpleColorPrimaryDark
-            2 -> R.color.redColorPrimaryDark
-            3 -> R.color.pinkColorPrimaryDark
-            4 -> R.color.greenColorPrimaryDark
-            5 -> R.color.blueColorPrimaryDark
-            6 -> R.color.orangeColorPrimaryDark
-            7 -> R.color.greyColorPrimaryDark
-            else -> R.color.cyanColorPrimaryDark
-        }
-    }
-
-
-    fun getTextColor(context: Context): Int {
-        val themeTag = SharedPrefencesUtils.getParam(context, Contants.THEME, 0) as Int
-        return when (themeTag) {
-            0 -> R.color.cyanColorPrimary
-            1 -> R.color.purpleColorPrimary
-            2 -> R.color.redColorPrimary
-            3 -> R.color.pinkColorPrimary
-            4 -> R.color.greenColorPrimary
-            5 -> R.color.blueColorPrimary
-            6 -> R.color.orangeColorPrimary
-            7 -> R.color.greyColorPrimary
-            else -> R.color.primary_black_text
-        }
-    }
-
-
-    fun getWeatherIcon(condTxt:String):Int {
-        if (condTxt.contains("云")) {
-            return R.drawable.ic_cloudy
-        }
-        if (condTxt.contains("阴")) {
-            return R.drawable.ic_shade
-        }
-        if (condTxt.contains("雨")) {
-            return R.drawable.ic_rain
-        }
-        if (condTxt.contains("雪")) {
-            return R.drawable.ic_snow
-        }
-        if (condTxt.contains("雾")) {
-            return R.drawable.ic_fog
-        }
-        if (condTxt.contains("霾")) {
-            return R.drawable.ic_smog
-        }
-        if (condTxt.contains("风")) {
-            return R.drawable.ic_wind
-        }
-        if (condTxt.contains("晴")||condTxt.contains("静")) {
-            return R.drawable.ic_sunny
-        }
-        if (condTxt.contains("沙")||condTxt.contains("尘")) {
-            return R.drawable.ic_sand
-        }
-        return R.drawable.ic_unknow
-    }
-
-    fun getColorWeatherIcon(condTxt:String):Int {
-        if (condTxt.contains("云")) {
-            return R.mipmap.ic_cloudy
-        }
-        if (condTxt.contains("阴")) {
-            return R.mipmap.ic_shadow
-        }
-        if (condTxt.contains("雨")) {
-            return R.mipmap.ic_rain
-        }
-        if (condTxt.contains("雪")) {
-            return R.mipmap.ic_snow
-        }
-        if (condTxt.contains("风")) {
-            return R.mipmap.ic_wind
-        }
-        if (condTxt.contains("晴")||condTxt.contains("静")) {
-            return R.mipmap.ic_sunny
-        }
-        if (condTxt.contains("雾")
-                ||condTxt.contains("霾")
-                ||condTxt.contains("沙")
-                ||condTxt.contains("尘")) {
-            return R.mipmap.ic_fog
-        }
-        return R.drawable.ic_unknow
-    }
-
-    fun getColorWeatherBack(condTxt:String):Int {
-        if (condTxt.contains("云")) {
-            return R.mipmap.ic_cloudy_back
-        }
-        if (condTxt.contains("阴")) {
-            return R.mipmap.ic_shadow_back
-        }
-        if (condTxt.contains("雨")) {
-            return R.mipmap.ic_rain_back
-        }
-        if (condTxt.contains("雪")) {
-            return R.mipmap.ic_snow_back
-        }
-        if (condTxt.contains("风")) {
-            return R.mipmap.ic_wind_back
-        }
-        if (condTxt.contains("晴")||condTxt.contains("静")) {
-            return R.mipmap.ic_sunny_back
-        }
-        if (condTxt.contains("雾")
-                ||condTxt.contains("霾")
-                ||condTxt.contains("沙")
-                ||condTxt.contains("尘")) {
-            return R.mipmap.ic_fog_back
-        }
-        return R.drawable.ic_unknow
-    }
-
-    fun getColorWeatherBackColor(condTxt:String):Int {
-        if (condTxt.contains("云")) {
-            return R.color.weather_back_cloud
-        }
-        if (condTxt.contains("阴")) {
-            return R.color.weather_back_shadow
-        }
-        if (condTxt.contains("雨")) {
-            return R.color.weather_back_rain
-        }
-        if (condTxt.contains("雪")) {
-            return R.color.weather_back_snow
-        }
-        if (condTxt.contains("风")) {
-            return R.color.weather_back_wind
-        }
-        if (condTxt.contains("晴")||condTxt.contains("静")) {
-            return R.color.weather_back_sunny
-        }
-        if (condTxt.contains("雾")
-                ||condTxt.contains("霾")
-                ||condTxt.contains("沙")
-                ||condTxt.contains("尘")) {
-            return R.color.weather_back_fog
-        }
-        return R.drawable.ic_unknow
-    }
-
-    fun getColorWeatherTheme(condTxt:String):Int {
-        if (condTxt.contains("云")) {
-            return R.color.weather_theme_cloud
-        }
-        if (condTxt.contains("阴")) {
-            return R.color.weather_theme_shadow
-        }
-        if (condTxt.contains("雨")) {
-            return R.color.weather_theme_rain
-        }
-        if (condTxt.contains("雪")) {
-            return R.color.weather_theme_snow
-        }
-        if (condTxt.contains("风")) {
-            return R.color.weather_theme_wind
-        }
-        if (condTxt.contains("晴")||condTxt.contains("静")) {
-            return R.color.weather_theme_sunny
-        }
-        if (condTxt.contains("雾")
-                ||condTxt.contains("霾")
-                ||condTxt.contains("沙")
-                ||condTxt.contains("尘")) {
-            return R.color.weather_theme_fog
-        }
-        return R.drawable.ic_unknow
-    }
 
     /**
      * dp转换成px
@@ -339,6 +165,12 @@ object CommonUtils {
         return (pxValue / fontScale + 0.5f).toInt()
     }
 
+    fun getStatusBarHeight(context: Context): Int {
+        val resources: Resources = context.resources
+        val resourceId: Int = resources.getIdentifier("status_bar_height", "dimen", "android")
+        return resources.getDimensionPixelSize(resourceId)
+    }
+
     fun compressBitmap(bitmap: Bitmap): Bitmap {
         val ratio = 3
         return if (bitmap.height >= 1000 || bitmap.width >= 1000) {
@@ -346,28 +178,33 @@ object CommonUtils {
         } else bitmap
     }
 
-    fun changeTimeFormat(date: String): String {
+    fun changeTimeFormat(date: String): List<String> {
+        var dates=listOf<String>()
+        var years=listOf<String>()
+        var times=listOf<String>()
         if(date==null){
-            return ""
+            return dates
         }
-        var dates= listOf<String>()
-        var years= listOf<String>()
         if(date.contains(" ")) {
             dates = date.split(" ")
-            years = listOf()
-            if (dates.size >= 2) {
-                years = dates[0].split("-")
+            if(dates.size>=2&&dates[0].contains("-")){
+                years=dates[0].split("-")
+            }
+            if(dates.size>=2&&dates[1].contains(":")){
+                times=dates[1].split(":")
             }
         }else if(date.contains("-")) {
             years=date.split("-")
+        }else if(date.contains(":")) {
+            times=date.split(":")
         }
         if(years.size<3){
             years = listOf("","","")
         }
-        if(dates.size<2){
-            dates = listOf("","")
+        if(times.size<2){
+            times = listOf("","")
         }
-        return ""+years[1].toInt()+"月"+years[2].toInt()+"日 "+dates[1]
+        return listOf(years[0],years[1],years[2],times[0],times[1])
     }
 
     fun getTimeFormat(date: String): Array<Int> {

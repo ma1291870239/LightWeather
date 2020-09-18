@@ -13,6 +13,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import com.ma.lightweather.R
 import com.ma.lightweather.utils.CommonUtils
+import com.ma.lightweather.utils.WeatherUtils
 import java.util.*
 
 class ActionSheetDialog(private val context: Context) {
@@ -150,7 +151,7 @@ class ActionSheetDialog(private val context: Context) {
 
             // 字体颜色
             if (color == null) {
-                textView.setTextColor(ContextCompat.getColor(context,CommonUtils.getTextColor(context)))
+                textView.setTextColor(ContextCompat.getColor(context, WeatherUtils.getTextColor(context)))
             } else {
                 textView.setTextColor(Color.parseColor(color.name))
             }

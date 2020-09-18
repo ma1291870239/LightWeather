@@ -1,9 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <ImageView
+    <RelativeLayout
+        android:id="@+id/nav_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-</LinearLayout>
+        android:layout_height="180dp"
+        android:paddingTop="50dp"
+        android:gravity="center_horizontal">
+        <ImageView
+            android:id="@+id/nav_iv"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitXY"/>
+        <TextView
+            android:id="@+id/nav_text"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/primary_white_text"
+            android:gravity="center"
+            android:layout_below="@id/nav_iv"/>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/nav_recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/nav_layout"/>
+</RelativeLayout>
