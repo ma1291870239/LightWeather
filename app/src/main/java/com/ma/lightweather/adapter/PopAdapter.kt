@@ -30,6 +30,7 @@ class PopAdapter(private val context: Context, private val popList: List<Weather
             holder.popTv.gravity=Gravity.CENTER_VERTICAL
             holder.popCloudTv.text = "云量"
             holder.popCloudTv.gravity=Gravity.CENTER_VERTICAL
+            holder.popIv.setImageResource(0)
         }else {
             holder.popTv.text = popList[position-1].pop + "%"
             when(popList[position-1].pop.toInt()){

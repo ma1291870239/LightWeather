@@ -271,11 +271,11 @@ class WeatherFragment : BaseFragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser && isResumed) {
-            val isShow=SharedPrefencesUtils.getParam(activity, Contants.LIFE, true) as Boolean
-            if (isShow){
-                weatherLife?.visibility=View.VISIBLE
-            }else{
+            val closeLife=SharedPrefencesUtils.getParam(activity, Contants.LIFE, false) as Boolean
+            if (closeLife){
                 weatherLife?.visibility=View.GONE
+            }else{
+                weatherLife?.visibility=View.VISIBLE
             }
         }
     }

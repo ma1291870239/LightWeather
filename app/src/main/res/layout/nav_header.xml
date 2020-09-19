@@ -17,6 +17,7 @@
             android:id="@+id/nav_text"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_8"
             android:textColor="@color/primary_white_text"
             android:gravity="center"
             android:layout_below="@id/nav_iv"/>

@@ -1,17 +1,22 @@
 package com.ma.lightweather.utils
 
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageInfo
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
+import android.net.Uri
 import android.view.View
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.ma.lightweather.R
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 /**
  * Created by Aeolus on 2018/6/5.
@@ -114,22 +119,6 @@ object CommonUtils {
         }
 
         return bitmap
-    }
-
-
-    fun isContains(context: Context, packageName: String): Boolean {
-        val packageManager = context.packageManager
-        val packageInfoList = packageManager.getInstalledPackages(0)
-        val nameList = ArrayList<String>()
-        if (packageInfoList != null) {
-            for (i in packageInfoList.indices) {
-                val name = packageInfoList[i].packageName
-                if (name == packageName) {
-                    return true
-                }
-            }
-        }
-        return false
     }
 
 
@@ -245,6 +234,54 @@ object CommonUtils {
         } else {
             "下午" + (time24 - 12)
         }
+    }
+
+
+    fun getVersion(context: Context): String? {
+        return try {
+            val manager: PackageManager = context.packageManager
+            val info: PackageInfo = manager.getPackageInfo(context.packageName, 0)
+            val version = info.versionName
+            "V $version"
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "找不到版本号"
+        }
+    }
+
+
+    fun isContains(context: Context, packageName: String): Boolean {
+        val packageManager = context.packageManager
+        val packageInfoList = packageManager.getInstalledPackages(0)
+        val nameList = ArrayList<String>()
+        if (packageInfoList != null) {
+            for (i in packageInfoList.indices) {
+                val name = packageInfoList[i].packageName
+                if (name == packageName) {
+                    return true
+                }
+            }
+        }
+        return false
+    }
+
+    fun goToMarket(context: Context) {
+        val uri = Uri.parse("market://details?id=" + context.packageName)
+        val goToMarket = Intent(Intent.ACTION_VIEW, uri)
+        try {
+            if (isContains(context, "com.tencent.android.qqdownloader")) {
+                goToMarket.setPackage("com.tencent.android.qqdownloader")
+            }else if (isContains(context, "com.coolapk.market")) {
+                goToMarket.setPackage("com.coolapk.market")
+            }
+            context.startActivity(goToMarket)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.ma.lightweather")
+            context.startActivity(intent)
+        }
+
     }
 
 }

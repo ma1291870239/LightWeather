@@ -213,21 +213,21 @@ class FrogWeatherFragment: BaseFragment() {
         val view = inflater.inflate(R.layout.frag_frogweather, null)
         val weatherJson = SharedPrefencesUtils.getParam(context, Contants.WEATHER_JSON, "") as String
         val weatherAqiJson = SharedPrefencesUtils.getParam(context, Contants.WEATHER_AQI_JSON, "") as String
-        if (weatherJson.isEmpty()||weatherAqiJson.isEmpty()) {
-            return view
-        }
         if (isAdded) {
             initView(view)
             setViewHeight()
-            airList= Parse.parseAir(weatherAqiJson, weatherView, hourWeatherView, mContext)
-            weatherList = Parse.parseWeather(weatherJson, weatherView, hourWeatherView, mContext)
-            handler.sendEmptyMessage(WEATHER_SUCCESE)
-            (activity as MainActivity).refreshCity()
+            if(weatherJson.isNotEmpty()&&weatherAqiJson.isNotEmpty()) {
+                airList = Parse.parseAir(weatherAqiJson, weatherView, hourWeatherView, mContext)
+                weatherList = Parse.parseWeather(weatherJson, weatherView, hourWeatherView, mContext)
+                handler.sendEmptyMessage(WEATHER_SUCCESE)
+                (activity as MainActivity).refreshCity()
+            }
             if (SharedPrefencesUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
                 val it = Intent(mContext, WeatherService::class.java)
                 mContext.startService(it)
             }
-            //loadData(city)
+            city=SharedPrefencesUtils.getParam(activity, Contants.CITY, Contants.CITYNAME) as String
+            loadData(city)
             //requestLocationPermission()
         }
         return view
@@ -277,7 +277,6 @@ class FrogWeatherFragment: BaseFragment() {
                     } else{
                         handler.sendEmptyMessage(WEATHER_ERROR)
                     }
-                    Log.e("abc4",""+System.currentTimeMillis())
                 },
                 Response.ErrorListener {
                     swipeRefreshLayout?.isRefreshing = false

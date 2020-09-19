@@ -34,8 +34,7 @@
                             android:layout_weight="2"
                             android:gravity="center_vertical"
                             android:textSize="@dimen/text_56"
-                            android:textColor="@color/primary_white_text"
-                            tools:ignore="Suspicious0dp" />
+                            android:textColor="@color/primary_white_text" />
                         <TextView
                             style="@style/WeatherFragDetailText"
                             android:id="@+id/weather_feel"

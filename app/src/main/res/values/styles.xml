@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
 
     <style name="DefaultTheme" parent="Theme.AppCompat.Light.NoActionBar">
@@ -111,6 +111,7 @@
         <item name="android:layout_height">50dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:textSize">20dp</item>
     </style>
 
     <style name="ToolBarSearch" >
@@ -124,13 +125,22 @@
         <item name="android:text">@string/app_name</item>
     </style>
 
-    <style name="WeatherFragDetailText" >
+    <style name="FrogWeatherFragDetailText" >
         <item name="android:layout_height">25dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_weight">1</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:textSize">@dimen/text_15</item>
         <item name="android:textColor">@color/primary_black_text</item>
+    </style>
+
+    <style name="WeatherFragDetailText" >
+        <item name="android:layout_height">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">@dimen/text_13</item>
+        <item name="android:textColor">@color/primary_white_text</item>
     </style>
 
     <style name="WeatherFragDetailTextValue" >
@@ -203,7 +213,6 @@
     <style name="SettingTitle" >
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:ems">5</item>
         <item name="android:textSize">@dimen/text_15</item>
         <item name="android:textColor">@color/primary_black_text</item>
         <item name="android:gravity">center_vertical</item>
@@ -216,7 +225,7 @@
         <item name="android:layout_marginLeft">@dimen/margin_8</item>
         <item name="android:textSize">@dimen/text_13</item>
         <item name="android:textColor">@color/secondary_black_text</item>
-        <item name="android:gravity">center_vertical|right</item>
+        <item name="android:gravity">center_vertical|left</item>
     </style>
 
     <style name="SettingSwitch" >

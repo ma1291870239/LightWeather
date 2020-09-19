@@ -7,8 +7,8 @@
 
     <ImageView
         android:id="@+id/item_weathericon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:scaleType="fitXY" />
@@ -21,7 +21,7 @@
         android:layout_marginTop="@dimen/margin_16"
         android:layout_marginLeft="@dimen/margin_16"
         android:layout_toRightOf="@+id/item_weathericon"
-        android:textSize="@dimen/text_21"
+        android:textSize="@dimen/text_15"
         android:textColor="@color/primary_black_text"
         android:gravity="center_vertical"/>
     <TextView

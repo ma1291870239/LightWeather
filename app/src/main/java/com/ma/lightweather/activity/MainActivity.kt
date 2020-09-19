@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
@@ -21,12 +22,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.ma.lightweather.R
-import com.ma.lightweather.adapter.CityWeatherAdapter
 import com.ma.lightweather.adapter.NavCityAdapter
+import com.ma.lightweather.app.Contants
 import com.ma.lightweather.fragment.*
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.DbUtils
+import com.ma.lightweather.utils.SharedPrefencesUtils
 import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.WeatherViewPager
 import java.util.*
@@ -46,6 +48,7 @@ class MainActivity : BaseActivity() {
     private var searchView:SearchView?=null
     private var tabLayout: TabLayout? = null
     private var navigationView: NavigationView? = null
+    private var drawerLayout: DrawerLayout? = null
     private var navHeaderLayout:RelativeLayout? = null
     private var navImgView: ImageView? = null
     private var navTextView: TextView? = null
@@ -62,21 +65,26 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main)
         initView()
         setSearch()
-        //initOldData()
-        initNewData()
+        val oldVersion= SharedPrefencesUtils.getParam(this, Contants.VERSION, false) as Boolean
+        if(oldVersion){
+            initOldData()
+            drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        }else{
+            initNewData()
+            drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        }
     }
 
     override fun recreate() {
-//        try {//避免重启太快 恢复
-//            val fragmentTransaction = supportFragmentManager.beginTransaction()
-//            for (fragment in fragmentList) {
-//                fragmentTransaction.remove(fragment)
-//            }
-//            fragmentTransaction.commitAllowingStateLoss()
-//        } catch (e: Exception) {
-//            CommonUtils.showShortSnackBar(tabLayout,"切换主题失败，请重试")
-//        }
-
+        try {//避免重启太快 恢复
+            val fragmentTransaction = supportFragmentManager.beginTransaction()
+            for (fragment in fragmentList) {
+                fragmentTransaction.remove(fragment)
+            }
+            fragmentTransaction.commitAllowingStateLoss()
+        } catch (e: Exception) {
+            CommonUtils.showShortSnackBar(tabLayout,"切换主题失败，请重试")
+        }
         super.recreate()
     }
 
@@ -89,7 +97,7 @@ class MainActivity : BaseActivity() {
         fragmentList.add(photoFrag!!)
         titleList.add(getString(R.string.main_weather_text))
         titleList.add(getString(R.string.main_city_text))
-        titleList.add(getString(R.string.main_photo_text))
+        titleList.add(getString(R.string.main_setting_text))
         viewPager?.adapter = ViewAdapter(supportFragmentManager)
         tabLayout?.setupWithViewPager(viewPager)
         supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -113,6 +121,7 @@ class MainActivity : BaseActivity() {
         tabLayout = findViewById(R.id.tabLayout)
         viewPager = findViewById(R.id.viewPager)
         navigationView=findViewById(R.id.navigation_view)
+        drawerLayout=findViewById(R.id.drawerLayout)
         navHeaderLayout=navigationView?.getHeaderView(0)?.findViewById(R.id.nav_layout)
         navImgView=navigationView?.getHeaderView(0)?.findViewById(R.id.nav_iv)
         navTextView=navigationView?.getHeaderView(0)?.findViewById(R.id.nav_text)
@@ -292,20 +301,4 @@ class MainActivity : BaseActivity() {
     }
 
 
-    fun setStatusColor(color: Int) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //6.0以上版本
-            // 设置状态栏底色颜色
-            val window: Window = window
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            window.statusBarColor =ContextCompat.getColor(this,color)
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            //5.0以上版本
-            val window: Window = window
-            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-            //6.0以下设置默认黑色状态栏
-            window.statusBarColor = ContextCompat.getColor(this,color)
-        }
-    }
 }

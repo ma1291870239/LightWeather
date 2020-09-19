@@ -59,7 +59,6 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         setContentView(R.layout.activity_splash)
         initView()
         getBingImg()
-        loadData()
         checkPermission()
     }
 
@@ -158,43 +157,6 @@ class SplashActivity : BaseActivity(), View.OnClickListener {
         val it= Intent(this, MainActivity::class.java)
         startActivity(it)
         finish()
-    }
-
-
-    //加载上部数据
-    fun loadData() {
-        val city=SharedPrefencesUtils.getParam(this, Contants.CITY, Contants.CITYNAME) as String
-        val requestQueue = Volley.newRequestQueue(this)
-        val stringRequest = StringRequest(Request.Method.GET, Contants.WEATHER_AIR + city,
-                Response.Listener { response ->
-                    try {
-                        SharedPrefencesUtils.setParam(this, Contants.WEATHER_AQI_JSON, response)
-                        getWeather(city)
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-                },
-                Response.ErrorListener {
-
-                })
-        requestQueue.add(stringRequest)
-    }
-
-
-    private fun getWeather(city:String?){
-        val requestQueue = Volley.newRequestQueue(this)
-        val stringRequest = StringRequest(Request.Method.GET, Contants.WEATHER_ALL + city,
-                Response.Listener { response ->
-                    try {
-                        SharedPrefencesUtils.setParam(this, Contants.WEATHER_JSON, response)
-                    } catch (e: JSONException) {
-                        e.printStackTrace()
-                    }
-                },
-                Response.ErrorListener {
-                })
-        requestQueue.add(stringRequest)
-
     }
 
     override fun onDestroy() {

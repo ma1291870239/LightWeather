@@ -83,6 +83,15 @@
                     style="@style/PhotoFragText"/>
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/aboutLayout"
+                style="@style/PhotoFragLayout">
+                <TextView
+                    android:text="关于软件"
+                    style="@style/PhotoFragTitle"/>
+                <TextView
+                    style="@style/PhotoFragText"/>
+            </LinearLayout>
+            <LinearLayout
                 android:visibility="gone"
                 android:id="@+id/shareLayout"
                 style="@style/PhotoFragLayout">

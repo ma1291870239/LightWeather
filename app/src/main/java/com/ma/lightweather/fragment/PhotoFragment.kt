@@ -23,6 +23,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.ma.lightweather.R
+import com.ma.lightweather.activity.AboutActivity
 import com.ma.lightweather.activity.SettingActivity
 import com.ma.lightweather.adapter.SelectColorAdapter
 import com.ma.lightweather.app.Contants
@@ -49,6 +50,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
     private var themeLayout: LinearLayout? = null
     private var settingLayout: LinearLayout? = null
     private var shareLayout: LinearLayout? = null
+    private var aboutLayout: LinearLayout? = null
     private var defaultPhoneTv: TextView? = null
     private var defaultLoctionTv: TextView? = null
     private var defaultWeatherTv: TextView? = null
@@ -94,6 +96,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         themeLayout = view?.findViewById(R.id.themeLayout)
         settingLayout = view?.findViewById(R.id.settingLayout)
         shareLayout = view?.findViewById(R.id.shareLayout)
+        aboutLayout = view?.findViewById(R.id.aboutLayout)
         phoneTv = view?.findViewById(R.id.phoneTv)
         loctionTv = view?.findViewById(R.id.loctionTv)
         weatherTv = view?.findViewById(R.id.weatherTv)
@@ -112,6 +115,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         themeLayout?.setOnClickListener(this)
         settingLayout?.setOnClickListener(this)
         shareLayout?.setOnClickListener(this)
+        aboutLayout?.setOnClickListener(this)
 
 
         phoneTv?.text = SharedPrefencesUtils.getParam(mContext, Contants.MODEL, "点击左侧设置当前机型") as String?
@@ -144,13 +148,17 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
                 }
                 showActionSheet()
             }
-            R.id.scoreLayout -> goToMarket()
+            R.id.scoreLayout -> CommonUtils.goToMarket(activity!!)
             R.id.themeLayout -> selectColor()
             R.id.settingLayout -> {
                 val it = Intent(context, SettingActivity::class.java)
                 startActivity(it)
             }
             R.id.shareLayout -> {
+            }
+            R.id.aboutLayout -> {
+                val it= Intent(context, AboutActivity::class.java)
+                startActivity(it)
             }
         }
 
@@ -194,25 +202,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
 
     }
 
-    private fun goToMarket() {
-        val uri = Uri.parse("market://details?id=" + mContext.packageName)
-        val goToMarket = Intent(Intent.ACTION_VIEW, uri)
-        try {
-            if (CommonUtils.isContains(mContext, "com.tencent.android.qqdownloader")) {
-                goToMarket.setPackage("com.tencent.android.qqdownloader")
-            }
-            if (CommonUtils.isContains(mContext, "com.coolapk.market")) {
-                goToMarket.setPackage("com.coolapk.market")
-            }
-            context?.startActivity(goToMarket)
-        } catch (e: Exception) {
-            e.printStackTrace()
-            val intent = Intent(Intent.ACTION_VIEW)
-            intent.data = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.ma.lightweather")
-            startActivity(intent)
-        }
 
-    }
 
 
     private fun showActionSheet() {

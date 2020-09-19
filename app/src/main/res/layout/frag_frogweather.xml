@@ -204,22 +204,22 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
                         <TextView
-                            style="@style/WeatherFragDetailText"
+                            style="@style/FrogWeatherFragDetailText"
                             android:text="湿度"/>
                         <TextView
-                            style="@style/WeatherFragDetailText"
+                            style="@style/FrogWeatherFragDetailText"
                             android:text="风速"/>
                         <TextView
-                            style="@style/WeatherFragDetailText"
+                            style="@style/FrogWeatherFragDetailText"
                             android:text="气压"/>
                         <TextView
-                            style="@style/WeatherFragDetailText"
+                            style="@style/FrogWeatherFragDetailText"
                             android:text="PM25"/>
                         <TextView
-                            style="@style/WeatherFragDetailText"
+                            style="@style/FrogWeatherFragDetailText"
                             android:text="PM10"/>
                         <TextView
-                            style="@style/WeatherFragDetailText"
+                            style="@style/FrogWeatherFragDetailText"
                             android:text="能见度"/>
                     </LinearLayout>
                     <LinearLayout

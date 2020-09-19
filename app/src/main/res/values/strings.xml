@@ -12,8 +12,8 @@
     <string name="main_frog_text">青蛙</string>
     <string name="main_future_text">未来</string>
     <string name="main_weather_text">天气</string>
-    <string name="main_city_text">列表</string>
-    <string name="main_photo_text">照片</string>
+    <string name="main_city_text">城市</string>
+    <string name="main_setting_text">设置</string>
     <string name="menu_search_text">搜索</string>
     <string name="now_weather_text">实时天气</string>
     <string name="feture_weather_text">未来七天</string>

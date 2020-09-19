@@ -14,10 +14,10 @@
         style="@style/SettingLayout">
         <TextView
             style="@style/SettingTitle"
-            android:text="通知栏"/>
+            android:text="打开通知图标"/>
         <TextView
             style="@style/SettingText"
-            android:text=""/>
+            android:text="通知栏天气图标，默认关闭"/>
         <Switch
             android:id="@+id/notifySwitch"
             style="@style/SettingSwitch"/>
@@ -30,7 +30,7 @@
             style="@style/SettingTitle"
             android:text="状态栏显示"/>
         <TextView
-            style="@style/SettingText"/>
+            style="@style/SettingText" />
         <Switch
             android:id="@+id/statusSwitch"
             style="@style/SettingSwitch"/>
@@ -39,12 +39,24 @@
         style="@style/SettingLayout">
         <TextView
             style="@style/SettingTitle"
-            android:text="生活指数"/>
+            android:text="关闭生活指数"/>
         <TextView
             style="@style/SettingText"
-            android:text=""/>
+            android:text="旧版生活指数，默认打开"/>
         <Switch
             android:id="@+id/lifeSwitch"
+            style="@style/SettingSwitch"/>
+    </LinearLayout>
+    <LinearLayout
+        style="@style/SettingLayout">
+        <TextView
+            style="@style/SettingTitle"
+            android:text="新旧版本切换"/>
+        <TextView
+            style="@style/SettingText"
+            android:text="新旧版本页面切换，默认新版"/>
+        <Switch
+            android:id="@+id/versionSwitch"
             style="@style/SettingSwitch"/>
     </LinearLayout>
 

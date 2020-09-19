@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="ColorPrimary">#00000000</color>
-    <color name="ColorPrimaryDark">#00000000</color>
-    <color name="ColorAccent">#00000000</color>
+    <color name="ColorPrimary">#FAFAFA</color>
+    <color name="ColorPrimaryDark">#FAFAFA</color>
+    <color name="ColorAccent">#87000000</color>
 
     <color name="cyanColorPrimary">#00BCD4</color>
     <color name="cyanColorPrimaryDark">#0097A7</color>
@@ -44,7 +44,6 @@
     <color name="splash_back">#30000000</color>
     <color name="cover_back">#90FFFFFF</color>
 
-    <color name="back_cloud">#17BDF1</color>
     <color name="primary_black_text">#87000000</color>
     <color name="secondary_black_text">#54000000</color>
     <color name="hint_black_text">#38000000</color>
