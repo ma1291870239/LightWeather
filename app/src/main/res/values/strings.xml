@@ -6,7 +6,7 @@
     <string name="splash_save_text">保存成功</string>
     <string name="splash_read_permission_text">当前没有读写权限</string>
     <string name="splash_nopass_permission_text">存在没有通过的权限</string>
-    <string name="splash_skip_text">跳过%1$d秒</string>
+    <string name="splash_skip_text">跳过 %1$d 秒</string>
     <string name="main_exit_text">再按一次退出程序</string>
     <string name="main_search_text">请输入要查询的城市名字</string>
     <string name="main_frog_text">青蛙</string>

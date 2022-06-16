@@ -27,11 +27,12 @@ object Contants {
     const val LOCTION = "loction"
     const val WEATHER = "weather"
     const val WEATHERDB = "Weather.db"
-    const val CITYNAME = "洛阳"
+    const val CITYNAME = "luoyang"
     const val THEME = "themetag"
     const val NOTIFY = "notify"
     const val STATUS = "status"
     const val LIFE = "life"
     const val VERSION = "version"
     const val BING = "bing"
+    const val BINGPATH = "bingpath"
 }

@@ -8,13 +8,17 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
+import androidx.viewbinding.ViewBinding
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.SharedPrefencesUtils
 import com.ma.lightweather.utils.WeatherUtils
 
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity<VB:ViewBinding> : AppCompatActivity() {
+
+    lateinit var mBinding: VB
+    lateinit var TAG:String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,8 +26,8 @@ open class BaseActivity : AppCompatActivity() {
         if(oldVersion){
             setTheme(WeatherUtils.getTheme(this))
         }
-
         setContentView(R.layout.activity_base)
+        TAG=localClassName
         setTaskDescriptionBar()
     }
 

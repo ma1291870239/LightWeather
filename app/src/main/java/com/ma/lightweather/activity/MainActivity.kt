@@ -24,6 +24,7 @@ import com.google.android.material.tabs.TabLayout
 import com.ma.lightweather.R
 import com.ma.lightweather.adapter.NavCityAdapter
 import com.ma.lightweather.app.Contants
+import com.ma.lightweather.databinding.ActivityMainBinding
 import com.ma.lightweather.fragment.*
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
@@ -35,7 +36,7 @@ import java.util.*
 import kotlin.system.exitProcess
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 
     private var frogWeatherFrag: FrogWeatherFragment? = null

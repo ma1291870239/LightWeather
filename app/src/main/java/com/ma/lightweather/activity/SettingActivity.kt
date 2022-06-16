@@ -10,10 +10,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.app.WeatherService
+import com.ma.lightweather.databinding.ActivitySettingBinding
 import com.ma.lightweather.utils.SharedPrefencesUtils
 import com.ma.lightweather.utils.WeatherUtils
 
-class SettingActivity : BaseActivity(), CompoundButton.OnCheckedChangeListener {
+class SettingActivity : BaseActivity<ActivitySettingBinding>(), CompoundButton.OnCheckedChangeListener {
 
     private var notifySwitch: Switch? = null
     private var statusSwitch: Switch? = null

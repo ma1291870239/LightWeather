@@ -57,5 +57,11 @@ object SharedPrefencesUtils {
 
     }
 
+    fun getStringParam(context: Context?, key: String, defaultObject: Any): Any? {
+        val type = defaultObject.javaClass.simpleName
+        val sp = context?.getSharedPreferences(FILE_NAME, Context.MODE_PRIVATE)
+        return sp?.getString(key, defaultObject as String)
+    }
+
 
 }

@@ -22,6 +22,7 @@
         android:gravity="center"
         android:background="@drawable/bg_splash_tv_solid_black"/>
     <ImageView
+        android:visibility="gone"
         android:id="@+id/downloadIv"
         android:layout_width="36dp"
         android:layout_height="36dp"

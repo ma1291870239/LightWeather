@@ -8,11 +8,12 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
+import com.ma.lightweather.databinding.ActivityAboutBinding
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.SharedPrefencesUtils
 import com.ma.lightweather.utils.WeatherUtils
 
-class AboutActivity : BaseActivity() {
+class AboutActivity : BaseActivity<ActivityAboutBinding>() {
 
     private var versionTv: TextView? = null
     private var toolBar: Toolbar? = null
