@@ -4,11 +4,17 @@ import android.app.ActivityManager
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
-import android.view.*
+import android.view.KeyEvent
+import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -24,7 +30,7 @@ import com.google.android.material.tabs.TabLayout
 import com.ma.lightweather.R
 import com.ma.lightweather.adapter.NavCityAdapter
 import com.ma.lightweather.app.Contants
-import com.ma.lightweather.databinding.ActivityMainBinding
+import com.ma.lightweather.databinding.ActivityFrogBinding
 import com.ma.lightweather.fragment.*
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
@@ -32,11 +38,10 @@ import com.ma.lightweather.utils.DbUtils
 import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.WeatherViewPager
-import java.util.*
+import java.util.ArrayList
 import kotlin.system.exitProcess
 
-
-class MainActivity : BaseActivity<ActivityMainBinding>() {
+class FrogActivity : BaseActivity<ActivityFrogBinding>() {
 
 
     private var frogWeatherFrag: FrogWeatherFragment? = null
@@ -44,36 +49,31 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private var weatherFrag: WeatherFragment? = null
     private var cityFrag: CityFrgment? = null
     private var photoFrag: PhotoFragment? = null
-    private var viewPager:WeatherViewPager? = null
+    private var viewPager: WeatherViewPager? = null
     private var toolBar: Toolbar? = null
-    private var searchView:SearchView?=null
+    private var searchView: SearchView?=null
     private var tabLayout: TabLayout? = null
     private var navigationView: NavigationView? = null
     private var drawerLayout: DrawerLayout? = null
-    private var navHeaderLayout:RelativeLayout? = null
+    private var navHeaderLayout: RelativeLayout? = null
     private var navImgView: ImageView? = null
     private var navTextView: TextView? = null
     private var recyclerView: RecyclerView? = null
     private val fragmentList = ArrayList<Fragment>()
     private val titleList = ArrayList<String>()
     private val weatherList = ArrayList<Weather>()
-    private var navCityAdapter:NavCityAdapter? = null
+    private var navCityAdapter: NavCityAdapter? = null
     private var clickTime: Long = 0
     private val backTime: Long = 2000
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        mBinding= ActivityFrogBinding.inflate(layoutInflater)
+        setContentView(mBinding.root)
         initView()
         setSearch()
-        val oldVersion= SPUtils.getParam(this, Contants.OLDVERSION, false) as Boolean
-        if(oldVersion){
-            initOldData()
-            drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-        }else{
-            initNewData()
-            drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        }
+        initNewData()
+        drawerLayout?.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
     }
 
     override fun recreate() {
@@ -87,21 +87,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             CommonUtils.showShortSnackBar(tabLayout,"切换主题失败，请重试")
         }
         super.recreate()
-    }
-
-    private fun initOldData() {
-        weatherFrag = WeatherFragment()
-        cityFrag = CityFrgment()
-        photoFrag = PhotoFragment()
-        fragmentList.add(weatherFrag!!)
-        fragmentList.add(cityFrag!!)
-        fragmentList.add(photoFrag!!)
-        titleList.add(getString(R.string.main_weather_text))
-        titleList.add(getString(R.string.main_city_text))
-        titleList.add(getString(R.string.main_setting_text))
-        viewPager?.adapter = ViewAdapter(supportFragmentManager)
-        tabLayout?.setupWithViewPager(viewPager)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
     }
 
     private fun initNewData() {
@@ -180,14 +165,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         var color= WeatherUtils.getColorWeatherTheme(cond)
         toolBar?.setBackgroundColor(ContextCompat.getColor(this,color))
         tabLayout?.setBackgroundColor(ContextCompat.getColor(this,color))
-        navHeaderLayout?.setBackgroundColor(ContextCompat.getColor(this,WeatherUtils.getColorWeatherBack(cond)))
+        navHeaderLayout?.setBackgroundColor(ContextCompat.getColor(this, WeatherUtils.getColorWeatherBack(cond)))
         navImgView?.setImageResource(WeatherUtils.getColorWeatherIcon(cond))
         navTextView?.text=cond
 
         if (Build.VERSION.SDK_INT >= 21) {
             val tDesc = ActivityManager.TaskDescription(getString(R.string.app_name),
-                    BitmapFactory.decodeResource(resources, R.drawable.ic_app_launcher),
-                    ContextCompat.getColor(this,color))
+                BitmapFactory.decodeResource(resources, R.drawable.ic_app_launcher),
+                ContextCompat.getColor(this,color))
             setTaskDescription(tDesc)
         }
         setStatusColor(color)
@@ -297,9 +282,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         if (token != null) {
             val manager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             manager.hideSoftInputFromWindow(token,
-                    InputMethodManager.HIDE_NOT_ALWAYS)
+                InputMethodManager.HIDE_NOT_ALWAYS)
         }
     }
-
 
 }

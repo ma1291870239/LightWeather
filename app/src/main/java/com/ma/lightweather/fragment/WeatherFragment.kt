@@ -28,7 +28,7 @@ import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.CardTextView
 import com.ma.lightweather.widget.HourWeatherView
@@ -139,11 +139,11 @@ class WeatherFragment : BaseFragment() {
                         }
 
                     }
-                    SharedPrefencesUtils.setParam(mContext, Contants.CITY, weatherList!![i].basic.location)
-                    SharedPrefencesUtils.setParam(mContext, Contants.TMP, weatherList!![i].now.tmp)
-                    SharedPrefencesUtils.setParam(mContext, Contants.TXT, weatherList!![i].now.cond_txt)
+                    SPUtils.setParam(mContext, Contants.CITY, weatherList!![i].basic.location)
+                    SPUtils.setParam(mContext, Contants.TMP, weatherList!![i].now.tmp)
+                    SPUtils.setParam(mContext, Contants.TXT, weatherList!![i].now.cond_txt)
                     //CommonUtils.showShortToast(getC,"数据已更新");
-                    if (SharedPrefencesUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
+                    if (SPUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
                         val it = Intent(mContext, WeatherService::class.java)
                         mContext.startService(it)
                     }
@@ -165,7 +165,7 @@ class WeatherFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.frag_weather, null)
-        city = SharedPrefencesUtils.getParam(mContext, Contants.CITY, Contants.CITYNAME) as String
+        city = SPUtils.getParam(mContext, Contants.CITY, Contants.CITYNAME) as String
         if (isAdded) {
             initView(view)
             loadData(city)
@@ -271,7 +271,7 @@ class WeatherFragment : BaseFragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser && isResumed) {
-            val closeLife=SharedPrefencesUtils.getParam(activity, Contants.LIFE, false) as Boolean
+            val closeLife=SPUtils.getParam(activity, Contants.LIFE, false) as Boolean
             if (closeLife){
                 weatherLife?.visibility=View.GONE
             }else{

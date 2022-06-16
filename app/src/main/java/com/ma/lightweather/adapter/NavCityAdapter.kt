@@ -2,7 +2,6 @@ package com.ma.lightweather.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,7 @@ import com.ma.lightweather.app.Contants
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.DbUtils
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.ActionSheetDialog
 
@@ -87,7 +86,7 @@ class NavCityAdapter (private val context: Context, private val weatherList: Lis
                 .setTitle("选择项目")
                 .addSheetItem("删除", null, object : ActionSheetDialog.OnSheetItemClickListener {
                     override fun onClick(which: Int) {
-                        val city1 = SharedPrefencesUtils.getParam(context, Contants.CITY, Contants.CITYNAME) as String
+                        val city1 = SPUtils.getParam(context, Contants.CITY, Contants.CITYNAME) as String
                         val city2 = weatherList?.get(i)?.basic?.location
                         if (weatherList?.size!! > 1) {
                             Snackbar.make(holder.weatherLayout,"删除成功", Snackbar.LENGTH_SHORT)

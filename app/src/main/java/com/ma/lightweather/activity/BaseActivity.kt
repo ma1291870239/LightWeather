@@ -11,8 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
-import com.ma.lightweather.utils.CommonUtils
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 
 open class BaseActivity<VB:ViewBinding> : AppCompatActivity() {
@@ -22,7 +21,7 @@ open class BaseActivity<VB:ViewBinding> : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val oldVersion= SharedPrefencesUtils.getParam(this, Contants.VERSION, false) as Boolean
+        val oldVersion= SPUtils.getParam(this, Contants.OLDVERSION, false) as Boolean
         if(oldVersion){
             setTheme(WeatherUtils.getTheme(this))
         }

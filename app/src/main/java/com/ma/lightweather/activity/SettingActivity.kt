@@ -6,12 +6,11 @@ import android.widget.CompoundButton
 import android.widget.Switch
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import androidx.drawerlayout.widget.DrawerLayout
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.app.WeatherService
 import com.ma.lightweather.databinding.ActivitySettingBinding
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 
 class SettingActivity : BaseActivity<ActivitySettingBinding>(), CompoundButton.OnCheckedChangeListener {
@@ -26,11 +25,11 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), CompoundButton.O
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_setting)
         initView()
-        val oldVersion= SharedPrefencesUtils.getParam(this, Contants.VERSION, false) as Boolean
+        val oldVersion= SPUtils.getParam(this, Contants.OLDVERSION, false) as Boolean
         if(oldVersion){
 
         }else{
-            val cond=SharedPrefencesUtils.getParam(this, Contants.TXT, "") as String
+            val cond=SPUtils.getParam(this, Contants.TXT, "") as String
             var color= WeatherUtils.getColorWeatherTheme(cond)
             toolBar?.setBackgroundColor(ContextCompat.getColor(this,color))
             setStatusColor(color)
@@ -47,16 +46,16 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), CompoundButton.O
         statusSwitch?.setOnCheckedChangeListener(this)
         lifeSwitch?.setOnCheckedChangeListener(this)
         versionSwitch?.setOnCheckedChangeListener(this)
-        notifySwitch?.isChecked = SharedPrefencesUtils.getParam(this, Contants.NOTIFY, false) as Boolean
-        statusSwitch?.isChecked = SharedPrefencesUtils.getParam(this, Contants.STATUS, false) as Boolean
-        lifeSwitch?.isChecked = SharedPrefencesUtils.getParam(this, Contants.LIFE, false) as Boolean
-        versionSwitch?.isChecked = SharedPrefencesUtils.getParam(this, Contants.VERSION, false) as Boolean
+        notifySwitch?.isChecked = SPUtils.getParam(this, Contants.NOTIFY, false) as Boolean
+        statusSwitch?.isChecked = SPUtils.getParam(this, Contants.STATUS, false) as Boolean
+        lifeSwitch?.isChecked = SPUtils.getParam(this, Contants.LIFE, false) as Boolean
+        versionSwitch?.isChecked = SPUtils.getParam(this, Contants.OLDVERSION, false) as Boolean
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
         when (buttonView.id) {
             R.id.notifySwitch -> {
-                SharedPrefencesUtils.setParam(this, Contants.NOTIFY, isChecked)
+                SPUtils.setParam(this, Contants.NOTIFY, isChecked)
                 if (isChecked) {
                     val it = Intent(this, WeatherService::class.java)
                     startService(it)
@@ -66,7 +65,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), CompoundButton.O
                 }
             }
             R.id.statusSwitch -> {
-                SharedPrefencesUtils.setParam(this, Contants.STATUS, isChecked)
+                SPUtils.setParam(this, Contants.STATUS, isChecked)
                 if (isChecked) {
                     val it = Intent(this, WeatherService::class.java)
                     startService(it)
@@ -76,7 +75,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), CompoundButton.O
                 }
             }
             R.id.lifeSwitch -> {
-                SharedPrefencesUtils.setParam(this, Contants.LIFE, isChecked)
+                SPUtils.setParam(this, Contants.LIFE, isChecked)
                 if (isChecked) {
 
                 } else {
@@ -84,7 +83,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), CompoundButton.O
                 }
             }
             R.id.versionSwitch -> {
-                SharedPrefencesUtils.setParam(this, Contants.VERSION, isChecked)
+                SPUtils.setParam(this, Contants.OLDVERSION, isChecked)
                 if (isChecked) {
 
                 } else {

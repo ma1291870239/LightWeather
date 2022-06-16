@@ -9,7 +9,6 @@ import android.location.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -35,7 +34,7 @@ import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.CardTextView
 import com.ma.lightweather.widget.HourFrogWeatherView
@@ -181,13 +180,13 @@ class FrogWeatherFragment: BaseFragment() {
                     popRv?.adapter=PopAdapter(context!!,weatherList!![i].hourly)
                     windRv?.adapter= WindAdapter(context!!,weatherList!![i].hourly)
 
-                    SharedPrefencesUtils.setParam(mContext, Contants.CITY, weatherList!![i].basic.location)
-                    SharedPrefencesUtils.setParam(mContext, Contants.TMP, weatherList!![i].now.tmp)
-                    SharedPrefencesUtils.setParam(mContext, Contants.TXT, weatherList!![i].now.cond_txt)
-                    SharedPrefencesUtils.setParam(mContext, Contants.WEATHER_JSON, weatherJson)
-                    SharedPrefencesUtils.setParam(mContext, Contants.WEATHER_AQI_JSON, weatherAqiJson)
+                    SPUtils.setParam(mContext, Contants.CITY, weatherList!![i].basic.location)
+                    SPUtils.setParam(mContext, Contants.TMP, weatherList!![i].now.tmp)
+                    SPUtils.setParam(mContext, Contants.TXT, weatherList!![i].now.cond_txt)
+                    SPUtils.setParam(mContext, Contants.WEATHER_JSON, weatherJson)
+                    SPUtils.setParam(mContext, Contants.WEATHER_AQI_JSON, weatherAqiJson)
                     //CommonUtils.showShortToast(getC,"数据已更新");
-                    if (SharedPrefencesUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
+                    if (SPUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
                         val it = Intent(mContext, WeatherService::class.java)
                         mContext.startService(it)
                     }
@@ -211,8 +210,8 @@ class FrogWeatherFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.frag_frogweather, null)
-        val weatherJson = SharedPrefencesUtils.getParam(context, Contants.WEATHER_JSON, "") as String
-        val weatherAqiJson = SharedPrefencesUtils.getParam(context, Contants.WEATHER_AQI_JSON, "") as String
+        val weatherJson = SPUtils.getParam(context, Contants.WEATHER_JSON, "") as String
+        val weatherAqiJson = SPUtils.getParam(context, Contants.WEATHER_AQI_JSON, "") as String
         if (isAdded) {
             initView(view)
             setViewHeight()
@@ -222,11 +221,11 @@ class FrogWeatherFragment: BaseFragment() {
                 handler.sendEmptyMessage(WEATHER_SUCCESE)
                 (activity as MainActivity).refreshCity()
             }
-            if (SharedPrefencesUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
+            if (SPUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
                 val it = Intent(mContext, WeatherService::class.java)
                 mContext.startService(it)
             }
-            city=SharedPrefencesUtils.getParam(activity, Contants.CITY, Contants.CITYNAME) as String
+            city=SPUtils.getParam(activity, Contants.CITY, Contants.CITYNAME) as String
             loadData(city)
             //requestLocationPermission()
         }
@@ -366,7 +365,7 @@ class FrogWeatherFragment: BaseFragment() {
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (isVisibleToUser && isResumed) {
-            val isShow=SharedPrefencesUtils.getParam(activity, Contants.LIFE, true) as Boolean
+            val isShow=SPUtils.getParam(activity, Contants.LIFE, true) as Boolean
             if (isShow){
                 weatherLife?.visibility=View.VISIBLE
             }else{

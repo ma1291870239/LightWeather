@@ -6,16 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ExpandableListView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.google.android.material.appbar.AppBarLayout
 import com.ma.lightweather.R
 import com.ma.lightweather.adapter.FutureDaysAdapter
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.Parse
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.HourFrogWeatherView
-import kotlinx.android.synthetic.main.frag_futuredays.*
 
 class FutureDaysFragment:BaseFragment() {
 
@@ -35,7 +33,7 @@ class FutureDaysFragment:BaseFragment() {
     }
 
     private fun initData() {
-        val weatherJson = SharedPrefencesUtils.getParam(context, Contants.WEATHER_JSON, "") as String
+        val weatherJson = SPUtils.getParam(context, Contants.WEATHER_JSON, "") as String
         if (weatherJson.isEmpty()) {
             return
         }

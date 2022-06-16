@@ -32,7 +32,7 @@ object Contants {
     const val NOTIFY = "notify"
     const val STATUS = "status"
     const val LIFE = "life"
-    const val VERSION = "version"
+    const val OLDVERSION = "version"
     const val BING = "bing"
     const val BINGPATH = "bingpath"
 }

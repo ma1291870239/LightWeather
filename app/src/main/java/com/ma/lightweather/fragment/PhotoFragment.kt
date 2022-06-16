@@ -29,7 +29,7 @@ import com.ma.lightweather.adapter.SelectColorAdapter
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.PhotoUtils
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.widget.ActionSheetDialog
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -118,9 +118,9 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         aboutLayout?.setOnClickListener(this)
 
 
-        phoneTv?.text = SharedPrefencesUtils.getParam(mContext, Contants.MODEL, "点击左侧设置当前机型") as String?
-        loctionTv?.text = SharedPrefencesUtils.getParam(mContext, Contants.LOCTION, "点击左侧设置当前城市") as String?
-        weatherTv?.text = SharedPrefencesUtils.getParam(mContext, Contants.WEATHER, "点击左侧设置当前天气") as String?
+        phoneTv?.text = SPUtils.getParam(mContext, Contants.MODEL, "点击左侧设置当前机型") as String?
+        loctionTv?.text = SPUtils.getParam(mContext, Contants.LOCTION, "点击左侧设置当前城市") as String?
+        weatherTv?.text = SPUtils.getParam(mContext, Contants.WEATHER, "点击左侧设置当前天气") as String?
     }
 
     override fun onClick(view: View) {
@@ -130,16 +130,16 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
             R.id.weatherTv -> showDialog(3)
             R.id.defaultPhoneTv -> {
                 phoneTv!!.text = android.os.Build.BRAND + " " + android.os.Build.MODEL
-                SharedPrefencesUtils.setParam(mContext, Contants.MODEL, phoneTv!!.text.toString())
+                SPUtils.setParam(mContext, Contants.MODEL, phoneTv!!.text.toString())
             }
             R.id.defaultLoctionTv -> {
-                loctionTv!!.text = SharedPrefencesUtils.getParam(mContext, Contants.CITY, "") as String?
-                SharedPrefencesUtils.setParam(mContext, Contants.LOCTION, loctionTv!!.text.toString())
+                loctionTv!!.text = SPUtils.getParam(mContext, Contants.CITY, "") as String?
+                SPUtils.setParam(mContext, Contants.LOCTION, loctionTv!!.text.toString())
             }
             R.id.defaultWeatherTv -> {
-                weatherTv!!.text = (SharedPrefencesUtils.getParam(mContext, Contants.TMP, "").toString() + "℃ "
-                        + SharedPrefencesUtils.getParam(mContext, Contants.TXT, ""))
-                SharedPrefencesUtils.setParam(mContext, Contants.WEATHER, weatherTv!!.text.toString())
+                weatherTv!!.text = (SPUtils.getParam(mContext, Contants.TMP, "").toString() + "℃ "
+                        + SPUtils.getParam(mContext, Contants.TXT, ""))
+                SPUtils.setParam(mContext, Contants.WEATHER, weatherTv!!.text.toString())
             }
             R.id.photoLayout -> {
                 if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -189,7 +189,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         val dialog = AlertDialog.Builder(activity!!)
                 .setSingleChoiceItems(adapter, 0) { dialog, which ->
                     dialog.dismiss()
-                    SharedPrefencesUtils.setParam(mContext, Contants.THEME, which)
+                    SPUtils.setParam(mContext, Contants.THEME, which)
                     activity?.recreate()
                 }.create()
         dialog.show()
@@ -236,15 +236,15 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
                     val s = editText.text.toString()
                     if (tag == 1) {
                         phoneTv?.text = s
-                        SharedPrefencesUtils.setParam(mContext, Contants.MODEL, phoneTv!!.text.toString())
+                        SPUtils.setParam(mContext, Contants.MODEL, phoneTv!!.text.toString())
                     }
                     if (tag == 2) {
                         loctionTv?.text = s
-                        SharedPrefencesUtils.setParam(mContext, Contants.LOCTION, loctionTv!!.text.toString())
+                        SPUtils.setParam(mContext, Contants.LOCTION, loctionTv!!.text.toString())
                     }
                     if (tag == 3) {
                         weatherTv?.text = s
-                        SharedPrefencesUtils.setParam(mContext, Contants.WEATHER, weatherTv!!.text.toString())
+                        SPUtils.setParam(mContext, Contants.WEATHER, weatherTv!!.text.toString())
                     }
                 }
                 .setNegativeButton("取消", null).show()

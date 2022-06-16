@@ -1,25 +1,13 @@
 package com.ma.lightweather.activity
 
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.os.Handler
-import android.os.Message
 import android.util.Log
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import android.view.View
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.TextView
 import com.android.volley.Request
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.bumptech.glide.Glide
@@ -30,14 +18,9 @@ import com.bumptech.glide.request.target.Target
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.databinding.ActivitySplashBinding
-import com.ma.lightweather.fragment.FrogWeatherFragment
-import com.ma.lightweather.utils.CommonUtils
-import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.PhotoUtils
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import kotlinx.android.synthetic.main.activity_splash.*
-import org.json.JSONException
-import java.util.concurrent.ExecutionException
 
 class SplashActivity : BaseActivity<ActivitySplashBinding>(){
 
@@ -73,18 +56,29 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
             countDownTimer.cancel()
             toMain()
         }
+
+        countDownTimer = object : CountDownTimer(4000, 1000) {
+            override fun onTick(l: Long) {
+                mBinding.skipTv.text = getString(R.string.splash_skip_text,l/1000)
+            }
+
+            override fun onFinish() {
+                toMain()
+            }
+        }
+        countDownTimer.start()
     }
 
     private fun setData(response:String) {
-        val bing=SharedPrefencesUtils.getParam(this, Contants.BING, "") as String
-        val bingPath=SharedPrefencesUtils.getParam(this, Contants.BINGPATH, "") as String
-        if(response==bing &&bingPath.isNotEmpty()){
+        val bing=SPUtils.getParam(this, Contants.BING, "") as String
+        val bingPath=SPUtils.getString(this, Contants.BINGPATH)
+        if(response==bing && !bingPath.isNullOrEmpty()){
             Glide.with(this)
                 .load(bingPath)
                 .error(R.mipmap.splash)
                 .into(mBinding.backIv)
         }else{
-            SharedPrefencesUtils.setParam(this, Contants.BING, response)
+            SPUtils.setParam(this, Contants.BING, response)
             Glide.with(this)
                 .load(response)
                 .error(R.mipmap.splash)
@@ -107,7 +101,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
                         isFirstResource: Boolean
                     ): Boolean {
                         val path=PhotoUtils.saveSplashImage(this@SplashActivity,(resource as BitmapDrawable).bitmap)
-                        SharedPrefencesUtils.setParam(this@SplashActivity, Contants.BINGPATH, path)
+                        SPUtils.setParam(this@SplashActivity, Contants.BINGPATH, path)
                         return false
                     }
 
@@ -115,21 +109,15 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
                 .into(mBinding.backIv)
         }
 
-        countDownTimer = object : CountDownTimer(4000, 1000) {
-            override fun onTick(l: Long) {
-                mBinding.skipTv.text = getString(R.string.splash_skip_text,l/1000)
-            }
-
-            override fun onFinish() {
-                toMain()
-            }
-        }
-        countDownTimer.start()
     }
 
 
     fun toMain() {
-        val it= Intent(this, MainActivity::class.java)
+        val oldVersion= SPUtils.getBoolean(this, Contants.OLDVERSION)
+        var it= Intent(this, FrogActivity::class.java)
+        if(oldVersion){
+            it= Intent(this, MainActivity::class.java)
+        }
         startActivity(it)
         finish()
     }

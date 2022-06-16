@@ -3,14 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="com.ma.lightweather.activity.SplashActivity">
+    <LinearLayout
+        android:id="@+id/appLayout"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:drawablePadding="@dimen/padding_8"
+            android:text="@string/app_name"
+            android:textSize="@dimen/text_17"
+            android:textColor="@color/black"
+            android:gravity="center"
+            />
+    </LinearLayout>
     <ImageView
         android:id="@+id/backIv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@mipmap/splash"
+        android:layout_above="@id/appLayout"
         android:scaleType="centerCrop"/>
     <TextView
+        android:visibility="gone"
         android:id="@+id/skipTv"
         android:layout_width="wrap_content"
         android:layout_height="36dp"

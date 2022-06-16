@@ -17,9 +17,8 @@ import com.ma.lightweather.R
 import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
-import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.Parse
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.HourWeatherView
 import org.json.JSONException
@@ -68,7 +67,7 @@ class WeatherService : Service() {
     }
 
     private fun initData() {
-        val city = SharedPrefencesUtils.getParam(applicationContext, Contants.CITY, Contants.CITYNAME) as String
+        val city = SPUtils.getParam(applicationContext, Contants.CITY, Contants.CITYNAME) as String
         val requestQueue = Volley.newRequestQueue(applicationContext)
         val airStringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_AIR + city,
                 Response.Listener { response ->

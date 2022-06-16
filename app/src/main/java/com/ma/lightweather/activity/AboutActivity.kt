@@ -1,8 +1,6 @@
 package com.ma.lightweather.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Switch
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -10,7 +8,7 @@ import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.databinding.ActivityAboutBinding
 import com.ma.lightweather.utils.CommonUtils
-import com.ma.lightweather.utils.SharedPrefencesUtils
+import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 
 class AboutActivity : BaseActivity<ActivityAboutBinding>() {
@@ -22,11 +20,11 @@ class AboutActivity : BaseActivity<ActivityAboutBinding>() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_about)
         initView()
-        val oldVersion= SharedPrefencesUtils.getParam(this, Contants.VERSION, false) as Boolean
+        val oldVersion= SPUtils.getParam(this, Contants.OLDVERSION, false) as Boolean
         if(oldVersion){
             versionTv?.text="旧版："+CommonUtils.getVersion(this)
         }else{
-            val cond=SharedPrefencesUtils.getParam(this, Contants.TXT, "") as String
+            val cond=SPUtils.getParam(this, Contants.TXT, "") as String
             var color= WeatherUtils.getColorWeatherTheme(cond)
             toolBar?.setBackgroundColor(ContextCompat.getColor(this,color))
             setStatusColor(color)

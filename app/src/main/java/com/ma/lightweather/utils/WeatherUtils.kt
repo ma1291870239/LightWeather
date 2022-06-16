@@ -7,7 +7,7 @@ import com.ma.lightweather.app.Contants
 object WeatherUtils {
 
     fun getBackColor(context: Context): Int {
-        return when (SharedPrefencesUtils.getParam(context, Contants.THEME, 0) as Int) {
+        return when (SPUtils.getParam(context, Contants.THEME, 0) as Int) {
             0 -> R.color.cyanColorPrimaryDark
             1 -> R.color.purpleColorPrimaryDark
             2 -> R.color.redColorPrimaryDark
@@ -21,7 +21,7 @@ object WeatherUtils {
     }
 
     fun getTheme(context: Context): Int {
-        return when (SharedPrefencesUtils.getParam(context, Contants.THEME, 0) as Int ) {
+        return when (SPUtils.getParam(context, Contants.THEME, 0) as Int ) {
             0 -> R.style.CyanAppTheme
             1 -> R.style.PuroleAppTheme
             2 -> R.style.RedAppTheme
@@ -36,7 +36,7 @@ object WeatherUtils {
 
 
     fun getTextColor(context: Context): Int {
-        return when (SharedPrefencesUtils.getParam(context, Contants.THEME, 0) as Int) {
+        return when (SPUtils.getParam(context, Contants.THEME, 0) as Int) {
             0 -> R.color.cyanColorPrimary
             1 -> R.color.purpleColorPrimary
             2 -> R.color.redColorPrimary

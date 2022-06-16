@@ -24,6 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/DefaultTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".activity.FrogActivity"></activity>
         <activity android:name=".activity.AboutActivity" />
         <activity android:name=".activity.CityActivity" />
         <activity
@@ -61,7 +62,8 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <receiver android:name=".widget.WeatherWidget"
+        <receiver
+            android:name=".widget.WeatherWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
