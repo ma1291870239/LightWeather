@@ -9,6 +9,7 @@ import android.location.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -30,6 +31,7 @@ import com.ma.lightweather.adapter.PopAdapter
 import com.ma.lightweather.adapter.WindAdapter
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.app.WeatherService
+import com.ma.lightweather.databinding.FragFrogweatherBinding
 import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
@@ -45,7 +47,7 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-class FrogWeatherFragment: BaseFragment() {
+class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
 
     private var timetv:TextView?=null
     private var maxmintmptv: TextView? = null
@@ -93,6 +95,9 @@ class FrogWeatherFragment: BaseFragment() {
     private var weatherAqiJson: String = ""
     private var locationManager: LocationManager? = null
     private var locationListener: LocationListener? = null
+
+    private var h:Int=0
+
     private val handler = object : Handler() {
         override fun handleMessage(msg: Message) {
             super.handleMessage(msg)
@@ -118,7 +123,7 @@ class FrogWeatherFragment: BaseFragment() {
                     ivTop?.setImageResource(WeatherUtils.getColorWeatherIcon(cond))
                     ivBottom?.setImageResource(WeatherUtils.getColorWeatherImg(cond))
                     relativeLayout1?.setBackgroundColor(ContextCompat.getColor(context!!,WeatherUtils.getColorWeatherBack(cond)))
-                    (activity as MainActivity).setWeatherBack(cond)
+                    //(activity as MainActivity).setWeatherBack(cond)
                     humtv?.text = "" + weatherList!![i].now.hum + " %"
                     pcpntv?.text = "日降水总量  " + weatherList!![i].now.pcpn + " 毫米"
                     citytv?.text = weatherList!![i].basic.location + "·" + weatherList!![i].basic.cnty
@@ -210,16 +215,20 @@ class FrogWeatherFragment: BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.frag_frogweather, null)
+        viewBinding= FragFrogweatherBinding.inflate(inflater,container,false)
         val weatherJson = SPUtils.getParam(context, Contants.WEATHER_JSON, "") as String
         val weatherAqiJson = SPUtils.getParam(context, Contants.WEATHER_AQI_JSON, "") as String
+        arguments?.takeIf { it.containsKey("height") }?.apply {
+            h = getInt("height")
+        }
         if (isAdded) {
             initView(view)
-            setViewHeight()
+            //setViewHeight()
             if(weatherJson.isNotEmpty()&&weatherAqiJson.isNotEmpty()) {
                 airList = Parse.parseAir(weatherAqiJson, weatherView, hourWeatherView, mContext)
                 weatherList = Parse.parseWeather(weatherJson, weatherView, hourWeatherView, mContext)
                 handler.sendEmptyMessage(WEATHER_SUCCESE)
-                (activity as MainActivity).refreshCity()
+                //(activity as MainActivity).refreshCity()
             }
             if (SPUtils.getParam(mContext, Contants.NOTIFY, false) as Boolean) {
                 val it = Intent(mContext, WeatherService::class.java)
@@ -233,11 +242,10 @@ class FrogWeatherFragment: BaseFragment() {
     }
 
     private fun setViewHeight() {
-//        val metrics: WindowMetrics = ((activity?.getSystemService(Context.WINDOW_SERVICE)) as WindowManager).currentWindowMetrics
-//        val height:Int=metrics.bounds.height()
-        val display: Display = (activity?.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-        val width :Int=display.width
-        val height:Int=display.height-CommonUtils.getStatusBarHeight(activity!!)-CommonUtils.dp2px(activity!!,50f+40f)
+        val display= resources.displayMetrics
+        val width :Int=display.widthPixels
+        val height:Int=display.heightPixels-CommonUtils.getStatusBarHeight(requireActivity())-CommonUtils.dp2px(requireActivity(),50f+8f+8f+40f)
+        Log.e(TAG, "setViewHeight: ${display.widthPixels}---${display.heightPixels}---${height}---${h}", )
         relativeLayout1?.layoutParams?.height=height
         relativeLayout2?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,250f)
         textView?.layoutParams?.height=height
@@ -288,7 +296,7 @@ class FrogWeatherFragment: BaseFragment() {
     private fun getWeather(city:String?){
         val requestQueue = Volley.newRequestQueue(mContext)
         val stringRequest = StringRequest(Request.Method.GET, Contants.WEATHER_ALL + city,
-                Response.Listener { response ->
+                { response ->
                     try {
                         weatherJson=response
                         weatherList= Parse.parseWeather(response, weatherView, hourWeatherView, mContext)
@@ -297,7 +305,7 @@ class FrogWeatherFragment: BaseFragment() {
                     }
                     if (weatherList!!.isNotEmpty()&& weatherList!![0].status == "ok") {
                         handler.sendEmptyMessage(WEATHER_SUCCESE)
-                        (activity as MainActivity).refreshCity()
+                        //(activity as MainActivity).refreshCity()
                     } else if(weatherList!![0].status == "no more requests"){
                         handler.sendEmptyMessage(WEATHER_NOMORE)
                     } else if(weatherList!![0].status == "unknown location"){
@@ -306,7 +314,7 @@ class FrogWeatherFragment: BaseFragment() {
                         handler.sendEmptyMessage(WEATHER_ERROR)
                     }
                 },
-                Response.ErrorListener {
+                {
                     swipeRefreshLayout?.isRefreshing = false
                     handler.sendEmptyMessage(WEATHER_ERROR)
                 })
@@ -355,11 +363,11 @@ class FrogWeatherFragment: BaseFragment() {
         val windManager=LinearLayoutManager(context)
         popManager.orientation=LinearLayoutManager.HORIZONTAL
         windManager.orientation=LinearLayoutManager.HORIZONTAL
-        popRv?.layoutManager=popManager
-        windRv?.layoutManager=windManager
-        swipeRefreshLayout?.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
+        mBinding.popRv.layoutManager=popManager
+        mBinding.windRv.layoutManager=windManager
+        mBinding.swipeRefreshLayout.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
         appBarLayout?.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener { _, p1 -> setLayourEnable(p1) })
-        swipeRefreshLayout?.setOnRefreshListener { loadData(city) }
+        mBinding.swipeRefreshLayout.setOnRefreshListener { loadData(city) }
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {

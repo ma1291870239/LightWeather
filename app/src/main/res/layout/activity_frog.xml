@@ -5,33 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/app_background"
+    android:background="@color/ColorPrimary"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolBar"
-            style="@style/AppToolbar">
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/toolBarSearch"
-                style="@style/ToolBarSearch" />
-        </androidx.appcompat.widget.Toolbar>
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabLayout"
+        <com.ma.lightweather.widget.WeatherSearchView
+            android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/tab_height"
-            android:background="?attr/colorPrimary"
-            app:tabTextColor="@color/secondary_white_text"
-            app:tabSelectedTextColor="@color/primary_white_text"
-            app:tabIndicatorColor="@color/primary_white_text"
-            app:tabRippleColor="?attr/colorPrimary"
-            app:tabIndicatorHeight="@dimen/tab_indicator_height"/>
+            android:layout_height="wrap_content">
+        </com.ma.lightweather.widget.WeatherSearchView>
         <com.ma.lightweather.widget.WeatherViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent" >
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/tab_height"
+                android:background="@color/ColorPrimaryDark"
+                app:tabTextColor="@color/TextColorSecondary"
+                app:tabSelectedTextColor="@color/TextColorPrimary"
+                app:tabIndicatorColor="@color/TextColorPrimary"
+                app:tabIndicatorHeight="@dimen/tab_indicator_height"/>
+        </com.ma.lightweather.widget.WeatherViewPager>
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView

@@ -26,7 +26,7 @@ open class BaseActivity<VB:ViewBinding> : AppCompatActivity() {
             setTheme(WeatherUtils.getTheme(this))
         }
         setContentView(R.layout.activity_base)
-        TAG=localClassName
+        TAG=javaClass.simpleName
         setTaskDescriptionBar()
     }
 

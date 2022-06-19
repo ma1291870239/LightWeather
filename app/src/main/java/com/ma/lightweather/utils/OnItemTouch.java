@@ -2,11 +2,12 @@ package com.ma.lightweather.utils;
 
 import android.app.Activity;
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.ma.lightweather.adapter.CityWeatherAdapter;
 

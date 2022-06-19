@@ -24,6 +24,7 @@ import com.ma.lightweather.R
 import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.app.WeatherService
+import com.ma.lightweather.databinding.FragWeatherBinding
 import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
@@ -42,7 +43,7 @@ import java.util.*
 /**
  * Created by Ma-PC on 2016/12/5.
  */
-class WeatherFragment : BaseFragment() {
+class WeatherFragment : BaseFragment<FragWeatherBinding>() {
 
     
     private var tmptv: TextView? = null

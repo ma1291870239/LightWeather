@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ma.lightweather.R
 import com.ma.lightweather.adapter.CityWeatherAdapter
+import com.ma.lightweather.databinding.FragCityBinding
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.DbUtils
@@ -20,7 +21,7 @@ import java.util.*
 /**
  * Created by Ma-PC on 2016/12/5.
  */
-class CityFrgment : BaseFragment() {
+class CityFrgment : BaseFragment<FragCityBinding>() {
 
     private var recyclerView: RecyclerView? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null

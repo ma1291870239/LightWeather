@@ -9,13 +9,14 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ma.lightweather.R
 import com.ma.lightweather.adapter.FutureDaysAdapter
 import com.ma.lightweather.app.Contants
+import com.ma.lightweather.databinding.FragFuturedaysBinding
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
 import com.ma.lightweather.widget.HourFrogWeatherView
 
-class FutureDaysFragment:BaseFragment() {
+class FutureDaysFragment:BaseFragment<FragFuturedaysBinding>() {
 
     private var expandableListView: ExpandableListView? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null

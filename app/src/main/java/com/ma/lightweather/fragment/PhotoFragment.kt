@@ -21,12 +21,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.ma.lightweather.R
 import com.ma.lightweather.activity.AboutActivity
 import com.ma.lightweather.activity.SettingActivity
 import com.ma.lightweather.adapter.SelectColorAdapter
 import com.ma.lightweather.app.Contants
+import com.ma.lightweather.databinding.FragPhotoBinding
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.PhotoUtils
 import com.ma.lightweather.utils.SPUtils
@@ -36,11 +38,12 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.util.*
+import kotlin.text.Typography.degree
 
 /**
  * Created by Ma-PC on 2016/12/5.
  */
-class PhotoFragment : BaseFragment(), View.OnClickListener {
+class PhotoFragment : BaseFragment<FragPhotoBinding>(), View.OnClickListener {
 
     private var phoneLayout: LinearLayout? = null
     private var loctionLayout: LinearLayout? = null
@@ -270,11 +273,11 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
                 .setView(contentView)
                 .setPositiveButton("确定") { _, _ ->
                     Thread(Runnable {
-                        val isSave = PhotoUtils.saveImageToGallery(mContext, bitmap!!)
-                        bitmap!!.recycle()
-                        if (isSave) {
-                            handler.sendEmptyMessage(SAVE_CODE)
-                        }
+//                        val isSave = PhotoUtils.saveImageToGallery(mContext, bitmap!!)
+//                        bitmap!!.recycle()
+//                        if (isSave) {
+//                            handler.sendEmptyMessage(SAVE_CODE)
+//                        }
                     }).start()
                 }
                 .setNegativeButton("取消", null).show()
@@ -291,7 +294,7 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
         }
         out = File(strImgPath, filename!!)
         strImgPath += filename
-        imgUrl = PhotoUtils.getUriForFile(mContext, out!!)
+        //imgUrl = PhotoUtils.getUriForFile(mContext, out!!)
         imageCaptureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imgUrl)
         imageCaptureIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
         startActivityForResult(imageCaptureIntent, RESULT_PHOTO)
@@ -306,8 +309,8 @@ class PhotoFragment : BaseFragment(), View.OnClickListener {
             RESULT_PHOTO//拍照
             -> try {
                 bitmap = MediaStore.Images.Media.getBitmap(contentResolver, imgUrl)
-                val degree = PhotoUtils.readPictureDegree(strImgPath!!)
-                bitmap = PhotoUtils.toTurn(bitmap!!, degree)
+                //val degree = PhotoUtils.readPictureDegree(strImgPath!!)
+                //bitmap = PhotoUtils.toTurn(bitmap!!, degree)
             } catch (e: IOException) {
                 e.printStackTrace()
             }

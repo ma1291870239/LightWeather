@@ -4,19 +4,19 @@
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:addStatesFromChildren="true"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    >
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:clipChildren="false">
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:clipChildren="false"
                 app:layout_scrollFlags="enterAlwaysCollapsed|scroll">
 
@@ -112,12 +112,19 @@
                         android:layout_toRightOf="@id/weather_tmp"
                         android:layout_alignTop="@id/weather_tmp"
                         android:layout_alignBottom="@id/weather_tmp"/>
-                    <ImageView
-                        android:id="@+id/weather_iv_bottom"
+                    <LinearLayout
+                        android:id="@+id/weather_ll_bottom"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/weather_tmp"
-                        android:adjustViewBounds="true" />
+                        android:layout_alignParentBottom="true"
+                        android:gravity="bottom">
+                        <ImageView
+                            android:id="@+id/weather_iv_bottom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"/>
+                    </LinearLayout>
                     <TextView
                         android:id="@+id/weather_feel"
                         android:layout_width="match_parent"
@@ -154,7 +161,11 @@
                         android:layout_alignRight="@id/weather_iv_top"
                         android:layout_alignTop="@id/weather_feel"
                         android:layout_alignBottom="@id/weather_feel"/>
-
+                    <com.ma.lightweather.widget.HourFrogWeatherView
+                        android:id="@+id/hourweather_view"
+                        android:layout_below="@id/weather_ll_bottom"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp" />
                 </RelativeLayout>
 
                 <RelativeLayout
@@ -168,7 +179,7 @@
                         android:layout_height="wrap_content" />
 
                     <com.ma.lightweather.widget.HourFrogWeatherView
-                        android:id="@+id/hourweather_view"
+                        android:id="@+id/hourweather_view1"
                         android:layout_below="@id/weather_tv"
                         android:layout_width="match_parent"
                         android:layout_height="250dp" />
@@ -198,193 +209,193 @@
                     android:layout_marginBottom="@dimen/margin_16"
                     android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            style="@style/FrogWeatherFragDetailText"
-                            android:text="湿度"/>
-                        <TextView
-                            style="@style/FrogWeatherFragDetailText"
-                            android:text="风速"/>
-                        <TextView
-                            style="@style/FrogWeatherFragDetailText"
-                            android:text="气压"/>
-                        <TextView
-                            style="@style/FrogWeatherFragDetailText"
-                            android:text="PM25"/>
-                        <TextView
-                            style="@style/FrogWeatherFragDetailText"
-                            android:text="PM10"/>
-                        <TextView
-                            style="@style/FrogWeatherFragDetailText"
-                            android:text="能见度"/>
-                    </LinearLayout>
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical">
-                        <TextView
-                            style="@style/WeatherFragDetailTextValue"
-                            android:id="@+id/weather_hum" />
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                style="@style/FrogWeatherFragDetailText"
+                                android:text="湿度"/>
+                            <TextView
+                                style="@style/FrogWeatherFragDetailText"
+                                android:text="风速"/>
+                            <TextView
+                                style="@style/FrogWeatherFragDetailText"
+                                android:text="气压"/>
+                            <TextView
+                                style="@style/FrogWeatherFragDetailText"
+                                android:text="PM25"/>
+                            <TextView
+                                style="@style/FrogWeatherFragDetailText"
+                                android:text="PM10"/>
+                            <TextView
+                                style="@style/FrogWeatherFragDetailText"
+                                android:text="能见度"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+                            <TextView
+                                style="@style/WeatherFragDetailTextValue"
+                                android:id="@+id/weather_hum" />
 
-                        <TextView
-                            style="@style/WeatherFragDetailTextValue"
-                            android:id="@+id/weather_spd" />
-                        <TextView
-                            style="@style/WeatherFragDetailTextValue"
-                            android:id="@+id/weather_pres" />
-                        <TextView
-                            style="@style/WeatherFragDetailTextValue"
-                            android:id="@+id/weather_pm25" />
-                        <TextView
-                            style="@style/WeatherFragDetailTextValue"
-                            android:id="@+id/weather_pm10" />
-                        <TextView
-                            style="@style/WeatherFragDetailTextValue"
-                            android:id="@+id/weather_vis" />
+                            <TextView
+                                style="@style/WeatherFragDetailTextValue"
+                                android:id="@+id/weather_spd" />
+                            <TextView
+                                style="@style/WeatherFragDetailTextValue"
+                                android:id="@+id/weather_pres" />
+                            <TextView
+                                style="@style/WeatherFragDetailTextValue"
+                                android:id="@+id/weather_pm25" />
+                            <TextView
+                                style="@style/WeatherFragDetailTextValue"
+                                android:id="@+id/weather_pm10" />
+                            <TextView
+                                style="@style/WeatherFragDetailTextValue"
+                                android:id="@+id/weather_vis" />
+                        </LinearLayout>
                     </LinearLayout>
-                </LinearLayout>
-                <include layout="@layout/item_horizontaldivider" />
-                <TextView
-                    style="@style/WeatherFragDetailTextValue"
-                    android:layout_margin="@dimen/margin_16"
-                    android:text="降水预报"/>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/pop_rv"
-                    android:layout_marginLeft="@dimen/margin_16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <TextView
-                    android:id="@+id/weather_pcpn"
-                    style="@style/WeatherFragDetailTextValue"
-                    android:layout_margin="@dimen/margin_16"
-                    android:text=""/>
-                <include layout="@layout/item_horizontaldivider" />
-                <TextView
-                    style="@style/WeatherFragDetailTextValue"
-                    android:layout_margin="@dimen/margin_16"
-                    android:text="风况"/>
-                <RelativeLayout
-                    android:layout_marginLeft="@dimen/margin_16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    <include layout="@layout/item_horizontaldivider" />
                     <TextView
-                        android:id="@+id/wind_speed"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="6"
-                        android:textSize="@dimen/text_67"
-                        android:textColor="@color/wind_text"/>
-                    <TextView
-                        android:id="@+id/wind_unit"
+                        style="@style/WeatherFragDetailTextValue"
+                        android:layout_margin="@dimen/margin_16"
+                        android:text="降水预报"/>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/pop_rv"
                         android:layout_marginLeft="@dimen/margin_16"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="公里/小时"
-                        android:textSize="@dimen/text_15"
-                        android:layout_toRightOf="@id/wind_speed"
-                        android:layout_alignBaseline="@id/wind_speed"/>
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
                     <TextView
-                        android:id="@+id/wind_dir"
-                        android:layout_marginLeft="@dimen/margin_24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="@dimen/text_15"
-                        android:layout_toRightOf="@id/wind_unit"
-                        android:layout_alignBaseline="@id/wind_unit"/>
-                    <TextView
-                        android:id="@+id/wind_sc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="bottom"
-                        android:text=""
-                        android:textSize="@dimen/text_24"
-                        android:layout_alignLeft="@id/wind_dir"
-                        android:layout_alignTop="@id/wind_speed"
-                        android:layout_above="@id/wind_dir"/>
-                </RelativeLayout>
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/wind_rv"
-                    android:layout_marginLeft="@dimen/margin_16"
-                    android:layout_marginBottom="@dimen/margin_16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <include layout="@layout/item_horizontaldivider" />
-                <TextView
-                    style="@style/WeatherFragDetailTextValue"
-                    android:layout_margin="@dimen/margin_16"
-                    android:text="空气质量"/>
-                <RelativeLayout
-                    android:layout_marginLeft="@dimen/margin_16"
-                    android:layout_marginRight="@dimen/margin_16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/weather_aqi"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="@dimen/text_67"
-                        android:textColor="@color/wind_text"
-                        android:layout_alignParentRight="true"/>
-                    <TextView
-                        android:id="@+id/weather_aqi_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="@dimen/text_15"
-                        android:layout_alignBaseline="@id/weather_aqi"/>
-                    <TextView
-                        android:id="@+id/weather_aqi_level"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:gravity="bottom"
-                        android:text=""
-                        android:textSize="@dimen/text_24"
-                        android:layout_alignTop="@id/weather_aqi"
-                        android:layout_above="@id/weather_aqi_main"/>
-                </RelativeLayout>
-                <TextView
-                    style="@style/WeatherFragDetailTextValue"
-                    android:layout_marginTop="@dimen/margin_16"
-                    android:layout_marginLeft="@dimen/margin_16"
-                    android:text="健康提示"/>
-                <TextView
-                    android:id="@+id/airTextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/margin_16"
-                    android:text=""/>
-                <include layout="@layout/item_horizontaldivider" />
-                <TextView
-                    style="@style/WeatherFragDetailTextValue"
-                    android:layout_margin="@dimen/margin_16"
-                    android:text="日出和日落"/>
-                <RelativeLayout
-                    android:layout_marginLeft="@dimen/margin_16"
-                    android:layout_marginRight="@dimen/margin_16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/weather_rise_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/text_24"
-                        android:layout_marginTop="@dimen/margin_24"
+                        android:id="@+id/weather_pcpn"
+                        style="@style/WeatherFragDetailTextValue"
+                        android:layout_margin="@dimen/margin_16"
                         android:text=""/>
+                    <include layout="@layout/item_horizontaldivider" />
                     <TextView
-                        android:id="@+id/weather_rise"
+                        style="@style/WeatherFragDetailTextValue"
+                        android:layout_margin="@dimen/margin_16"
+                        android:text="风况"/>
+                    <RelativeLayout
+                        android:layout_marginLeft="@dimen/margin_16"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/wind_speed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="6"
+                            android:textSize="@dimen/text_67"
+                            android:textColor="@color/wind_text"/>
+                        <TextView
+                            android:id="@+id/wind_unit"
+                            android:layout_marginLeft="@dimen/margin_16"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="公里/小时"
+                            android:textSize="@dimen/text_15"
+                            android:layout_toRightOf="@id/wind_speed"
+                            android:layout_alignBaseline="@id/wind_speed"/>
+                        <TextView
+                            android:id="@+id/wind_dir"
+                            android:layout_marginLeft="@dimen/margin_24"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="@dimen/text_15"
+                            android:layout_toRightOf="@id/wind_unit"
+                            android:layout_alignBaseline="@id/wind_unit"/>
+                        <TextView
+                            android:id="@+id/wind_sc"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:text=""
+                            android:textSize="@dimen/text_24"
+                            android:layout_alignLeft="@id/wind_dir"
+                            android:layout_alignTop="@id/wind_speed"
+                            android:layout_above="@id/wind_dir"/>
+                    </RelativeLayout>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/wind_rv"
+                        android:layout_marginLeft="@dimen/margin_16"
+                        android:layout_marginBottom="@dimen/margin_16"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+                    <include layout="@layout/item_horizontaldivider" />
+                    <TextView
+                        style="@style/WeatherFragDetailTextValue"
+                        android:layout_margin="@dimen/margin_16"
+                        android:text="空气质量"/>
+                    <RelativeLayout
+                        android:layout_marginLeft="@dimen/margin_16"
+                        android:layout_marginRight="@dimen/margin_16"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/weather_aqi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="@dimen/text_67"
+                            android:textColor="@color/wind_text"
+                            android:layout_alignParentRight="true"/>
+                        <TextView
+                            android:id="@+id/weather_aqi_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textSize="@dimen/text_15"
+                            android:layout_alignBaseline="@id/weather_aqi"/>
+                        <TextView
+                            android:id="@+id/weather_aqi_level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="bottom"
+                            android:text=""
+                            android:textSize="@dimen/text_24"
+                            android:layout_alignTop="@id/weather_aqi"
+                            android:layout_above="@id/weather_aqi_main"/>
+                    </RelativeLayout>
+                    <TextView
+                        style="@style/WeatherFragDetailTextValue"
+                        android:layout_marginTop="@dimen/margin_16"
+                        android:layout_marginLeft="@dimen/margin_16"
+                        android:text="健康提示"/>
+                    <TextView
+                        android:id="@+id/airTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignLeft="@id/weather_rise_text"
-                        android:layout_alignRight="@id/weather_rise_text"
-                        android:gravity="center"
-                        android:text="日出时间"/>
+                        android:layout_margin="@dimen/margin_16"
+                        android:text=""/>
+                    <include layout="@layout/item_horizontaldivider" />
+                    <TextView
+                        style="@style/WeatherFragDetailTextValue"
+                        android:layout_margin="@dimen/margin_16"
+                        android:text="日出和日落"/>
+                    <RelativeLayout
+                        android:layout_marginLeft="@dimen/margin_16"
+                        android:layout_marginRight="@dimen/margin_16"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                        <TextView
+                            android:id="@+id/weather_rise_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/text_24"
+                            android:layout_marginTop="@dimen/margin_24"
+                            android:text=""/>
+                        <TextView
+                            android:id="@+id/weather_rise"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignLeft="@id/weather_rise_text"
+                            android:layout_alignRight="@id/weather_rise_text"
+                            android:gravity="center"
+                            android:text="日出时间"/>
 
                     <TextView
                         android:id="@+id/weather_set_text"

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/ColorPrimary"
     tools:context="com.ma.lightweather.activity.SplashActivity">
     <LinearLayout
         android:id="@+id/appLayout"
@@ -18,7 +18,7 @@
             android:drawablePadding="@dimen/padding_8"
             android:text="@string/app_name"
             android:textSize="@dimen/text_17"
-            android:textColor="@color/black"
+            android:textColor="@color/TextColorPrimary"
             android:gravity="center"
             />
     </LinearLayout>
@@ -37,7 +37,7 @@
         android:paddingHorizontal="@dimen/padding_8"
         android:layout_alignParentRight="true"
         android:textSize="@dimen/text_13"
-        android:textColor="@color/primary_white_text"
+        android:textColor="@color/TextColorPrimary"
         android:gravity="center"
         android:background="@drawable/bg_splash_tv_solid_black"/>
     <ImageView
