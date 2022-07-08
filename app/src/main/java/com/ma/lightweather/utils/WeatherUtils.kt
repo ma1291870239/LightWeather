@@ -1,8 +1,10 @@
 package com.ma.lightweather.utils
 
 import android.content.Context
+import androidx.annotation.ColorRes
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
+import androidx.annotation.ColorInt as ColorInt1
 
 object WeatherUtils {
 
@@ -137,7 +139,7 @@ object WeatherUtils {
         return R.mipmap.ic_unknow_back
     }
 
-    fun getColorWeatherBack(condTxt:String):Int {
+    fun getColorWeatherBack(condTxt:String): Int {
         if (condTxt.contains("云")) {
             return R.color.weather_back_cloud
         }

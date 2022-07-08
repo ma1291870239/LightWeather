@@ -66,10 +66,10 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
                 toMain()
             }
         }
-        countDownTimer.start()
     }
 
     private fun setData(response:String) {
+        countDownTimer.start()
         val bing=SPUtils.getParam(this, Contants.BING, "") as String
         val bingPath=SPUtils.getString(this, Contants.BINGPATH)
         if(response==bing && !bingPath.isNullOrEmpty()){

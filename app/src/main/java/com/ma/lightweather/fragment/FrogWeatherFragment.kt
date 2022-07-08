@@ -80,7 +80,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     private var hourWeatherView: HourFrogWeatherView? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     private var appBarLayout: AppBarLayout? = null
-    private var relativeLayout1: RelativeLayout? = null
+    private var relativeLayout1: LinearLayout? = null
     private var relativeLayout2: RelativeLayout? = null
     private var textView: TextView? = null
     private var ivTop: ImageView? = null
@@ -123,6 +123,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
                     ivTop?.setImageResource(WeatherUtils.getColorWeatherIcon(cond))
                     ivBottom?.setImageResource(WeatherUtils.getColorWeatherImg(cond))
                     relativeLayout1?.setBackgroundColor(ContextCompat.getColor(context!!,WeatherUtils.getColorWeatherBack(cond)))
+                    relativeLayout1?.setBackgroundColor(ContextCompat.getColor(context!!,R.color.weather_back_sunny))
                     //(activity as MainActivity).setWeatherBack(cond)
                     humtv?.text = "" + weatherList!![i].now.hum + " %"
                     pcpntv?.text = "日降水总量  " + weatherList!![i].now.pcpn + " 毫米"
@@ -245,14 +246,14 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         val display= resources.displayMetrics
         val width :Int=display.widthPixels
         val height:Int=display.heightPixels-CommonUtils.getStatusBarHeight(requireActivity())-CommonUtils.dp2px(requireActivity(),50f+8f+8f+40f)
-        Log.e(TAG, "setViewHeight: ${display.widthPixels}---${display.heightPixels}---${height}---${h}", )
+        Log.e(TAG, "setViewHeight: ${display.widthPixels}---${display.heightPixels}---${height}---${h}---${relativeLayout1?.measuredHeight}", )
         relativeLayout1?.layoutParams?.height=height
         relativeLayout2?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,250f)
         textView?.layoutParams?.height=height
         appBarLayout?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,250f)
-        val lp = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT)
-        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
-        ivBottom?.layoutParams=lp
+//        val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+//        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
+//        ivBottom?.layoutParams=lp
     }
 
     fun setLayourEnable(verticalOffset: Int?) {
@@ -349,8 +350,6 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
         appBarLayout=view?.findViewById(R.id.appBarLayout)
         relativeLayout1=view?.findViewById(R.id.relativeLayout1)
-        relativeLayout2=view?.findViewById(R.id.relativeLayout2)
-        textView=view?.findViewById(R.id.weather_tv)
         ivTop=view?.findViewById(R.id.weather_iv_top)
         ivBottom=view?.findViewById(R.id.weather_iv_bottom)
         popRv= view?.findViewById(R.id.pop_rv)

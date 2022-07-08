@@ -45,6 +45,7 @@
     <color name="temp_low">#3F51B5</color>
     <color name="splash_back">#30000000</color>
     <color name="cover_back">#90FFFFFF</color>
+    <color name="transparent">#00000000</color>
 
     <color name="primary_black_text">#87000000</color>
     <color name="secondary_black_text">#54000000</color>
