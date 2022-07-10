@@ -112,7 +112,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
     }
 
 
-    fun toMain() {
+    private fun toMain() {
         val oldVersion= SPUtils.getBoolean(this, Contants.OLDVERSION)
         var it= Intent(this, FrogActivity::class.java)
         if(oldVersion){

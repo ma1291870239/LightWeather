@@ -11,11 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <com.ma.lightweather.widget.WeatherSearchView
+        <com.ma.lightweather.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </com.ma.lightweather.widget.WeatherSearchView>
+            android:layout_height="wrap_content"
+            android:transitionName="SearchView">
+        </com.ma.lightweather.widget.SearchView>
         <com.ma.lightweather.widget.WeatherViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"

@@ -1,12 +1,18 @@
 package com.ma.lightweather.activity
 
+import android.app.ActivityOptions
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
 import com.ma.lightweather.adapter.ViewPager2Adapter
 import com.ma.lightweather.adapter.ViewPagerAdapter
+import com.ma.lightweather.app.Contants
 import com.ma.lightweather.databinding.ActivityFrogBinding
 import com.ma.lightweather.utils.CommonUtils
+import com.ma.lightweather.utils.SPUtils
+import com.ma.lightweather.widget.SearchView
 import com.ma.lightweather.widget.WeatherSearchView
 
 class FrogActivity : BaseActivity<ActivityFrogBinding>() {
@@ -36,22 +42,42 @@ class FrogActivity : BaseActivity<ActivityFrogBinding>() {
 //                }
 //            }
 //        }.attach()
-
-        mBinding.searchView.setOnLeftClickListener(object:WeatherSearchView.OnLeftClickListener{
+        mBinding.searchView.setState(false)
+        mBinding.searchView.setCursorState(false)
+        mBinding.searchView.setOnLeftClickListener(object: SearchView.OnLeftClickListener{
             override fun onLeftClick(tag: Int) {
-                mBinding.drawerLayout.openDrawer(Gravity.LEFT)
+                if(tag==SearchView.LEFT_IV_SEARCH){
+                    toSearch()
+                }
             }
         })
 
-        mBinding.searchView.setOnAccountClickListener(object :WeatherSearchView.OnAccountClickListener{
-            override fun onAccountClick() {
-                mBinding.drawerLayout.openDrawer(Gravity.LEFT)
+        mBinding.searchView.setOnAccountClickListener(object :SearchView.OnAccountClickListener{
+            override fun onAccountClick(tag: Int) {
+                if(tag==SearchView.RIGHT_ACCOUNT_ACCOUNT){
+                    mBinding.drawerLayout.openDrawer(Gravity.LEFT)
+                }
+            }
+        })
+        mBinding.searchView.setOnFocusChangeListener(object :SearchView.OnFocusChangeListener{
+            override fun onFocusChange(hasFocus: Boolean) {
+                if (hasFocus){
+                    toSearch()
+                }
+                false
             }
         })
     }
 
-    override fun onWindowFocusChanged(hasFocus: Boolean) {
-        super.onWindowFocusChanged(hasFocus)
-        Log.e(TAG, "onWindowFocusChanged: ${mBinding.viewPager.measuredHeight- CommonUtils.dp2px(this,40f)}", )
+    private fun toSearch() {
+        mBinding.searchView.clearEtFocus()
+        var it= Intent(this@FrogActivity, SearchActivity::class.java)
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
+            startActivity(it,ActivityOptions.makeSceneTransitionAnimation(
+                    this@FrogActivity,mBinding.searchView,"searchView"
+            ).toBundle())
+        }else{
+            startActivity(it)
+        }
     }
 }
