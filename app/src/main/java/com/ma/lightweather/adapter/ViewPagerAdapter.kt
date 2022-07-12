@@ -18,7 +18,7 @@ class ViewPagerAdapter (fm: FragmentManager,height: Int) : FragmentStatePagerAda
         lateinit var fragment: Fragment
         when(position){
             0->{
-                fragment = FrogTodayFragment()
+                fragment = FrogWeatherFragment()
                 fragment.arguments = Bundle().apply {
 
                 }

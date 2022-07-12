@@ -57,7 +57,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
             toMain()
         }
 
-        countDownTimer = object : CountDownTimer(4000, 1000) {
+        countDownTimer = object : CountDownTimer(2000, 1000) {
             override fun onTick(l: Long) {
                 mBinding.skipTv.text = getString(R.string.splash_skip_text,l/1000)
             }

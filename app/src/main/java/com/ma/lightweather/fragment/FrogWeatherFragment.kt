@@ -25,6 +25,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.ma.lightweather.R
 import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.adapter.PopAdapter
@@ -42,6 +43,8 @@ import com.ma.lightweather.widget.CardTextView
 import com.ma.lightweather.widget.HourFrogWeatherView
 import com.ma.lightweather.widget.WeatherView
 import kotlinx.android.synthetic.main.activity_splash.*
+import kotlinx.android.synthetic.main.frag_frogweather.*
+import kotlinx.android.synthetic.main.item_notify_simple.*
 import org.json.JSONException
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -80,8 +83,10 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     private var hourWeatherView: HourFrogWeatherView? = null
     private var swipeRefreshLayout: SwipeRefreshLayout? = null
     private var appBarLayout: AppBarLayout? = null
-    private var relativeLayout1: LinearLayout? = null
+    private var relativeLayout1: RelativeLayout? = null
     private var relativeLayout2: RelativeLayout? = null
+    private var relativeLayout3: RelativeLayout? = null
+    private var collapsingToolbarLayout: CollapsingToolbarLayout? = null
     private var textView: TextView? = null
     private var ivTop: ImageView? = null
     private var ivBottom:ImageView?=null
@@ -224,6 +229,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         }
         if (isAdded) {
             initView(view)
+
             //setViewHeight()
             if(weatherJson.isNotEmpty()&&weatherAqiJson.isNotEmpty()) {
                 airList = Parse.parseAir(weatherAqiJson, weatherView, hourWeatherView, mContext)
@@ -236,6 +242,8 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
                 mContext.startService(it)
             }
             city=SPUtils.getParam(activity, Contants.CITY, Contants.CITYNAME) as String
+
+
             loadData(city)
             //requestLocationPermission()
         }
@@ -246,11 +254,12 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         val display= resources.displayMetrics
         val width :Int=display.widthPixels
         val height:Int=display.heightPixels-CommonUtils.getStatusBarHeight(requireActivity())-CommonUtils.dp2px(requireActivity(),50f+8f+8f+40f)
-        Log.e(TAG, "setViewHeight: ${display.widthPixels}---${display.heightPixels}---${height}---${h}---${relativeLayout1?.measuredHeight}", )
-        relativeLayout1?.layoutParams?.height=height
-        relativeLayout2?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,250f)
-        textView?.layoutParams?.height=height
-        appBarLayout?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,250f)
+        Log.e(TAG, "setViewHeight: ${display.widthPixels}---${display.heightPixels}---${mBinding.root.height}---${h}---${relativeLayout1?.measuredHeight}", )
+//        relativeLayout1?.layoutParams?.height=height
+//        relativeLayout2?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,250f)
+//        textView?.layoutParams?.height=height
+        appBarLayout?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,350f)
+        collapsingToolbarLayout?.layoutParams?.height=height+CommonUtils.dp2px(activity!!,350f)
 //        val lp = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
 //        lp.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM)
 //        ivBottom?.layoutParams=lp
@@ -350,6 +359,9 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
         appBarLayout=view?.findViewById(R.id.appBarLayout)
         relativeLayout1=view?.findViewById(R.id.relativeLayout1)
+        relativeLayout2=view?.findViewById(R.id.relativeLayout2)
+        relativeLayout3=view?.findViewById(R.id.relativeLayout3)
+        collapsingToolbarLayout=view?.findViewById(R.id.collapsingToolbarLayout)
         ivTop=view?.findViewById(R.id.weather_iv_top)
         ivBottom=view?.findViewById(R.id.weather_iv_bottom)
         popRv= view?.findViewById(R.id.pop_rv)
@@ -365,8 +377,23 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         mBinding.popRv.layoutManager=popManager
         mBinding.windRv.layoutManager=windManager
         mBinding.swipeRefreshLayout.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
+        appBarLayout?.setOnClickListener {
+
+        }
         appBarLayout?.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener { _, p1 -> setLayourEnable(p1) })
         mBinding.swipeRefreshLayout.setOnRefreshListener { loadData(city) }
+
+        hourWeatherView?.post {
+            Log.e(TAG, "setViewHeight: ${appBarLayout!!.measuredHeight}---${hourWeatherView!!.measuredHeight}---${collapsingToolbarLayout?.measuredHeight}---${ivBottom?.measuredHeight}---${relativeLayout1?.measuredHeight}", )
+            val height=appBarLayout!!.measuredHeight
+            val newHeight=appBarLayout!!.measuredHeight+hourWeatherView!!.measuredHeight
+            appBarLayout?.layoutParams?.height=newHeight
+            collapsingToolbarLayout?.layoutParams?.height=height
+            relativeLayout1?.layoutParams?.height=height-ivBottom!!.measuredHeight
+            relativeLayout2?.layoutParams?.height=height
+
+        }
+
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {

@@ -30,7 +30,7 @@ class FrogActivity : BaseActivity<ActivityFrogBinding>() {
     private fun initView() {
         viewPagerAdapter= ViewPagerAdapter(supportFragmentManager, mBinding.viewPager.height)
         mBinding.viewPager.adapter=viewPagerAdapter
-        viewPager2Adapter= ViewPager2Adapter(this, mBinding.viewPager.measuredHeight)
+//        viewPager2Adapter= ViewPager2Adapter(this, mBinding.viewPager.measuredHeight)
 //        mBinding.viewPager.adapter=viewPager2Adapter
 //        TabLayoutMediator(mBinding.tabLayout, mBinding.viewPager) { tab, position ->
 //            when(position){

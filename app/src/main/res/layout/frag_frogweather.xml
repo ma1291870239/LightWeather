@@ -10,180 +10,169 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            app:layout_behavior=".behavior.AppBarLayoutFlingBehavior">
             <com.google.android.material.appbar.CollapsingToolbarLayout
+                android:id="@+id/collapsingToolbarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:minHeight="10dp"
                 app:layout_scrollFlags="scroll">
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/relativeLayout1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
+                    android:paddingTop="@dimen/padding_8"
+                    android:background="?attr/colorPrimary"
                     app:layout_collapseMode="pin">
-                    <RelativeLayout
+                    <TextView
+                        android:id="@+id/weather_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_8"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:shadowColor="@color/shadow_white_text"
+                        android:shadowDx="3"
+                        android:shadowDy="3"
+                        android:shadowRadius="5"
+                        android:textSize="@dimen/text_13" />
+                    <TextView
+                        android:id="@+id/weather_city"
                         android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:paddingTop="@dimen/padding_8"
-                        android:background="?attr/colorPrimary">
-                        <TextView
-                            android:id="@+id/weather_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_8"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:shadowColor="@color/shadow_white_text"
-                            android:shadowDx="3"
-                            android:shadowDy="3"
-                            android:shadowRadius="5"
-                            android:textSize="@dimen/text_13" />
-                        <TextView
-                            android:id="@+id/weather_city"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_8"
-                            android:text=""
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:shadowColor="@color/shadow_white_text"
-                            android:shadowDx="3"
-                            android:shadowDy="3"
-                            android:shadowRadius="5"
-                            android:textSize="@dimen/text_13"
-                            android:layout_toRightOf="@id/weather_time"/>
-                        <TextView
-                            android:id="@+id/weather_maxmintmp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="@dimen/margin_8"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:shadowColor="@color/shadow_black_text"
-                            android:shadowDx="3"
-                            android:shadowDy="3"
-                            android:shadowRadius="5"
-                            android:textSize="@dimen/text_15"
-                            android:layout_below="@id/weather_time"/>
-                        <ImageView
-                            android:id="@+id/weather_iv_top"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:layout_below="@id/weather_maxmintmp"
-                            android:layout_marginRight="@dimen/margin_24"
-                            android:adjustViewBounds="true" />
-
-                        <TextView
-                            android:id="@+id/weather_tmp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:layout_marginLeft="@dimen/margin_8"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:shadowColor="@color/shadow_black_text"
-                            android:shadowDx="3"
-                            android:shadowDy="3"
-                            android:shadowRadius="5"
-                            android:textSize="@dimen/text_100"
-                            android:gravity="center_vertical"
-                            android:layout_alignTop="@id/weather_iv_top"
-                            android:layout_alignBottom="@id/weather_iv_top" />
-                        <TextView
-                            android:id="@+id/weather_tmp_unit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:layout_marginLeft="@dimen/margin_8"
-                            android:text="℃"
-                            android:textColor="@color/white"
-                            android:shadowColor="@color/shadow_black_text"
-                            android:shadowDx="3"
-                            android:shadowDy="3"
-                            android:shadowRadius="5"
-                            android:textSize="@dimen/text_56"
-                            android:gravity="center_vertical"
-                            android:firstBaselineToTopHeight="0dp"
-                            android:layout_toRightOf="@id/weather_tmp"
-                            android:layout_alignTop="@id/weather_tmp"
-                            android:layout_alignBottom="@id/weather_tmp"/>
-                        <TextView
-                            android:id="@+id/weather_feel"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:layout_marginTop="@dimen/margin_16"
-                            android:layout_marginLeft="@dimen/margin_8"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:shadowColor="@color/shadow_black_text"
-                            android:shadowDx="3"
-                            android:shadowDy="3"
-                            android:shadowRadius="5"
-                            android:textSize="@dimen/text_15"
-                            android:gravity="center_vertical"
-                            android:layout_below="@+id/weather_tmp" />
-                        <TextView
-                            android:id="@+id/weather_cond"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:includeFontPadding="false"
-                            android:text=""
-                            android:textColor="@color/white"
-                            android:textStyle="bold"
-                            android:shadowColor="@color/shadow_black_text"
-                            android:shadowDx="3"
-                            android:shadowDy="3"
-                            android:shadowRadius="5"
-                            android:textSize="@dimen/text_15"
-                            android:gravity="center"
-                            android:layout_below="@+id/weather_iv_top"
-                            android:layout_alignLeft="@id/weather_iv_top"
-                            android:layout_alignRight="@id/weather_iv_top"
-                            android:layout_alignTop="@id/weather_feel"
-                            android:layout_alignBottom="@id/weather_feel"/>
-
-                    </RelativeLayout>
-                    <View
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_8"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:shadowColor="@color/shadow_white_text"
+                        android:shadowDx="3"
+                        android:shadowDy="3"
+                        android:shadowRadius="5"
+                        android:textSize="@dimen/text_13"
+                        android:layout_toRightOf="@id/weather_time"/>
+                    <TextView
+                        android:id="@+id/weather_maxmintmp"
                         android:layout_width="match_parent"
-                        android:layout_height="350dp"
-                        android:background="@color/transparent"/>
-                </LinearLayout>
-                <LinearLayout
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_8"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:shadowColor="@color/shadow_black_text"
+                        android:shadowDx="3"
+                        android:shadowDy="3"
+                        android:shadowRadius="5"
+                        android:textSize="@dimen/text_15"
+                        android:layout_below="@id/weather_time"/>
+                    <ImageView
+                        android:id="@+id/weather_iv_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/weather_maxmintmp"
+                        android:layout_marginRight="@dimen/margin_24"
+                        android:adjustViewBounds="true" />
+
+                    <TextView
+                        android:id="@+id/weather_tmp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:layout_marginLeft="@dimen/margin_8"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:shadowColor="@color/shadow_black_text"
+                        android:shadowDx="3"
+                        android:shadowDy="3"
+                        android:shadowRadius="5"
+                        android:textSize="@dimen/text_100"
+                        android:gravity="center_vertical"
+                        android:layout_alignTop="@id/weather_iv_top"
+                        android:layout_alignBottom="@id/weather_iv_top" />
+                    <TextView
+                        android:id="@+id/weather_tmp_unit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:layout_marginLeft="@dimen/margin_8"
+                        android:text="℃"
+                        android:textColor="@color/white"
+                        android:shadowColor="@color/shadow_black_text"
+                        android:shadowDx="3"
+                        android:shadowDy="3"
+                        android:shadowRadius="5"
+                        android:textSize="@dimen/text_56"
+                        android:gravity="center_vertical"
+                        android:firstBaselineToTopHeight="0dp"
+                        android:layout_toRightOf="@id/weather_tmp"
+                        android:layout_alignTop="@id/weather_tmp"
+                        android:layout_alignBottom="@id/weather_tmp"/>
+                    <TextView
+                        android:id="@+id/weather_feel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:layout_marginTop="@dimen/margin_16"
+                        android:layout_marginLeft="@dimen/margin_8"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:shadowColor="@color/shadow_black_text"
+                        android:shadowDx="3"
+                        android:shadowDy="3"
+                        android:shadowRadius="5"
+                        android:textSize="@dimen/text_15"
+                        android:gravity="center_vertical"
+                        android:layout_below="@+id/weather_tmp" />
+                    <TextView
+                        android:id="@+id/weather_cond"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text=""
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:shadowColor="@color/shadow_black_text"
+                        android:shadowDx="3"
+                        android:shadowDy="3"
+                        android:shadowRadius="5"
+                        android:textSize="@dimen/text_15"
+                        android:gravity="center"
+                        android:layout_below="@+id/weather_iv_top"
+                        android:layout_alignLeft="@id/weather_iv_top"
+                        android:layout_alignRight="@id/weather_iv_top"
+                        android:layout_alignTop="@id/weather_feel"
+                        android:layout_alignBottom="@id/weather_feel"/>
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/relativeLayout2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/transparent"
-                    android:orientation="vertical"
                     app:layout_collapseMode="parallax"
                     app:layout_collapseParallaxMultiplier="1">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="350dp"
-                        android:background="@color/transparent"/>
                     <ImageView
                         android:id="@+id/weather_iv_bottom"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
                         android:adjustViewBounds="true" />
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="350dp"
-                        android:background="@color/transparent"/>
-                </LinearLayout>
+                </RelativeLayout>
+
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+            <RelativeLayout
+                android:id="@+id/relativeLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="350dp"
+                android:minHeight="100dp"
+                app:layout_scrollFlags="scroll">
                 <com.ma.lightweather.widget.HourFrogWeatherView
                     android:id="@+id/hourweather_view"
                     android:layout_width="match_parent"
-                    android:background="#00FFFFFF"
-                    android:layout_height="350dp"
-                    android:layout_gravity="bottom"
-                    app:layout_collapseMode="pin" />
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
-
+                    android:layout_height="match_parent"
+                    android:layout_alignParentBottom="true"/>
+            </RelativeLayout>
         </com.google.android.material.appbar.AppBarLayout>
         <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:transitionName="SearchView">
         </com.ma.lightweather.widget.SearchView>
-        <com.ma.lightweather.widget.WeatherViewPager
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
@@ -30,7 +30,7 @@
                 app:tabSelectedTextColor="@color/TextColorPrimary"
                 app:tabIndicatorColor="@color/TextColorPrimary"
                 app:tabIndicatorHeight="@dimen/tab_indicator_height"/>
-        </com.ma.lightweather.widget.WeatherViewPager>
+        </androidx.viewpager.widget.ViewPager>
     </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
