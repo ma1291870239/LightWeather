@@ -1,5 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="FrogWhite">#FFFFFF</color>
+    <color name="FrogWhitePrimary">#FAFAFA</color>
+    <color name="FrogWhitePrimaryDark">#F5F5F5</color>
+    <color name="FrogWhiteDark">#E0E0E0</color>
+    <color name="FrogBlackTextPrimary">#87000000</color>
+    <color name="FrogBlackTextSecondary">#54000000</color>
+    <color name="FrogBlackTextHint">#38000000</color>
+    <color name="FrogBlackDivide">#12000000</color>
+
+
+    <color name="FrogBlack">#424242</color>
+    <color name="FrogBlackPrimary">#303030</color>
+    <color name="FrogBlackPrimaryDark">#212121</color>
+    <color name="FrogBlackDark">#000000</color>
+    <color name="FrogWhiteTextPrimary">#FFFFFF</color>
+    <color name="FrogWhiteTextSecondary">#70FFFFFF</color>
+    <color name="FrogWhiteTextHint">#50FFFFFF</color>
+    <color name="FrogWhiteDivide">#12FFFFFF</color>
+
+    <color name="FrogBack">#0CB2F0</color>
+    <color name="FrogIcon">#757575</color>
+
     <color name="ColorPrimary">#F5F5F5</color>
     <color name="ColorPrimaryDark">#FAFAFA</color>
     <color name="ColorAccent">#FAFAFA</color>
@@ -38,14 +60,15 @@
     <color name="greyColorPrimaryDark">#616161</color>
     <color name="greyColorAccent">#9E9E9E</color>
 
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="transparent">#00000000</color>
     <color name="app_background">#FAFAFA</color>
     <color name="temp_high">#FF5722</color>
     <color name="temp_low">#3F51B5</color>
     <color name="splash_back">#30000000</color>
     <color name="cover_back">#90FFFFFF</color>
-    <color name="transparent">#00000000</color>
+
 
     <color name="primary_black_text">#87000000</color>
     <color name="secondary_black_text">#54000000</color>

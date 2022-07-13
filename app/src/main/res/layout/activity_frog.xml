@@ -25,10 +25,9 @@
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/tab_height"
-                android:background="@color/ColorPrimaryDark"
-                app:tabTextColor="@color/TextColorSecondary"
-                app:tabSelectedTextColor="@color/TextColorPrimary"
-                app:tabIndicatorColor="@color/TextColorPrimary"
+                app:tabTextColor="@color/FrogWhiteTextSecondary"
+                app:tabSelectedTextColor="@color/FrogWhiteTextPrimary"
+                app:tabIndicatorColor="@color/FrogWhiteTextPrimary"
                 app:tabIndicatorHeight="@dimen/tab_indicator_height"/>
         </com.ma.lightweather.widget.WeatherViewPager>
     </LinearLayout>

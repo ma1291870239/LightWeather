@@ -8,11 +8,10 @@ import com.bumptech.glide.Glide.init
 import com.ma.lightweather.fragment.FrogWeatherFragment
 import com.ma.lightweather.fragment.FutureDaysFragment
 
-class ViewPager2Adapter(fragmentActivity: FragmentActivity,height: Int) : FragmentStateAdapter(fragmentActivity) {
+class ViewPager2Adapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
 
     override fun getItemCount(): Int = 2
 
-    var h=height
 
 
     override fun createFragment(position: Int): Fragment {
@@ -21,7 +20,7 @@ class ViewPager2Adapter(fragmentActivity: FragmentActivity,height: Int) : Fragme
             0->{
                 fragment = FrogWeatherFragment()
                 fragment.arguments = Bundle().apply {
-                    putInt("height",h)
+
                 }
             }
             1->{

@@ -35,4 +35,12 @@ object Contants {
     const val OLDVERSION = "version"
     const val BING = "bing"
     const val BINGPATH = "bingpath"
+
+
+    //和风 实时天气
+    const val HF_WEATHER_NOW ="https://devapi.qweather.com/v7/weather/now?key=4ddad270cdb94639ae5f4cfe11aadf82&location="
+    //和风 未来天气
+    const val HF_WEATHER_FUTURE = "https://devapi.qweather.com/v7/weather/7d?key=4ddad270cdb94639ae5f4cfe11aadf82&location="
+    //行政区域
+    const val HF_WEATHER_HOUR = "https://devapi.qweather.com/v7/weather/24h??key=4ddad270cdb94639ae5f4cfe11aadf82&location="
 }

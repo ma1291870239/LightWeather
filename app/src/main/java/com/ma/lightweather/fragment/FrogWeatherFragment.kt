@@ -5,22 +5,22 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.location.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.os.Message
 import android.util.Log
+import android.util.Log.e
 import android.view.*
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -39,10 +39,7 @@ import com.ma.lightweather.app.WeatherService
 import com.ma.lightweather.databinding.FragFrogweatherBinding
 import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
-import com.ma.lightweather.utils.CommonUtils
-import com.ma.lightweather.utils.Parse
-import com.ma.lightweather.utils.SPUtils
-import com.ma.lightweather.utils.WeatherUtils
+import com.ma.lightweather.utils.*
 import com.ma.lightweather.widget.CardTextView
 import com.ma.lightweather.widget.HourFrogWeatherView
 import com.ma.lightweather.widget.WeatherView
@@ -64,6 +61,9 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     private var weatherAqiJson: String = ""
     private var locationManager: LocationManager? = null
     private var locationListener: LocationListener? = null
+    private var isGetHeight: Boolean=false
+    private var height: Int=0
+    private var newHeight:Int=0
 
     private val handler = object : Handler(Looper.getMainLooper()) {
         override fun handleMessage(msg: Message) {
@@ -76,86 +76,175 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         when (code) {
             WEATHER_SUCCESE -> {
                 mBinding.swipeRefreshLayout.isRefreshing = false
-                for (i in weatherList!!.indices) {
-                    val dates=CommonUtils.changeTimeFormat(weatherList!![i].update.loc)
-                    mBinding.weatherTime.text="${dates[1]}月${dates[2]}日 ${dates[3]}:${dates[4]}"
-                    mBinding.weatherMaxmintmp.text="白天气温："+weatherList!![i].daily_forecast[0].tmp_max+ "℃ · "+
-                            "夜晚气温："+weatherList!![i].daily_forecast[0].tmp_min+ "℃"
-                    mBinding.weatherTmp.text = weatherList!![i].now.tmp
-                    mBinding.weatherFeel.text ="体感温度：" +weatherList!![i].now.fl+ "℃"
-                    var cond=weatherList!![i].now.cond_txt
-                    mBinding.weatherCond.text =cond
-                    mBinding.weatherIvTop.setImageResource(WeatherUtils.getColorWeatherIcon(cond))
-                    mBinding.weatherIvBottom.setImageResource(WeatherUtils.getColorWeatherImg(cond))
-                    val backgroundColor=ContextCompat.getColor(requireContext(),WeatherUtils.getColorWeatherBack(cond))
-                    mBinding.collapsingToolbarLayout.setBackgroundColor(backgroundColor)
-                    setFragmentResult("backgroundColor", bundleOf("backgroundColor" to backgroundColor))
+                weatherList?.let{ weatherList->
+                    for (i in weatherList.indices) {
+                        val dates = CommonUtils.changeTimeFormat(weatherList[i].update.loc)
+                        mBinding.weatherTime.text =
+                            "${dates[1]}月${dates[2]}日 ${dates[3]}:${dates[4]}"
+                        mBinding.weatherMaxmintmp.text =
+                            "白天气温：" + weatherList[i].daily_forecast[0].tmp_max + "℃ · " +
+                                    "夜晚气温：" + weatherList[i].daily_forecast[0].tmp_min + "℃"
+                        mBinding.weatherTmp.text = weatherList[i].now.tmp
+                        mBinding.weatherFeel.text = "体感温度：" + weatherList!![i].now.fl + "℃"
+                        var cond = weatherList[i].now.cond_txt
+                        mBinding.weatherCond.text = cond
+                        mBinding.weatherIvTop.setImageResource(WeatherUtils.getColorWeatherIcon(cond))
+                        mBinding.weatherIvBottom.setImageResource(
+                            WeatherUtils.getColorWeatherImg(
+                                cond
+                            )
+                        )
+
+                        val backgroundColor = ContextCompat.getColor(
+                            requireContext(),
+                            WeatherUtils.getColorWeatherBack(cond)
+                        )
+                        var themeColor = ContextCompat.getColor(
+                            requireContext(),
+                            WeatherUtils.getColorWeatherBack(cond)
+                        )
+                        val vibrantSwatch = Palette.from(
+                            BitmapFactory.decodeResource(
+                                resources,
+                                WeatherUtils.getColorWeatherImg(cond)
+                            )
+                        ).generate().vibrantSwatch
+                        vibrantSwatch?.let {
+                            themeColor = vibrantSwatch.rgb
+                        }
+                        mBinding.collapsingToolbarLayout.setBackgroundColor(backgroundColor)
+                        setFragmentResult(
+                            "backgroundColor",
+                            bundleOf("backgroundColor" to themeColor)
+                        )
 
 
-                    mBinding.weatherHum.text = "" + weatherList!![i].now.hum + " %"
-                    mBinding.weatherPcpn.text = "日降水总量  " + weatherList!![i].now.pcpn + " 毫米"
-                    mBinding.weatherCity.text = weatherList!![i].basic.location + "·" + weatherList!![i].basic.cnty
-                    mBinding.windDir.text =  "当前·" + weatherList!![i].now.wind_dir
-                    mBinding.windSc.text = "" + weatherList!![i].now.wind_sc+"级"
-                    mBinding.weatherSpd.text = "" + weatherList!![i].now.wind_spd + " 公里/小时"
-                    mBinding.weatherPres.text = "" + weatherList!![i].now.pres + " 帕"
-                    mBinding.weatherVis.text = "" + weatherList!![i].now.vis + " 公里"
-                    mBinding.weatherPm25.text = "" + airList!![i].air_now_city.pm25 + " 微克/立方米"
-                    mBinding.weatherPm10.text = "" + airList!![i].air_now_city.pm10 + " 微克/立方米"
-                    val aqi=airList!![i].air_now_city.aqi.toInt()
-                    mBinding.weatherAqi.text = "" + aqi
-                    when {
-                        aqi<50 -> {
-                            mBinding.weatherAqiLevel.text = "优"
-                            mBinding.weatherAqi.setTextColor(ContextCompat.getColor(mContext,R.color.aqi_1))
+                        mBinding.weatherHum.text = "" + weatherList[i].now.hum + " %"
+                        mBinding.weatherPcpn.text = "日降水总量  " + weatherList[i].now.pcpn + " 毫米"
+                        mBinding.weatherCity.text =
+                            weatherList[i].basic.location + "·" + weatherList[i].basic.cnty
+                        mBinding.windDir.text = "当前·" + weatherList[i].now.wind_dir
+                        mBinding.windSc.text = "" + weatherList[i].now.wind_sc + "级"
+                        mBinding.weatherSpd.text = "" + weatherList[i].now.wind_spd + " 公里/小时"
+                        mBinding.weatherPres.text = "" + weatherList[i].now.pres + " 帕"
+                        mBinding.weatherVis.text = "" + weatherList[i].now.vis + " 公里"
+                        mBinding.weatherPm25.text = "" + airList!![i].air_now_city.pm25 + " 微克/立方米"
+                        mBinding.weatherPm10.text = "" + airList!![i].air_now_city.pm10 + " 微克/立方米"
+                        val aqi = airList!![i].air_now_city.aqi.toInt()
+                        mBinding.weatherAqi.text = "" + aqi
+                        when {
+                            aqi < 50 -> {
+                                mBinding.weatherAqiLevel.text = "优"
+                                mBinding.weatherAqi.setTextColor(
+                                    ContextCompat.getColor(
+                                        mContext,
+                                        R.color.aqi_1
+                                    )
+                                )
+                            }
+                            aqi in 51..100 -> {
+                                mBinding.weatherAqiLevel.text = "良"
+                                mBinding.weatherAqi.setTextColor(
+                                    ContextCompat.getColor(
+                                        mContext,
+                                        R.color.aqi_2
+                                    )
+                                )
+                            }
+                            aqi in 101..150 -> {
+                                mBinding.weatherAqiLevel.text = "轻度污染"
+                                mBinding.weatherAqi?.setTextColor(
+                                    ContextCompat.getColor(
+                                        mContext,
+                                        R.color.aqi_3
+                                    )
+                                )
+                            }
+                            aqi in 151..200 -> {
+                                mBinding.weatherAqiLevel.text = "中度污染"
+                                mBinding.weatherAqi.setTextColor(
+                                    ContextCompat.getColor(
+                                        mContext,
+                                        R.color.aqi_4
+                                    )
+                                )
+                            }
+                            aqi in 201..300 -> {
+                                mBinding.weatherAqiLevel.text = "重度污染"
+                                mBinding.weatherAqi?.setTextColor(
+                                    ContextCompat.getColor(
+                                        mContext,
+                                        R.color.aqi_5
+                                    )
+                                )
+                            }
+                            else -> {
+                                mBinding.weatherAqiLevel.text = "严重污染"
+                                mBinding.weatherAqi.setTextColor(
+                                    ContextCompat.getColor(
+                                        mContext,
+                                        R.color.aqi_6
+                                    )
+                                )
+                            }
                         }
-                        aqi in 51..100 -> {
-                            mBinding.weatherAqiLevel.text = "良"
-                            mBinding.weatherAqi?.setTextColor(ContextCompat.getColor(mContext,R.color.aqi_2))
-                        }
-                        aqi in 101..150 -> {
-                            mBinding.weatherAqiLevel.text = "轻度污染"
-                            mBinding.weatherAqi?.setTextColor(ContextCompat.getColor(mContext,R.color.aqi_3))
-                        }
-                        aqi in 151..200 -> {
-                            mBinding.weatherAqiLevel.text = "中度污染"
-                            mBinding.weatherAqi?.setTextColor(ContextCompat.getColor(mContext,R.color.aqi_4))
-                        }
-                        aqi in 201..300 -> {
-                            mBinding.weatherAqiLevel.text = "重度污染"
-                            mBinding.weatherAqi?.setTextColor(ContextCompat.getColor(mContext,R.color.aqi_5))
-                        }
-                        else -> {
-                            mBinding.weatherAqiLevel.text = "严重污染"
-                            mBinding.weatherAqi?.setTextColor(ContextCompat.getColor(mContext,R.color.aqi_6))
-                        }
-                    }
-                    mBinding.weatherAqiMain.text = "主要污染物 " + airList!![i].air_now_city.main
-                    val sunrise=CommonUtils.getTimeFormat(weatherList!![i].daily_forecast[0].sr)
-                    mBinding.weatherRise.text=CommonUtils.change24To12(sunrise[0])+":"+sunrise[1]
-                    val sunset=CommonUtils.getTimeFormat(weatherList!![i].daily_forecast[0].ss)
-                    mBinding.weatherSet.text=CommonUtils.change24To12(sunset[0])+":"+sunset[1]
-                    mBinding.weatherSunTime.text="白昼时长 "+CommonUtils.minutesToHours(CommonUtils.getTimeValue(weatherList!![i].daily_forecast[0].date,weatherList!![i].daily_forecast[0].sr+":00" ,weatherList!![i].daily_forecast[0].ss+":00"))
-                    mBinding.weatherRemainTime.text="剩余的白昼时长 "+CommonUtils.minutesToHours(CommonUtils.getTimeValue(weatherList!![i].daily_forecast[0].date, SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis()),weatherList!![i].daily_forecast[0].ss+":00"))
-                    for (j in weatherList!![i].lifestyle.indices) {
-                        val lifeWeather = weatherList!![i].lifestyle[j]
-                        val type = lifeWeather.type
-                        if (type == getString(R.string.air_en_text)) {
-                            mBinding.airTextView.text=lifeWeather.txt
-                        }
+                        mBinding.weatherAqiMain.text = "主要污染物 " + airList!![i].air_now_city.main
+                        val sunrise =
+                            CommonUtils.getTimeFormat(weatherList[i].daily_forecast[0].sr)
+                        mBinding.weatherRise.text =
+                            CommonUtils.change24To12(sunrise[0]) + ":" + sunrise[1]
+                        val sunset =
+                            CommonUtils.getTimeFormat(weatherList[i].daily_forecast[0].ss)
+                        mBinding.weatherSet.text =
+                            CommonUtils.change24To12(sunset[0]) + ":" + sunset[1]
+                        mBinding.weatherSunTime.text = "白昼时长 " + CommonUtils.minutesToHours(
+                            CommonUtils.getTimeValue(
+                                weatherList[i].daily_forecast[0].date,
+                                weatherList[i].daily_forecast[0].sr + ":00",
+                                weatherList[i].daily_forecast[0].ss + ":00"
+                            )
+                        )
+                        mBinding.weatherRemainTime.text = "剩余的白昼时长 " + CommonUtils.minutesToHours(
+                            CommonUtils.getTimeValue(
+                                weatherList[i].daily_forecast[0].date,
+                                SimpleDateFormat("HH:mm:ss").format(System.currentTimeMillis()),
+                                weatherList[i].daily_forecast[0].ss + ":00"
+                            )
+                        )
+                        for (j in weatherList[i].lifestyle.indices) {
+                            val lifeWeather = weatherList[i].lifestyle[j]
+                            val type = lifeWeather.type
+                            if (type == getString(R.string.air_en_text)) {
+                                mBinding.airTextView.text = lifeWeather.txt
+                            }
 
-                    }
-                    mBinding.popRv.adapter=PopAdapter(requireContext(),weatherList!![i].hourly)
-                    mBinding.windRv.adapter= WindAdapter(requireContext(),weatherList!![i].hourly)
+                        }
+                        mBinding.popRv.adapter =
+                            PopAdapter(requireContext(), weatherList[i].hourly)
+                        mBinding.windRv.adapter =
+                            WindAdapter(requireContext(), weatherList[i].hourly)
 
-                    SPUtils.setParam(requireContext(), Contants.CITY, weatherList!![i].basic.location)
-                    SPUtils.setParam(requireContext(), Contants.TMP, weatherList!![i].now.tmp)
-                    SPUtils.setParam(requireContext(), Contants.TXT, weatherList!![i].now.cond_txt)
-                    SPUtils.setParam(requireContext(), Contants.WEATHER_JSON, weatherJson)
-                    SPUtils.setParam(requireContext(), Contants.WEATHER_AQI_JSON, weatherAqiJson)
-                    if (SPUtils.getParam(requireContext(), Contants.NOTIFY, false) as Boolean) {
-                        val it = Intent(requireContext(), WeatherService::class.java)
-                        requireContext().startService(it)
+                        SPUtils.setParam(
+                            requireContext(),
+                            Contants.CITY,
+                            weatherList[i].basic.location
+                        )
+                        SPUtils.setParam(requireContext(), Contants.TMP, weatherList[i].now.tmp)
+                        SPUtils.setParam(
+                            requireContext(),
+                            Contants.TXT,
+                            weatherList[i].now.cond_txt
+                        )
+                        SPUtils.setParam(requireContext(), Contants.WEATHER_JSON, weatherJson)
+                        SPUtils.setParam(
+                            requireContext(),
+                            Contants.WEATHER_AQI_JSON,
+                            weatherAqiJson
+                        )
+                        if (SPUtils.getParam(requireContext(), Contants.NOTIFY, false) as Boolean) {
+                            val it = Intent(requireContext(), WeatherService::class.java)
+                            requireContext().startService(it)
+                        }
                     }
                 }
             }
@@ -179,7 +268,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         viewBinding= FragFrogweatherBinding.inflate(inflater,container,false)
         val weatherJson = SPUtils.getParam(requireContext(), Contants.WEATHER_JSON, "") as String
         val weatherAqiJson = SPUtils.getParam(requireContext(), Contants.WEATHER_AQI_JSON, "") as String
-        city=SPUtils.getParam(requireContext(), Contants.CITY, Contants.CITYNAME) as String
+        val city=SPUtils.getParam(requireContext(), Contants.CITY, Contants.CITYNAME) as String
         if (isAdded) {
             initView()
             if(weatherJson.isNotEmpty()&&weatherAqiJson.isNotEmpty()) {
@@ -198,10 +287,10 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     }
 
     //加载上部数据
-    fun loadData(city: String?) {
+    fun loadData(city: String) {
         this.city = city
         val requestQueue = Volley.newRequestQueue(mContext)
-        val stringRequest = StringRequest(Request.Method.GET, Contants.WEATHER_AIR + city,
+        val stringRequest = StringRequest(Request.Method.GET, Contants.HF_WEATHER_NOW + city,
                 { response ->
                     try {
                         weatherAqiJson=response
@@ -263,23 +352,31 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         mBinding.popRv.layoutManager=popManager
         mBinding.windRv.layoutManager=windManager
         mBinding.swipeRefreshLayout.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
-        mBinding.appBarLayout.setOnClickListener {}
+        mBinding.collapsingToolbarLayout.setOnClickListener {
+
+        }
         mBinding.appBarLayout.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             mBinding.swipeRefreshLayout.isEnabled = verticalOffset >=0
             var offset=1+verticalOffset.toFloat()/mBinding.hourweatherView.measuredHeight
-            Log.e(TAG, "getOffset: ${verticalOffset.toFloat()}---${mBinding.hourweatherView.measuredHeight}---${offset}")
+            e(TAG, "getOffset: ${verticalOffset.toFloat()}---${mBinding.hourweatherView.measuredHeight}---${offset}")
             if(0<offset&&offset<1) {
                 mBinding.weatherIvBottom.alpha = offset
             }
         })
         mBinding.swipeRefreshLayout.setOnRefreshListener { loadData(city) }
-        mBinding.hourweatherView.post {
-            Log.e(TAG, "getHeight: ${mBinding.appBarLayout.measuredHeight}---${mBinding.weatherIvBottom.measuredHeight}---${mBinding.hourweatherView.measuredHeight}", )
-            val height=mBinding.appBarLayout.measuredHeight
-            val newHeight=mBinding.appBarLayout.measuredHeight+mBinding.hourweatherView.measuredHeight
-            mBinding.appBarLayout.layoutParams.height=newHeight
-            mBinding.collapsingToolbarLayout.layoutParams?.height=newHeight
-            mBinding.relativeLayout1.layoutParams.height=height
+        mBinding.hourweatherView.viewTreeObserver.addOnGlobalLayoutListener {
+
+            if (!isGetHeight
+                &&mBinding.appBarLayout.measuredHeight!=0
+                &&mBinding.hourweatherView.measuredHeight!=0) {
+                LogUtils.e("getHeight: ${mBinding.appBarLayout.measuredHeight}---${mBinding.weatherIvBottom.measuredHeight}---${mBinding.hourweatherView.measuredHeight}", )
+                isGetHeight=true
+                height = mBinding.appBarLayout.measuredHeight+1
+                newHeight = mBinding.appBarLayout.measuredHeight + mBinding.hourweatherView.measuredHeight
+                mBinding.appBarLayout.layoutParams.height = newHeight
+                mBinding.collapsingToolbarLayout.layoutParams.height = newHeight
+                mBinding.relativeLayout1.layoutParams.height = height
+            }
         }
     }
 

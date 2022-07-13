@@ -8,11 +8,9 @@ import com.ma.lightweather.fragment.FrogTodayFragment
 import com.ma.lightweather.fragment.FrogWeatherFragment
 import com.ma.lightweather.fragment.FutureDaysFragment
 
-class ViewPagerAdapter (fm: FragmentManager,height: Int) : FragmentStatePagerAdapter(fm) {
+class ViewPagerAdapter (fm: FragmentManager) : FragmentStatePagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     override fun getCount(): Int  = 2
-
-    var h=height
 
     override fun getItem(position: Int): Fragment {
         lateinit var fragment: Fragment

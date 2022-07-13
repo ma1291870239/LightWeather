@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ma.lightweather.adapter.ViewPager2Adapter
 import com.ma.lightweather.adapter.ViewPagerAdapter
 import com.ma.lightweather.app.Contants
@@ -28,14 +29,9 @@ class FrogActivity : BaseActivity<ActivityFrogBinding>() {
     }
 
     private fun initView() {
-        viewPagerAdapter= ViewPagerAdapter(supportFragmentManager, mBinding.viewPager.height)
+        viewPagerAdapter= ViewPagerAdapter(supportFragmentManager)
         mBinding.viewPager.adapter=viewPagerAdapter
-        supportFragmentManager.setFragmentResultListener("backgroundColor", this) { requestKey, bundle ->
-            val backgroundColor = bundle.getInt("backgroundColor")
-            mBinding.tabLayout.setBackgroundColor(backgroundColor)
-            mBinding.searchView.setBackgroundColor(backgroundColor)
-        }
-//        viewPager2Adapter= ViewPager2Adapter(this, mBinding.viewPager.measuredHeight)
+//        viewPager2Adapter= ViewPager2Adapter(this)
 //        mBinding.viewPager.adapter=viewPager2Adapter
 //        TabLayoutMediator(mBinding.tabLayout, mBinding.viewPager) { tab, position ->
 //            when(position){
@@ -47,6 +43,18 @@ class FrogActivity : BaseActivity<ActivityFrogBinding>() {
 //                }
 //            }
 //        }.attach()
+        supportFragmentManager.setFragmentResultListener("backgroundColor", this) { requestKey, bundle ->
+            val backgroundColor = bundle.getInt("backgroundColor")
+            mBinding.tabLayout.setBackgroundColor(backgroundColor)
+            mBinding.searchView.setBackColor(backgroundColor)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.statusBarColor=backgroundColor
+            }else{
+
+            }
+        }
+
+
         mBinding.searchView.setState(false)
         mBinding.searchView.setCursorState(false)
         mBinding.searchView.setOnLeftClickListener(object: SearchView.OnLeftClickListener{

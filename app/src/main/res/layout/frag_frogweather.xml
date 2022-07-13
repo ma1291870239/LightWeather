@@ -34,7 +34,7 @@
                         android:shadowColor="@color/shadow_white_text"
                         android:shadowDx="3"
                         android:shadowDy="3"
-                        android:shadowRadius="5"
+                        android:shadowRadius="10"
                         android:textSize="@dimen/text_13" />
                     <TextView
                         android:id="@+id/weather_city"
@@ -156,9 +156,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     app:layout_collapseMode="pin">
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
+
                     <com.ma.lightweather.widget.HourFrogWeatherView
                         android:id="@+id/hourweather_view"
                         android:layout_width="match_parent"
