@@ -86,7 +86,7 @@ class NavCityAdapter (private val context: Context, private val weatherList: Lis
                 .setTitle("选择项目")
                 .addSheetItem("删除", null, object : ActionSheetDialog.OnSheetItemClickListener {
                     override fun onClick(which: Int) {
-                        val city1 = SPUtils.getParam(context, Contants.CITY, Contants.CITYNAME) as String
+                        val city1 = SPUtils.getParam(context, Contants.CITY, "luoyang") as String
                         val city2 = weatherList?.get(i)?.basic?.location
                         if (weatherList?.size!! > 1) {
                             Snackbar.make(holder.weatherLayout,"删除成功", Snackbar.LENGTH_SHORT)

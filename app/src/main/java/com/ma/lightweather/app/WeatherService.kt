@@ -67,7 +67,7 @@ class WeatherService : Service() {
     }
 
     private fun initData() {
-        val city = SPUtils.getParam(applicationContext, Contants.CITY, Contants.CITYNAME) as String
+        val city = SPUtils.getParam(applicationContext, Contants.CITY, "luoyang") as String
         val requestQueue = Volley.newRequestQueue(applicationContext)
         val airStringRequest = StringRequest(com.android.volley.Request.Method.GET, Contants.WEATHER_AIR + city,
                 Response.Listener { response ->

@@ -6,6 +6,8 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityOptionsCompat
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ma.lightweather.adapter.ViewPager2Adapter
 import com.ma.lightweather.adapter.ViewPagerAdapter
@@ -43,18 +45,6 @@ class FrogActivity : BaseActivity<ActivityFrogBinding>() {
 //                }
 //            }
 //        }.attach()
-        supportFragmentManager.setFragmentResultListener("backgroundColor", this) { requestKey, bundle ->
-            val backgroundColor = bundle.getInt("backgroundColor")
-            mBinding.tabLayout.setBackgroundColor(backgroundColor)
-            mBinding.searchView.setBackColor(backgroundColor)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                window.statusBarColor=backgroundColor
-            }else{
-
-            }
-        }
-
-
         mBinding.searchView.setState(false)
         mBinding.searchView.setCursorState(false)
         mBinding.searchView.setOnLeftClickListener {
@@ -74,17 +64,34 @@ class FrogActivity : BaseActivity<ActivityFrogBinding>() {
             }
             false
         }
+
+        supportFragmentManager.setFragmentResultListener("backgroundColor", this) { requestKey, bundle ->
+            val backgroundColor = bundle.getInt("backgroundColor")
+            mBinding.tabLayout.setBackgroundColor(backgroundColor)
+            mBinding.searchView.setBackColor(backgroundColor)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                window.statusBarColor=backgroundColor
+            }else{
+
+            }
+        }
     }
 
     private fun toSearch() {
         mBinding.searchView.clearEtFocus()
         var it= Intent(this@FrogActivity, SearchActivity::class.java)
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.LOLLIPOP){
-            startActivity(it,ActivityOptions.makeSceneTransitionAnimation(
-                    this@FrogActivity,mBinding.searchView,"searchView"
-            ).toBundle())
-        }else{
-            startActivity(it)
+        startActivity.launch(
+                it, ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this@FrogActivity,mBinding.searchView,"searchView"
+                )
+        )
+    }
+
+    private val startActivity=registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+        if(it.resultCode== RESULT_OK){
+            it.data?.extras?.let { bundle ->
+                supportFragmentManager.setFragmentResult("city",bundle)
+            }
         }
     }
 }

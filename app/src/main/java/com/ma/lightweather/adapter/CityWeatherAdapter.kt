@@ -49,7 +49,7 @@ class CityWeatherAdapter(private val context: Context, private val weatherList: 
             }
         }
         holder.iv.setOnClickListener {
-            val city1 = SPUtils.getParam(context, Contants.CITY, Contants.CITYNAME) as String
+            val city1 = SPUtils.getParam(context, Contants.CITY, "luoyang") as String
             val city2 = weatherList[i].basic.location
             if (weatherList.size > 1) {
                 Snackbar.make(holder.weatherLayout,"删除成功", Snackbar.LENGTH_SHORT)

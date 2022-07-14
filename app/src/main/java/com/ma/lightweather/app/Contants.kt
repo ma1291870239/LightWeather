@@ -16,7 +16,6 @@ object Contants {
 
     const val WEATHER_JSON = "weather_json"
     const val WEATHER_AQI_JSON = "weather_aqi_json"
-    const val CITY = "city"
     const val TMP = "tmp"
     const val TXT = "txt"
     const val DIR = "dir"
@@ -27,7 +26,8 @@ object Contants {
     const val LOCTION = "loction"
     const val WEATHER = "weather"
     const val WEATHERDB = "Weather.db"
-    const val CITYNAME = "luoyang"
+    const val CITY = "cityName"
+    const val CITYCODE = "cityCode"
     const val THEME = "themetag"
     const val NOTIFY = "notify"
     const val STATUS = "status"
@@ -39,9 +39,9 @@ object Contants {
     //和风 城市天气
     const val HF_WEATHER_AREA ="https://geoapi.qweather.com/v2/city/lookup?key=4ddad270cdb94639ae5f4cfe11aadf82&location="
     //和风 实时天气
-    const val HF_WEATHER_NOW ="https://devapi.qweather.com/v7/weather/now?key=4ddad270cdb94639ae5f4cfe11aadf82&location="
+    const val HF_WEATHER_NOW ="https://devapi.qweather.com/v7/weather/now?key=dbccdd9686e54c739cea4735879b7ae8&location="
     //和风 未来天气
-    const val HF_WEATHER_FUTURE = "https://devapi.qweather.com/v7/weather/7d?key=4ddad270cdb94639ae5f4cfe11aadf82&location="
+    const val HF_WEATHER_FUTURE = "https://devapi.qweather.com/v7/weather/7d?key=dbccdd9686e54c739cea4735879b7ae8&location="
     //和风  24小时
-    const val HF_WEATHER_HOUR = "https://devapi.qweather.com/v7/weather/24h??key=4ddad270cdb94639ae5f4cfe11aadf82&location="
+    const val HF_WEATHER_HOUR = "https://devapi.qweather.com/v7/weather/24h?key=dbccdd9686e54c739cea4735879b7ae8&location="
 }

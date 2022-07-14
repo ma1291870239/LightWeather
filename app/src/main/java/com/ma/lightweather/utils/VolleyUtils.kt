@@ -17,7 +17,8 @@ import org.json.JSONException
 
 object VolleyUtils {
 
-    private var requestQueue: RequestQueue? = null
+    private var requestQueue: RequestQueue?=null
+    private val TAG = "VolleyUtils"
 
     fun <T> requestGet(context:Context, url:String,t: Class<T>, volleySuccess: (t: Class<T>?)->Unit, volleyError:(error:String?)->Unit){
         if (requestQueue==null) {
@@ -45,10 +46,11 @@ object VolleyUtils {
         if (requestQueue==null) {
             requestQueue = Volley.newRequestQueue(context)
         }
+        LogUtils.e(TAG,url)
         var stringRequest = StringRequest(Request.Method.GET,url,
             { response ->
                 if (!response.isNullOrEmpty()){
-                    LogUtils.e(response)
+                    LogUtils.e(TAG,response)
                     val hfWeatherBean: HFWeather = Gson().fromJson(response,HFWeather::class.java)
                     val code=hfWeatherBean.code
                     var s=""
@@ -69,7 +71,7 @@ object VolleyUtils {
                 }
             },
             {
-                LogUtils.e(it.message?:"error")
+                LogUtils.e(TAG,it.message?:"error")
                 volleyError(it.message)
             })
         requestQueue?.add(stringRequest);

@@ -166,7 +166,7 @@ class WeatherFragment : BaseFragment<FragWeatherBinding>() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.frag_weather, null)
-        city = SPUtils.getParam(mContext, Contants.CITY, Contants.CITYNAME) as String
+        city = SPUtils.getParam(mContext, Contants.CITY, "luoyang") as String
         if (isAdded) {
             initView(view)
             loadData(city)

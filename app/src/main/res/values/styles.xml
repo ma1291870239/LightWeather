@@ -9,6 +9,12 @@
         <item name="android:windowBackground">@color/ColorPrimaryDark</item>
         <item name="android:textColorPrimary">@color/TextColorPrimary</item>
         <item name="android:textColorSecondary">@color/TextColorSecondary</item>
+        <item name="android:windowSharedElementEnterTransition" tools:ignore="NewApi">
+            @transition/search_transition
+        </item>
+        <item name="android:windowSharedElementExitTransition" tools:ignore="NewApi">
+            @transition/search_transition
+        </item>
     </style>
     <!-- Base application theme. -->
     <style name="CyanAppTheme" parent="Theme.AppCompat.Light.NoActionBar">

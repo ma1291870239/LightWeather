@@ -2,12 +2,14 @@ package com.ma.lightweather.fragment
 
 import android.graphics.BitmapFactory
 import android.location.*
+import android.os.Build
 import android.os.Bundle
 import android.util.Log.e
 import android.view.*
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.setFragmentResultListener
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
 
@@ -32,36 +34,24 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     private var locationManager: LocationManager? = null
     private var locationListener: LocationListener? = null
 
-    private var city: String? = null
+    private var city: String = "luoyang"
+    private var cityCode: String = "101180901"
     private var isGetHeight: Boolean=false
     private var height: Int=0
     private var newHeight:Int=0
     private lateinit var  hfWeather: HFWeather
 
 
-    private fun updateData(code:Int){
-        when (code) {
-
-        }
-    }
-
-
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         viewBinding= FragFrogweatherBinding.inflate(inflater,container,false)
-        val city=SPUtils.getParam(requireContext(), Contants.CITY, Contants.CITYNAME) as String
+        city=SPUtils.getParam(requireContext(), Contants.CITY, city) as String
+        cityCode=SPUtils.getParam(requireContext(), Contants.CITYCODE, cityCode) as String
         initView()
-        getNow(city)
+        getNow()
         return mBinding.root
     }
 
     private fun initView() {
-        val popManager=LinearLayoutManager(requireContext())
-        val windManager=LinearLayoutManager(requireContext())
-        popManager.orientation=LinearLayoutManager.HORIZONTAL
-        windManager.orientation=LinearLayoutManager.HORIZONTAL
-        mBinding.popRv.layoutManager=popManager
-        mBinding.windRv.layoutManager=windManager
         mBinding.swipeRefreshLayout.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
         mBinding.collapsingToolbarLayout.setOnClickListener {
 
@@ -74,7 +64,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
                 mBinding.weatherIvBottom.alpha = offset
             }
         })
-        mBinding.swipeRefreshLayout.setOnRefreshListener { getNow(city) }
+        mBinding.swipeRefreshLayout.setOnRefreshListener { getNow() }
         mBinding.hourweatherView.viewTreeObserver.addOnGlobalLayoutListener {
             if (!isGetHeight
                 &&mBinding.appBarLayout.measuredHeight!=0
@@ -88,16 +78,31 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
                 mBinding.relativeLayout1.layoutParams.height = height
             }
         }
+
+        hfWeather= HFWeather()
+        val popManager=LinearLayoutManager(requireContext())
+        val windManager=LinearLayoutManager(requireContext())
+        popManager.orientation=LinearLayoutManager.HORIZONTAL
+        windManager.orientation=LinearLayoutManager.HORIZONTAL
+        mBinding.popRv.layoutManager=popManager
+        mBinding.windRv.layoutManager=windManager
+
+        setFragmentResultListener("city") { requestKey, bundle ->
+            city = bundle.getString("city",city)
+            cityCode = bundle.getString("cityCode",cityCode)
+            getNow()
+        }
     }
 
-    fun getNow(city: String?) {
-        this.city = city
-        hfWeather= HFWeather()
-        VolleyUtils.requestGetHFWearher(requireContext(),Contants.HF_WEATHER_NOW + city,
+    fun getNow() {
+        hfWeather.now= HFWeather.WeatherNow()
+        hfWeather.hourly.clear()
+        hfWeather.daily.clear()
+        VolleyUtils.requestGetHFWearher(requireContext(),Contants.HF_WEATHER_NOW + cityCode,
             {hfWeatherBean,code,msg->
                 if (hfWeatherBean?.now != null){
                     hfWeather.now=hfWeatherBean.now
-                    getHour(city)
+                    getHour()
                 }else{
                     setMsg(msg)
                 }
@@ -108,12 +113,12 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     }
 
 
-    private fun getHour(city:String?){
-        VolleyUtils.requestGetHFWearher(requireContext(),Contants.HF_WEATHER_HOUR + city,
+    private fun getHour(){
+        VolleyUtils.requestGetHFWearher(requireContext(),Contants.HF_WEATHER_HOUR + cityCode,
             {hfWeatherBean,code,msg->
                 if (hfWeatherBean!=null&&!hfWeatherBean.hourly.isNullOrEmpty()){
                     hfWeather.hourly=hfWeatherBean.hourly
-                    getFuture(city)
+                    getFuture()
                 }else{
                     setMsg(msg)
                 }
@@ -123,8 +128,8 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
             })
     }
 
-    private fun getFuture(city:String?){
-        VolleyUtils.requestGetHFWearher(requireContext(),Contants.HF_WEATHER_FUTURE + city,
+    private fun getFuture(){
+        VolleyUtils.requestGetHFWearher(requireContext(),Contants.HF_WEATHER_FUTURE + cityCode,
             {hfWeatherBean,code,msg->
                 if (hfWeatherBean!=null&&!hfWeatherBean.daily.isNullOrEmpty()){
                     hfWeather.daily=hfWeatherBean.daily

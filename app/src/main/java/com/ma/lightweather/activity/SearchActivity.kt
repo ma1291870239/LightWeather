@@ -1,12 +1,15 @@
 package com.ma.lightweather.activity
 
+import android.app.Activity
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Gravity
+import android.view.MotionEvent
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.ma.lightweather.R
 import com.ma.lightweather.adapter.SearchAdapter
 import com.ma.lightweather.app.Contants
@@ -20,6 +23,7 @@ import com.ma.lightweather.widget.SearchView
 class SearchActivity : BaseActivity<ActivitySearchBinding>() {
 
     private lateinit var  hfWeather: HFWeather
+    private lateinit var  searchAdapter:SearchAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,9 +34,6 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
     }
 
     private fun initView() {
-        val rvManager= LinearLayoutManager(this)
-        rvManager.orientation= LinearLayoutManager.VERTICAL
-        mBinding.rv.layoutManager=rvManager
         mBinding.searchView.setState(true)
         mBinding.searchView.setCursorState(true)
         mBinding.searchView.setOnLeftClickListener{
@@ -51,16 +52,31 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
                 getArea(it)
             }
         }
-
+        hfWeather= HFWeather()
+        val rvManager= LinearLayoutManager(this)
+        rvManager.orientation= LinearLayoutManager.VERTICAL
+        mBinding.rv.layoutManager=rvManager
+        searchAdapter=SearchAdapter(this,hfWeather.location)
+        mBinding.rv.adapter=searchAdapter
+        searchAdapter.setOnItemClickListener {
+            val city:String= hfWeather.location[it].name
+            val cityCode: String =hfWeather.location[it].id
+            val intent =Intent()
+            intent.putExtra("city",city)
+            intent.putExtra("cityCode",cityCode)
+            setResult(Activity.RESULT_OK,intent)
+            finish()
+        }
     }
 
     private fun getArea(city: String?) {
-        hfWeather= HFWeather()
+        hfWeather.location.clear()
         VolleyUtils.requestGetHFWearher(this, Contants.HF_WEATHER_AREA + city,
             {hfWeatherBean,code,msg->
                 if (hfWeatherBean!=null&&code!=null){
                     hfWeather.location=hfWeatherBean.location
-                    setData()
+                    searchAdapter=SearchAdapter(this,hfWeather.location)
+                    searchAdapter.notifyDataSetChanged()
                 }else{
 
                 }
@@ -68,9 +84,5 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
             {
 
             })
-    }
-
-    private fun setData(){
-        mBinding.rv.adapter=SearchAdapter(this,hfWeather.location)
     }
 }
