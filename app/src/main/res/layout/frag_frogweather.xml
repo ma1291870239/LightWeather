@@ -197,16 +197,13 @@
                                 android:text="湿度"/>
                             <TextView
                                 style="@style/FrogWeatherFragDetailText"
-                                android:text="风速"/>
+                                android:text="露点"/>
                             <TextView
                                 style="@style/FrogWeatherFragDetailText"
                                 android:text="气压"/>
                             <TextView
                                 style="@style/FrogWeatherFragDetailText"
-                                android:text="PM25"/>
-                            <TextView
-                                style="@style/FrogWeatherFragDetailText"
-                                android:text="PM10"/>
+                                android:text="云量"/>
                             <TextView
                                 style="@style/FrogWeatherFragDetailText"
                                 android:text="能见度"/>
@@ -222,16 +219,13 @@
 
                             <TextView
                                 style="@style/WeatherFragDetailTextValue"
-                                android:id="@+id/weather_spd" />
+                                android:id="@+id/weather_dew" />
                             <TextView
                                 style="@style/WeatherFragDetailTextValue"
                                 android:id="@+id/weather_pres" />
                             <TextView
                                 style="@style/WeatherFragDetailTextValue"
-                                android:id="@+id/weather_pm25" />
-                            <TextView
-                                style="@style/WeatherFragDetailTextValue"
-                                android:id="@+id/weather_pm10" />
+                                android:id="@+id/weather_cloud" />
                             <TextView
                                 style="@style/WeatherFragDetailTextValue"
                                 android:id="@+id/weather_vis" />

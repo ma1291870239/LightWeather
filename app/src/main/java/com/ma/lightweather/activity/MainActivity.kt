@@ -168,7 +168,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             viewPager?.currentItem = 0
         }
         weatherFrag?.loadData(city)
-        frogWeatherFrag?.loadData(city)
+        frogWeatherFrag?.getNow(city)
     }
 
     fun refreshCity() {

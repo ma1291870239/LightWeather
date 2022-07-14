@@ -25,11 +25,11 @@ import java.util.*
 object CommonUtils {
     var mSnackbar: Snackbar? = null
 
-    fun showShortSnackBar(view: View?, content: String) {
+    fun showShortSnackBar(view: View?, content: String?) {
         if (mSnackbar == null) {
-            mSnackbar = Snackbar.make(view!!,content, Snackbar.LENGTH_SHORT)
+            mSnackbar = Snackbar.make(view!!,content?:"", Snackbar.LENGTH_SHORT)
         } else {
-            mSnackbar?.setText(content)
+            mSnackbar?.setText(content?:"")
             mSnackbar?.duration =BaseTransientBottomBar.LENGTH_SHORT
         }
         mSnackbar!!.show()

@@ -18,6 +18,7 @@ import com.bumptech.glide.request.target.Target
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.databinding.ActivitySplashBinding
+import com.ma.lightweather.utils.LogUtils
 import com.ma.lightweather.utils.PhotoUtils
 import com.ma.lightweather.utils.SPUtils
 import kotlinx.android.synthetic.main.activity_splash.*
@@ -43,7 +44,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
                 setData(response)
             },
             {
-                Log.e(TAG, "getBingImg: error ${it.message}", )
+                LogUtils.e("getBingImg: error ${it.message}", )
             })
         requestQueue.add(stringRequest)
     }
@@ -89,7 +90,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
                         target: Target<Drawable>?,
                         isFirstResource: Boolean
                     ): Boolean {
-                        Log.e(TAG, "setData: error ${e?.message}", )
+                        LogUtils.e( "setData: error ${e?.message}", )
                         return false
                     }
 

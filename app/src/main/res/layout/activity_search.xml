@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".activity.SearchActivity">
     <com.ma.lightweather.widget.SearchView
         android:id="@+id/searchView"
@@ -11,4 +12,8 @@
         android:layout_height="wrap_content"
         android:transitionName="SearchView">
     </com.ma.lightweather.widget.SearchView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

@@ -57,29 +57,23 @@ class FrogActivity : BaseActivity<ActivityFrogBinding>() {
 
         mBinding.searchView.setState(false)
         mBinding.searchView.setCursorState(false)
-        mBinding.searchView.setOnLeftClickListener(object: SearchView.OnLeftClickListener{
-            override fun onLeftClick(tag: Int) {
-                if(tag==SearchView.LEFT_IV_SEARCH){
-                    toSearch()
-                }
+        mBinding.searchView.setOnLeftClickListener {
+            if (it == SearchView.LEFT_IV_SEARCH) {
+                toSearch()
             }
-        })
+        }
 
-        mBinding.searchView.setOnAccountClickListener(object :SearchView.OnAccountClickListener{
-            override fun onAccountClick(tag: Int) {
-                if(tag==SearchView.RIGHT_ACCOUNT_ACCOUNT){
-                    mBinding.drawerLayout.openDrawer(Gravity.LEFT)
-                }
+        mBinding.searchView.setOnAccountClickListener{
+            if(it==SearchView.RIGHT_ACCOUNT_ACCOUNT){
+                mBinding.drawerLayout.openDrawer(Gravity.LEFT)
             }
-        })
-        mBinding.searchView.setOnFocusChangeListener(object :SearchView.OnFocusChangeListener{
-            override fun onFocusChange(hasFocus: Boolean) {
-                if (hasFocus){
-                    toSearch()
-                }
-                false
+        }
+        mBinding.searchView.setOnFocusChangeListener {
+            if (it){
+                toSearch()
             }
-        })
+            false
+        }
     }
 
     private fun toSearch() {

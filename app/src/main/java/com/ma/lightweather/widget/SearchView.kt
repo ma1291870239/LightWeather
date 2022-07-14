@@ -23,11 +23,12 @@ import kotlinx.android.synthetic.main.item_searchview.view.*
 
 class SearchView (context: Context, attrs: AttributeSet): LinearLayout(context, attrs) {
 
-    private var onLeftClickListener: OnLeftClickListener?=null
-    private var onRight1ClickListener:OnRight1ClickListener?=null
-    private var onRight2ClickListener:OnRight2ClickListener?=null
-    private var onAccountClickListener:OnAccountClickListener?=null
-    private var onFocusChangeListener:OnFocusChangeListener?=null
+    private lateinit var onLeftClickListener: (tag:Int)->Unit
+    private lateinit var onRight1ClickListener:(tag:Int)->Unit
+    private lateinit var onRight2ClickListener:(tag:Int)->Unit
+    private lateinit var onAccountClickListener:(tag:Int)->Unit
+    private var onFocusChangeListener:((hasFocus: Boolean)->Unit)?=null
+    private var addTextChangedListener: ((String) -> Unit)? =null
 
     private var mTransition: LayoutTransition = LayoutTransition()
 
@@ -59,10 +60,10 @@ class SearchView (context: Context, attrs: AttributeSet): LinearLayout(context, 
     private fun initView() {
         mBinding=ItemSearchviewBinding.bind(inflate(context,R.layout.item_searchview,this))
         mBinding.searchLeftIv.setOnClickListener {
-            onLeftClickListener?.onLeftClick(leftTag)
+            onLeftClickListener(leftTag)
         }
         mBinding.searchRightAccount.setOnClickListener {
-            onAccountClickListener?.onAccountClick(rightAccountTag)
+            onAccountClickListener(rightAccountTag)
         }
         mBinding.searchTextEt.setOnEditorActionListener { p0, p1, p2 ->
             if (p1== EditorInfo.IME_ACTION_SEARCH){
@@ -72,7 +73,7 @@ class SearchView (context: Context, attrs: AttributeSet): LinearLayout(context, 
             false
         }
         mBinding.searchTextEt.setOnFocusChangeListener{ _, hasFocus ->
-            onFocusChangeListener?.onFocusChange(hasFocus)
+            onFocusChangeListener?.invoke(hasFocus)
         }
         mBinding.searchTextEt.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
@@ -84,7 +85,7 @@ class SearchView (context: Context, attrs: AttributeSet): LinearLayout(context, 
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+                addTextChangedListener?.invoke(p0.toString())
             }
 
         })
@@ -179,47 +180,27 @@ class SearchView (context: Context, attrs: AttributeSet): LinearLayout(context, 
     }
 
 
-    fun setOnLeftClickListener(onLeftClickListener:OnLeftClickListener){
+    fun setOnLeftClickListener(onLeftClickListener:(tag:Int)->Unit){
         this.onLeftClickListener=onLeftClickListener
     }
 
-    fun setOnRight1ClickListener(onRight1ClickListener:OnRight1ClickListener){
+    fun setOnRight1ClickListener(onRight1ClickListener:(tag:Int)->Unit){
         this.onRight1ClickListener=onRight1ClickListener
     }
 
-    fun setOnRight2ClickListener(onRight2ClickListener:OnRight2ClickListener){
+    fun setOnRight2ClickListener(onRight2ClickListener:(tag:Int)->Unit){
         this.onRight2ClickListener=onRight2ClickListener
     }
 
-    fun setOnAccountClickListener(onAccountClickListener:OnAccountClickListener){
+    fun setOnAccountClickListener(onAccountClickListener:(tag:Int)->Unit){
         this.onAccountClickListener=onAccountClickListener
     }
 
-    fun setOnFocusChangeListener(onFocusChangeListener:OnFocusChangeListener){
+    fun setOnFocusChangeListener(onFocusChangeListener:(hasFocus: Boolean)->Unit){
         this.onFocusChangeListener=onFocusChangeListener
     }
 
-    interface OnLeftClickListener{
-        fun onLeftClick(tag:Int)
-    }
-
-    interface OnRight1ClickListener{
-        fun onRight1Click(tag:Int)
-    }
-
-    interface OnRight2ClickListener{
-        fun onRight2Click(tag:Int)
-    }
-
-    interface OnAccountClickListener{
-        fun onAccountClick(tag:Int)
-    }
-
-    interface OnFocusChangeListener {
-        fun onFocusChange(hasFocus: Boolean)
-    }
-
-    interface OnQueryTextListener {
-        fun onQueryTextChange(newText: CharSequence): Boolean
+    fun addTextChangedListener(addTextChangedListener:(s: String)->Unit){
+        this.addTextChangedListener=addTextChangedListener
     }
 }
