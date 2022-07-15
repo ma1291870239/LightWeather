@@ -172,6 +172,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         val img=WeatherUtils.getColorWeatherImg(cond)
         val vibrantSwatch = Palette
             .from(BitmapFactory.decodeResource(resources, img))
+            .setRegion(0,10,0,0)
             .generate()
             .vibrantSwatch
         vibrantSwatch?.let {
