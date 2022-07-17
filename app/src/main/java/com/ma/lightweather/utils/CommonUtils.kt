@@ -10,11 +10,15 @@ import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.Rect
 import android.net.Uri
+import android.os.Build
 import android.view.View
+import androidx.annotation.RequiresApi
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.ma.lightweather.R
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 
@@ -154,17 +158,44 @@ object CommonUtils {
         return (pxValue / fontScale + 0.5f).toInt()
     }
 
-    fun getStatusBarHeight(context: Context): Int {
-        val resources: Resources = context.resources
-        val resourceId: Int = resources.getIdentifier("status_bar_height", "dimen", "android")
-        return resources.getDimensionPixelSize(resourceId)
-    }
 
     fun compressBitmap(bitmap: Bitmap): Bitmap {
         val ratio = 3
         return if (bitmap.height >= 1000 || bitmap.width >= 1000) {
             Bitmap.createBitmap(bitmap.width / ratio, bitmap.height / ratio, Bitmap.Config.ARGB_8888)
         } else bitmap
+    }
+
+    fun dateTimeFormat(date: String, pattern:String ): String {
+       return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+           dateFormat1(date,pattern)
+       } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+           dateFormat2(date,pattern)
+       } else {
+           dateFormat3(date,pattern)
+       }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun dateFormat1(date: String, pattern:String ): String {
+        val dateTime=LocalDateTime.parse(date, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        return dateTime.format(DateTimeFormatter.ofPattern(pattern))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun dateFormat2(date: String, pattern:String ): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX")
+        val df = SimpleDateFormat(pattern)
+        val dateTime=sdf.parse(date)
+        return df.format(dateTime)
+    }
+
+    fun dateFormat3(date: String, pattern:String ): String {
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        val sdf = SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy")
+        val df = SimpleDateFormat(pattern)
+        val dateTime=sdf.parse(simpleDateFormat.parse(date).toString())
+        return df.format(dateTime)
     }
 
     fun changeTimeFormat(date: String): List<String> {

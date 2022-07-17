@@ -11,7 +11,7 @@ import android.view.View
 import android.widget.Scroller
 import androidx.core.content.ContextCompat
 import com.ma.lightweather.R
-import com.ma.lightweather.model.Weather
+import com.ma.lightweather.model.HFWeather
 import com.ma.lightweather.utils.CommonUtils
 import java.util.*
 import kotlin.math.abs
@@ -33,7 +33,7 @@ class HourFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context
 
 
 
-    private var tmpList: MutableList<Int> = ArrayList()
+    private var tempList: MutableList<Int> = ArrayList()
     private var popList: MutableList<Int> = ArrayList()
     private var dateList: MutableList<String> = ArrayList()
     private var txtList: MutableList<String> = ArrayList()
@@ -107,9 +107,9 @@ class HourFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context
         textSpace=0.5f*textHigh
         xUnit = viewWidth / (2*xPart)
         yUnit = getY(5,7) / 50
-        if (tmpList.isNotEmpty()) {
-            max = Collections.max(tmpList)
-            min = Collections.min(tmpList)
+        if (tempList.isNotEmpty()) {
+            max = Collections.max(tempList)
+            min = Collections.min(tempList)
             yUnit = getY(5,7) / (max - min)
         }
 
@@ -127,8 +127,7 @@ class HourFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context
         textPaint.setShadowLayer(5f,3f,3f,ContextCompat.getColor(context,R.color.shadow_white_text))
         //日期
         for (i in dateList.indices) {
-            val time=CommonUtils.getTimeFormat(dateList[i])
-            canvas.drawText(CommonUtils.change24To12(time[0])+ "时", getBezierX(i), getY(2, 3), textPaint)
+            canvas.drawText(CommonUtils.dateTimeFormat(dateList[i],"HH时"), getBezierX(i), getY(2, 3), textPaint)
         }
         textPaint.color=ContextCompat.getColor(context,R.color.white)
         //降水概率
@@ -144,7 +143,7 @@ class HourFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context
     private fun drawTmpCurve(canvas: Canvas){
         path.reset()
         shadowPath.reset()
-        for (i in tmpList.indices) {
+        for (i in tempList.indices) {
 
             var x1 = 0f
             var y1 = 0f
@@ -155,45 +154,45 @@ class HourFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context
             when{
                 i == 0 -> {
                     x1=getBezierX(i)+(getBezierX(i + 1)-getBezierX(i))*curvature
-                    y1=getBezierY(i,tmpList)+(getBezierY(i + 1,tmpList)-getBezierY(i,tmpList))*curvature
+                    y1=getBezierY(i,tempList)+(getBezierY(i + 1,tempList)-getBezierY(i,tempList))*curvature
 
                     x2=getBezierX(i+1)-(getBezierX(i + 2)-getBezierX(i))*curvature
-                    y2=getBezierY(i+1,tmpList)-(getBezierY(i + 2,tmpList)-getBezierY(i,tmpList))*curvature
+                    y2=getBezierY(i+1,tempList)-(getBezierY(i + 2,tempList)-getBezierY(i,tempList))*curvature
 
-                    path.moveTo(getBezierX(i), getBezierY(i, tmpList))
-                    path.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tmpList))
+                    path.moveTo(getBezierX(i), getBezierY(i, tempList))
+                    path.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tempList))
 
-                    shadowPath.moveTo(getBezierX(i), getBezierY(i, tmpList))
-                    shadowPath.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tmpList))
+                    shadowPath.moveTo(getBezierX(i), getBezierY(i, tempList))
+                    shadowPath.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tempList))
                 }
-                i< tmpList.size - 2 -> {
+                i< tempList.size - 2 -> {
                     x1=getBezierX(i)+(getBezierX(i + 1)-getBezierX(i-1))*curvature
-                    y1=getBezierY(i,tmpList)+(getBezierY(i + 1,tmpList)-getBezierY(i-1,tmpList))*curvature
+                    y1=getBezierY(i,tempList)+(getBezierY(i + 1,tempList)-getBezierY(i-1,tempList))*curvature
 
                     x2=getBezierX(i+1)-(getBezierX(i + 2)-getBezierX(i))*curvature
-                    y2=getBezierY(i+1,tmpList)-(getBezierY(i + 2,tmpList)-getBezierY(i,tmpList))*curvature
+                    y2=getBezierY(i+1,tempList)-(getBezierY(i + 2,tempList)-getBezierY(i,tempList))*curvature
 
-                    path.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tmpList))
+                    path.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tempList))
 
-                    shadowPath.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tmpList))
+                    shadowPath.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tempList))
 
                 }
-                i == tmpList.size - 2 -> {
+                i == tempList.size - 2 -> {
                     x1=getBezierX(i)+(getBezierX(i + 1)-getBezierX(i-1))*curvature
-                    y1=getBezierY(i,tmpList)+(getBezierY(i + 1,tmpList)-getBezierY(i-1,tmpList))*curvature
+                    y1=getBezierY(i,tempList)+(getBezierY(i + 1,tempList)-getBezierY(i-1,tempList))*curvature
 
                     x2=getBezierX(i+1)-(getBezierX(i + 1)-getBezierX(i))*curvature
-                    y2=getBezierY(i+1,tmpList)-(getBezierY(i + 1,tmpList)-getBezierY(i,tmpList))*curvature
+                    y2=getBezierY(i+1,tempList)-(getBezierY(i + 1,tempList)-getBezierY(i,tempList))*curvature
 
-                    path.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tmpList))
+                    path.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tempList))
 
-                    shadowPath.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tmpList))
+                    shadowPath.cubicTo(x1, y1, x2, y2, getBezierX(i + 1), getBezierY(i + 1, tempList))
                     shadowPath.lineTo(getBezierX(i + 1), (max - min+3) * yUnit + textHigh + textSpace)
                     shadowPath.lineTo(xUnit, (max - min+3) * yUnit + textHigh + textSpace)
-                    shadowPath.lineTo(xUnit, getBezierY(0, tmpList))
+                    shadowPath.lineTo(xUnit, getBezierY(0, tempList))
                 }
             }
-            canvas.drawText(tmpList[i].toString() + "°", getBezierX(i), getBezierY(i, tmpList)-textSpace, textPaint)
+            canvas.drawText(tempList[i].toString() + "°", getBezierX(i), getBezierY(i, tempList)-textSpace, textPaint)
         }
         temPathMeasureSpec.setPath(path, false)
         mLength = temPathMeasureSpec.length
@@ -236,19 +235,19 @@ class HourFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context
 //        canvas.drawPath(mDst, tmpPaint)
 //    }
 
-    fun loadViewData(hourlyList: List<Weather.HourlyWeather>?) {
+    fun loadViewData(hourlyList: List<HFWeather.WeatherHour>?) {
         if (hourlyList != null) {
-            tmpList.clear()
+            tempList.clear()
             popList.clear()
             dateList.clear()
             txtList.clear()
             dirList.clear()
             for (hourly in hourlyList){
-                (tmpList as ArrayList).add(hourly.tmp.toInt())
+                (tempList as ArrayList).add(hourly.temp.toInt())
                 (popList as ArrayList).add(hourly.pop.toInt())
-                hourly.time.let { (dateList as ArrayList).add(it) }
-                hourly.cond_txt.let { (txtList as ArrayList).add(it) }
-                hourly.wind_dir.let { (dirList as ArrayList).add(it) }
+                hourly.fxTime.let { (dateList as ArrayList).add(it) }
+                hourly.text.let { (txtList as ArrayList).add(it) }
+                hourly.windDir.let { (dirList as ArrayList).add(it) }
             }
             val valueAnimator = ValueAnimator.ofFloat(0f, 1f)
             valueAnimator.addUpdateListener { valueAnimator ->
@@ -302,12 +301,12 @@ class HourFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context
             MotionEvent.ACTION_UP -> {
             }
         }
-        return super.dispatchTouchEvent(event )
+        return super.dispatchTouchEvent(event)
     }
 
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        velocityTracker!!.addMovement(event)
+        velocityTracker?.addMovement(event)
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
                 if (!scroller!!.isFinished) {
@@ -336,8 +335,11 @@ class HourFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context
                 invalidate()
             }
         }
-        touchX = event!!.x
-        touchY = event.y
+        event?.let {
+            touchX = event.x
+            touchY = event.y
+        }
+
         return true
     }
 

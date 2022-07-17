@@ -14,6 +14,9 @@ import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.google.android.material.appbar.AppBarLayout
+import com.ma.lightweather.adapter.HourWeatherAdapter
+import com.ma.lightweather.adapter.PopAdapter
+import com.ma.lightweather.adapter.WindAdapter
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.databinding.FragFrogweatherBinding
 import com.ma.lightweather.model.Air
@@ -25,21 +28,15 @@ import kotlinx.android.synthetic.main.frag_frogweather.*
 
 class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
 
-    private var weatherList: List<Weather>? = null
-    private var airList: List<Air>? = null
-
-    private var locArea: String? = null
-    private var weatherJson: String = ""
-    private var weatherAqiJson: String = ""
-    private var locationManager: LocationManager? = null
-    private var locationListener: LocationListener? = null
-
     private var city: String = "luoyang"
     private var cityCode: String = "101180901"
     private var isGetHeight: Boolean=false
     private var height: Int=0
     private var newHeight:Int=0
-    private lateinit var  hfWeather: HFWeather
+    private lateinit var hourWeatherAdapter: HourWeatherAdapter
+    private lateinit var popAdapter: PopAdapter
+    private lateinit var windAdapter: WindAdapter
+    private lateinit var hfWeather: HFWeather
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,21 +55,21 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         }
         mBinding.appBarLayout.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             mBinding.swipeRefreshLayout.isEnabled = verticalOffset >=0
-            var offset=1+verticalOffset.toFloat()/mBinding.hourweatherView.measuredHeight
-            e(TAG, "getOffset: ${verticalOffset.toFloat()}---${mBinding.hourweatherView.measuredHeight}---${offset}")
+            var offset=1+verticalOffset.toFloat()/mBinding.hourWeatherRv.measuredHeight
+            e(TAG, "getOffset: ${verticalOffset.toFloat()}---${mBinding.hourWeatherRv.measuredHeight}---${offset}")
             if(0<offset&&offset<1) {
                 mBinding.weatherIvBottom.alpha = offset
             }
         })
         mBinding.swipeRefreshLayout.setOnRefreshListener { getNow() }
-        mBinding.hourweatherView.viewTreeObserver.addOnGlobalLayoutListener {
+        mBinding.hourWeatherRv.viewTreeObserver.addOnGlobalLayoutListener {
             if (!isGetHeight
                 &&mBinding.appBarLayout.measuredHeight!=0
-                &&mBinding.hourweatherView.measuredHeight!=0) {
-                LogUtils.e("getHeight: ${mBinding.appBarLayout.measuredHeight}---${mBinding.weatherIvBottom.measuredHeight}---${mBinding.hourweatherView.measuredHeight}")
+                &&mBinding.hourWeatherRv.measuredHeight!=0) {
+                LogUtils.e("getHeight: ${mBinding.appBarLayout.measuredHeight}---${mBinding.weatherIvBottom.measuredHeight}---${mBinding.hourWeatherRv.measuredHeight}")
                 isGetHeight=true
                 height = mBinding.appBarLayout.measuredHeight+1
-                newHeight = mBinding.appBarLayout.measuredHeight + mBinding.hourweatherView.measuredHeight
+                newHeight = mBinding.appBarLayout.measuredHeight + mBinding.hourWeatherRv.measuredHeight
                 mBinding.appBarLayout.layoutParams.height = newHeight
                 mBinding.collapsingToolbarLayout.layoutParams.height = newHeight
                 mBinding.relativeLayout1.layoutParams.height = height
@@ -80,12 +77,24 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         }
 
         hfWeather= HFWeather()
+        val hourWeatherManager=LinearLayoutManager(requireContext())
         val popManager=LinearLayoutManager(requireContext())
         val windManager=LinearLayoutManager(requireContext())
+        hourWeatherManager.orientation=LinearLayoutManager.HORIZONTAL
         popManager.orientation=LinearLayoutManager.HORIZONTAL
         windManager.orientation=LinearLayoutManager.HORIZONTAL
+        mBinding.hourWeatherRv.layoutManager=hourWeatherManager
         mBinding.popRv.layoutManager=popManager
         mBinding.windRv.layoutManager=windManager
+        context?.let {
+            hourWeatherAdapter= HourWeatherAdapter(it,hfWeather.hourly)
+            popAdapter= PopAdapter(it,hfWeather.hourly)
+            windAdapter= WindAdapter(it,hfWeather.hourly)
+            mBinding.hourWeatherRv.adapter=hourWeatherAdapter
+            mBinding.popRv.adapter=popAdapter
+            mBinding.windRv.adapter=windAdapter
+        }
+
 
         setFragmentResultListener("city") { requestKey, bundle ->
             city = bundle.getString("city",city)
@@ -150,10 +159,12 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     }
 
     private fun setData(){
+        setFragmentResult(
+                "hfWeather",
+                bundleOf("hfWeather" to hfWeather)
+        )
         mBinding.swipeRefreshLayout.isRefreshing = false
-        val dates = CommonUtils.changeTimeFormat(hfWeather.now.obsTime)
-        mBinding.weatherTime.text =
-            "${dates[1]}月${dates[2]}日 ${dates[3]}:${dates[4]}"
+        mBinding.weatherTime.text =CommonUtils.dateTimeFormat(hfWeather.now.obsTime,"MM月dd日 HH:mm")
         mBinding.weatherMaxmintmp.text =
             "白天气温：${ hfWeather.daily[0].tempMax}℃ · 夜晚气温：${ hfWeather.daily[0].tempMin}℃"
         mBinding.weatherTmp.text = hfWeather.now.temp
@@ -172,7 +183,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         val img=WeatherUtils.getColorWeatherImg(cond)
         val vibrantSwatch = Palette
             .from(BitmapFactory.decodeResource(resources, img))
-            .setRegion(0,10,0,0)
+            .setRegion(0,0,10,10)
             .generate()
             .vibrantSwatch
         vibrantSwatch?.let {
@@ -188,12 +199,17 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
 
 
         mBinding.weatherHum.text = "${ hfWeather.now.humidity}%"
-        mBinding.weatherDew.text = "${ hfWeather.now.dew}公里/小时"
-        mBinding.weatherPres.text = "${ hfWeather.now.pressure}帕"
-        mBinding.weatherCloud.text = "${ hfWeather.now.cloud}微克/立方米"
+        mBinding.weatherDew.text = "${ hfWeather.now.dew}摄氏度"
+        mBinding.weatherPres.text = "${ hfWeather.now.pressure}百帕"
+        mBinding.weatherCloud.text = "${ hfWeather.now.cloud}%"
         mBinding.weatherVis.text = "${ hfWeather.now.vis}公里"
 
-
+        hourWeatherAdapter.setData(hfWeather.hourly)
+        popAdapter.setData(hfWeather.hourly)
+        windAdapter.setData(hfWeather.hourly)
+        hourWeatherAdapter.notifyItemRangeChanged(0,hfWeather.hourly.size)
+        popAdapter.notifyItemRangeChanged(0,hfWeather.hourly.size)
+        windAdapter.notifyItemRangeChanged(0,hfWeather.hourly.size)
     }
 
 

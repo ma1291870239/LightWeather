@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import com.ma.lightweather.fragment.FrogTodayFragment
 import com.ma.lightweather.fragment.FrogWeatherFragment
 import com.ma.lightweather.fragment.FutureDaysFragment
 

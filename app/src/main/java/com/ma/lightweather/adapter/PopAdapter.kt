@@ -9,11 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ma.lightweather.R
+import com.ma.lightweather.model.HFWeather
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 
-class PopAdapter(private val context: Context, private val popList: List<Weather.HourlyWeather>) :RecyclerView.Adapter<PopAdapter.PopHolder>() {
+class PopAdapter(private val context: Context, private var popList: List<HFWeather.WeatherHour>) :RecyclerView.Adapter<PopAdapter.PopHolder>() {
 
+    fun setData(popList: List<HFWeather.WeatherHour>){
+        this.popList=popList
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_pop, parent, false)
@@ -21,7 +25,7 @@ class PopAdapter(private val context: Context, private val popList: List<Weather
     }
 
     override fun getItemCount(): Int {
-        return popList.size+1
+        return popList.size
     }
 
     override fun onBindViewHolder(holder: PopHolder, position: Int) {
@@ -32,8 +36,8 @@ class PopAdapter(private val context: Context, private val popList: List<Weather
             holder.popCloudTv.gravity=Gravity.CENTER_VERTICAL
             holder.popIv.setImageResource(0)
         }else {
-            holder.popTv.text = popList[position-1].pop + "%"
-            when(popList[position-1].pop.toInt()){
+            holder.popTv.text = popList[position].pop + "%"
+            when(popList[position].pop.toInt()){
                 0->{ holder.popIv.setImageResource(R.mipmap.ic_droplet_clear)}
                 in 1..25->{holder.popIv.setImageResource(R.mipmap.ic_droplet_drizzle)}
                 in 26..50->{holder.popIv.setImageResource(R.mipmap.ic_droplet_light)}
@@ -41,10 +45,9 @@ class PopAdapter(private val context: Context, private val popList: List<Weather
                 in 76..100->{holder.popIv.setImageResource(R.mipmap.ic_droplet_heavy)}
             }
             holder.popTv.gravity=Gravity.CENTER
-            holder.popCloudTv.text = popList[position-1].cloud + "%"
+            holder.popCloudTv.text = popList[position].cloud + "%"
             holder.popCloudTv.gravity=Gravity.CENTER
-            val time = CommonUtils.getTimeFormat(popList[position-1].time)
-            holder.popTimeTv.text = CommonUtils.change24To12(time[0])+ "时"
+            holder.popTimeTv.text = CommonUtils.dateTimeFormat(popList[position].fxTime,"HH时")
         }
     }
 

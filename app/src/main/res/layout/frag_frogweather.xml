@@ -157,10 +157,10 @@
                     android:layout_height="match_parent"
                     app:layout_collapseMode="pin">
 
-                    <com.ma.lightweather.widget.HourFrogWeatherView
-                        android:id="@+id/hourweather_view"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/hourWeatherRv"
                         android:layout_width="match_parent"
-                        android:layout_height="350dp"
+                        android:layout_height="300dp"
                         android:layout_alignParentBottom="true"/>
                 </RelativeLayout>
 

@@ -53,7 +53,7 @@ object Parse {
                     DbUtils.writeDb(context, weatherList, airList)
                 }
                 weatherView?.loadViewData(weatherBean.daily_forecast)
-                hourWeatherView?.loadViewData(weatherBean.hourly)
+                //hourWeatherView?.loadViewData(weatherBean.hourly)
             }
         }
         return weatherList

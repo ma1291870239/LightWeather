@@ -76,7 +76,7 @@ class SearchActivity : BaseActivity<ActivitySearchBinding>() {
                 if (hfWeatherBean!=null&&code!=null){
                     hfWeather.location=hfWeatherBean.location
                     searchAdapter.setData(hfWeather.location)
-                    searchAdapter.notifyDataSetChanged()
+                    searchAdapter.notifyItemRangeChanged(0,hfWeather.location.size)
                 }else{
 
                 }
