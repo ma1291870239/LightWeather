@@ -31,6 +31,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     private var city: String = "luoyang"
     private var cityCode: String = "101180901"
     private var isGetHeight: Boolean=false
+    private var isHorWeatherShow: Boolean=false
     private var height: Int=0
     private var newHeight:Int=0
     private lateinit var hourWeatherAdapter: HourWeatherAdapter
@@ -51,9 +52,23 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     private fun initView() {
         mBinding.swipeRefreshLayout.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
         mBinding.collapsingToolbarLayout.setOnClickListener {
-
+            LogUtils.e("collapsingToolbarLayout")
+            if (isHorWeatherShow){
+                setHourWeatherHide()
+            }else{
+                setHourWeatherShow()
+            }
         }
-        mBinding.appBarLayout.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+        mBinding.appBarLayout.setOnClickListener {
+            LogUtils.e("appBarLayout")
+            if (isHorWeatherShow){
+                setHourWeatherHide()
+            }else{
+                setHourWeatherShow()
+            }
+        }
+        mBinding.collapsingToolbarLayout.expandedTitleGravity
+        mBinding.appBarLayout.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             mBinding.swipeRefreshLayout.isEnabled = verticalOffset >=0
             var offset=1+verticalOffset.toFloat()/mBinding.hourWeatherRv.measuredHeight
             e(TAG, "getOffset: ${verticalOffset.toFloat()}---${mBinding.hourWeatherRv.measuredHeight}---${offset}")
@@ -70,9 +85,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
                 isGetHeight=true
                 height = mBinding.appBarLayout.measuredHeight+1
                 newHeight = mBinding.appBarLayout.measuredHeight + mBinding.hourWeatherRv.measuredHeight
-                mBinding.appBarLayout.layoutParams.height = newHeight
-                mBinding.collapsingToolbarLayout.layoutParams.height = newHeight
-                mBinding.relativeLayout1.layoutParams.height = height
+                setHourWeatherHide()
             }
         }
 
@@ -103,7 +116,29 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         }
     }
 
-    fun getNow() {
+    private fun setHourWeatherShow(){
+        val appBarLayoutParams=mBinding.appBarLayout.layoutParams
+        appBarLayoutParams.height =height
+        mBinding.appBarLayout.layoutParams=appBarLayoutParams
+        mBinding.collapsingToolbarLayout.layoutParams.height = height
+        mBinding.relativeLayout1.layoutParams.height = height
+        mBinding.relativeLayout2.layoutParams.height = height
+        mBinding.weatherIvBottom.alpha =0f
+        isHorWeatherShow=true
+    }
+
+    private fun setHourWeatherHide(){
+        val appBarLayoutParams=mBinding.appBarLayout.layoutParams
+        appBarLayoutParams.height =newHeight
+        mBinding.appBarLayout.layoutParams=appBarLayoutParams
+        mBinding.collapsingToolbarLayout.layoutParams.height = newHeight
+        mBinding.relativeLayout1.layoutParams.height = height
+        mBinding.relativeLayout2.layoutParams.height = newHeight
+        mBinding.weatherIvBottom.alpha =1f
+        isHorWeatherShow=false
+    }
+
+    private fun getNow() {
         hfWeather.now= HFWeather.WeatherNow()
         hfWeather.hourly.clear()
         hfWeather.daily.clear()

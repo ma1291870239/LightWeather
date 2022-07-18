@@ -26,7 +26,7 @@ data class HFWeather(
         var type:String="",
         var rank:String="",
         var fxLink:String="",
-    )
+    ):Serializable
 
     data class WeatherNow(
         var obsTime:String="",
@@ -44,7 +44,7 @@ data class HFWeather(
         var vis: String="",
         var cloud: String="",
         var dew: String="",
-    )
+    ):Serializable
 
     data class WeatherFuture(
         var fxDate: String="",
@@ -74,7 +74,7 @@ data class HFWeather(
         var vis: String="",
         var cloud: String="",
         var uvIndex: String="",
-    )
+    ):Serializable
 
     data class WeatherHour(
         var fxTime: String="",
@@ -91,5 +91,5 @@ data class HFWeather(
         var pressure: String="",
         var cloud: String="",
         var dew: String="",
-    )
+    ):Serializable
 }
