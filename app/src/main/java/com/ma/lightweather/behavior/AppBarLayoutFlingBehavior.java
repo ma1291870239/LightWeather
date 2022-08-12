@@ -1,15 +1,22 @@
 package com.ma.lightweather.behavior;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.OverScroller;
+import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
@@ -39,6 +46,59 @@ public class AppBarLayoutFlingBehavior extends AppBarLayout.Behavior {
         return super.onInterceptTouchEvent(parent, child, ev);
     }
 
+    @Override
+    public boolean onTouchEvent(@NonNull @NotNull CoordinatorLayout parent, @NonNull @NotNull AppBarLayout child, @NonNull @NotNull MotionEvent ev) {
+        CollapsingToolbarLayout layout= (CollapsingToolbarLayout) child.getChildAt(0);
+        RelativeLayout relativeLayout=(RelativeLayout) layout.getChildAt(0);
+        LogUtil.d(TAG, "onTouchEvent:" + child.getTop()+"---"+layout.getChildAt(0).getTop()+"---"+ layout.getChildAt(1).getTop());
+        int diff=layout.getChildAt(1).getHeight()-layout.getChildAt(0).getHeight();
+        int offset=child.getTop();
+        switch (ev.getActionMasked()) {
+            case MotionEvent.ACTION_UP:
+                if(offset<0&&offset>-diff/2){
+                    setShow(false);
+                    //child.offsetTopAndBottom(-offset);
+                    setAppbarLayoutOffset(0);
+                    relativeLayout.offsetTopAndBottom(offset);
+                    relativeLayout.getChildAt(relativeLayout.getChildCount()-1).setAlpha(1f);
+                }else if(offset<-diff/2&&offset>-diff){
+                    setShow(true);
+                    //child.offsetTopAndBottom(-diff-offset);
+                    setAppbarLayoutOffset(-diff);
+                    relativeLayout.offsetTopAndBottom(diff+offset);
+                    relativeLayout.getChildAt(relativeLayout.getChildCount()-1).setAlpha(0f);
+                }
+                return true;
+        }
+        return super.onTouchEvent(parent, child, ev);
+    }
+
+    private boolean isShow=false;
+    private ValueAnimator offsetAnimator;
+    public void setAppbarLayoutOffset(int offset){
+        LogUtil.d(TAG, "isShow:" + isShow+"---offset"+offset);
+        offsetAnimator = new ValueAnimator();
+        offsetAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
+        offsetAnimator.addUpdateListener(
+                new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(@NonNull ValueAnimator animator) {
+                        AppBarLayoutFlingBehavior.this.setTopAndBottomOffset(offset);
+                    }
+                });
+        offsetAnimator.setDuration(500);
+        offsetAnimator.setIntValues(offset);
+        offsetAnimator.start();
+
+    }
+
+    public void setShow(boolean isShow){
+       this.isShow=isShow;
+    }
+
+    public boolean isShow(){
+       return isShow;
+    }
     /**
      * 反射获取私有的flingRunnable 属性，考虑support 28以后变量名修改的问题
      *

@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log.e
 import android.view.*
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
@@ -18,6 +19,7 @@ import com.ma.lightweather.adapter.HourWeatherAdapter
 import com.ma.lightweather.adapter.PopAdapter
 import com.ma.lightweather.adapter.WindAdapter
 import com.ma.lightweather.app.Contants
+import com.ma.lightweather.behavior.AppBarLayoutFlingBehavior
 import com.ma.lightweather.databinding.FragFrogweatherBinding
 import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.HFWeather
@@ -38,6 +40,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     private lateinit var popAdapter: PopAdapter
     private lateinit var windAdapter: WindAdapter
     private lateinit var hfWeather: HFWeather
+    private var offset:Int=0
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -52,28 +55,27 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     private fun initView() {
         mBinding.swipeRefreshLayout.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
         mBinding.collapsingToolbarLayout.setOnClickListener {
-            LogUtils.e("collapsingToolbarLayout")
-            if (isHorWeatherShow){
-                setHourWeatherHide()
+            val behavior=(mBinding.appBarLayout.layoutParams as CoordinatorLayout.LayoutParams).behavior as AppBarLayoutFlingBehavior
+            if(behavior.isShow) {
+                behavior.isShow=false
+                behavior.setAppbarLayoutOffset(0)
+                mBinding.relativeLayout1.offsetTopAndBottom(-mBinding.hourWeatherRv.height)
+                mBinding.weatherIvBottom.alpha = 1f
             }else{
-                setHourWeatherShow()
-            }
-        }
-        mBinding.appBarLayout.setOnClickListener {
-            LogUtils.e("appBarLayout")
-            if (isHorWeatherShow){
-                setHourWeatherHide()
-            }else{
-                setHourWeatherShow()
+                behavior.isShow=true
+                behavior.setAppbarLayoutOffset(-mBinding.hourWeatherRv.height)
+                mBinding.relativeLayout1.offsetTopAndBottom(mBinding.hourWeatherRv.height)
+                mBinding.weatherIvBottom.alpha = 0f
             }
         }
         mBinding.collapsingToolbarLayout.expandedTitleGravity
         mBinding.appBarLayout.addOnOffsetChangedListener (AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             mBinding.swipeRefreshLayout.isEnabled = verticalOffset >=0
-            var offset=1+verticalOffset.toFloat()/mBinding.hourWeatherRv.measuredHeight
-            e(TAG, "getOffset: ${verticalOffset.toFloat()}---${mBinding.hourWeatherRv.measuredHeight}---${offset}")
-            if(0<offset&&offset<1) {
-                mBinding.weatherIvBottom.alpha = offset
+            offset=verticalOffset
+            val ratio=1+verticalOffset.toFloat()/mBinding.hourWeatherRv.measuredHeight
+            e(TAG, "getOffset: ${verticalOffset.toFloat()}---${mBinding.hourWeatherRv.measuredHeight}---${ratio}")
+            if(0<ratio&&ratio<1&&!isHorWeatherShow) {
+                mBinding.weatherIvBottom.alpha = ratio
             }
         })
         mBinding.swipeRefreshLayout.setOnRefreshListener { getNow() }
