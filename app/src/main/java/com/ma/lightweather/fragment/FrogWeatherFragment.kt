@@ -56,16 +56,22 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         mBinding.swipeRefreshLayout.setColorSchemeResources(WeatherUtils.getBackColor(mContext))
         mBinding.collapsingToolbarLayout.setOnClickListener {
             val behavior=(mBinding.appBarLayout.layoutParams as CoordinatorLayout.LayoutParams).behavior as AppBarLayoutFlingBehavior
-            if(behavior.isShow) {
-                behavior.isShow=false
-                behavior.setAppbarLayoutOffset(0)
-                mBinding.relativeLayout1.offsetTopAndBottom(-mBinding.hourWeatherRv.height)
-                mBinding.weatherIvBottom.alpha = 1f
-            }else{
-                behavior.isShow=true
-                behavior.setAppbarLayoutOffset(-mBinding.hourWeatherRv.height)
-                mBinding.relativeLayout1.offsetTopAndBottom(mBinding.hourWeatherRv.height)
-                mBinding.weatherIvBottom.alpha = 0f
+            if(0<=mBinding.relativeLayout1.top&&mBinding.relativeLayout1.top<=mBinding.hourWeatherRv.height) {
+                if (behavior.isShow) {
+                    val b = behavior.setAppbarLayoutOffset(0)
+                    if (b) {
+                        behavior.isShow = false
+                        mBinding.relativeLayout1.offsetTopAndBottom(- mBinding.relativeLayout1.top)
+                        mBinding.weatherIvBottom.alpha = 1f
+                    }
+                } else {
+                    val b = behavior.setAppbarLayoutOffset(-mBinding.hourWeatherRv.height)
+                    if (b) {
+                        behavior.isShow = true
+                        mBinding.relativeLayout1.offsetTopAndBottom(mBinding.hourWeatherRv.height - mBinding.relativeLayout1.top)
+                        mBinding.weatherIvBottom.alpha = 0f
+                    }
+                }
             }
         }
         mBinding.collapsingToolbarLayout.expandedTitleGravity
@@ -73,8 +79,8 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
             mBinding.swipeRefreshLayout.isEnabled = verticalOffset >=0
             offset=verticalOffset
             val ratio=1+verticalOffset.toFloat()/mBinding.hourWeatherRv.measuredHeight
-            e(TAG, "getOffset: ${verticalOffset.toFloat()}---${mBinding.hourWeatherRv.measuredHeight}---${ratio}")
-            if(0<ratio&&ratio<1&&!isHorWeatherShow) {
+            LogUtils.e(TAG, "getOffset: ${verticalOffset.toFloat()}---${mBinding.hourWeatherRv.measuredHeight}---${ratio}")
+            if(0<ratio&&ratio<1) {
                 mBinding.weatherIvBottom.alpha = ratio
             }
         })

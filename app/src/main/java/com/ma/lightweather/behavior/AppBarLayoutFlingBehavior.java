@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.OverScroller;
 import android.widget.RelativeLayout;
@@ -22,10 +23,17 @@ import java.lang.reflect.Field;
 
 public class AppBarLayoutFlingBehavior extends AppBarLayout.Behavior {
 
-    private static final String TAG = "CustomBehavior";
+    private static final String TAG = "AppBarLayoutFlingBehavior";
     private static final int TYPE_FLING = 1;
     private boolean isFlinging;
     private boolean shouldBlockNestedScroll;
+
+    private VelocityTracker velocityTracker;
+    private boolean isShow=false;
+    private boolean isDownSlide=false;
+    private float firstMoveY;
+    private boolean isFirst=false;
+
 
     public AppBarLayoutFlingBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -33,7 +41,6 @@ public class AppBarLayoutFlingBehavior extends AppBarLayout.Behavior {
 
     @Override
     public boolean onInterceptTouchEvent(CoordinatorLayout parent, AppBarLayout child, MotionEvent ev) {
-        LogUtil.d(TAG, "onInterceptTouchEvent:" + child.getTotalScrollRange());
         shouldBlockNestedScroll = isFlinging;
         switch (ev.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
@@ -50,46 +57,72 @@ public class AppBarLayoutFlingBehavior extends AppBarLayout.Behavior {
     public boolean onTouchEvent(@NonNull @NotNull CoordinatorLayout parent, @NonNull @NotNull AppBarLayout child, @NonNull @NotNull MotionEvent ev) {
         CollapsingToolbarLayout layout= (CollapsingToolbarLayout) child.getChildAt(0);
         RelativeLayout relativeLayout=(RelativeLayout) layout.getChildAt(0);
-        LogUtil.d(TAG, "onTouchEvent:" + child.getTop()+"---"+layout.getChildAt(0).getTop()+"---"+ layout.getChildAt(1).getTop());
         int diff=layout.getChildAt(1).getHeight()-layout.getChildAt(0).getHeight();
         int offset=child.getTop();
+        if (velocityTracker == null) {
+            velocityTracker = VelocityTracker.obtain();
+        }
+        velocityTracker.addMovement(ev);
         switch (ev.getActionMasked()) {
-            case MotionEvent.ACTION_UP:
-                if(offset<0&&offset>-diff/2){
-                    setShow(false);
-                    //child.offsetTopAndBottom(-offset);
-                    setAppbarLayoutOffset(0);
-                    relativeLayout.offsetTopAndBottom(offset);
-                    relativeLayout.getChildAt(relativeLayout.getChildCount()-1).setAlpha(1f);
-                }else if(offset<-diff/2&&offset>-diff){
-                    setShow(true);
-                    //child.offsetTopAndBottom(-diff-offset);
-                    setAppbarLayoutOffset(-diff);
-                    relativeLayout.offsetTopAndBottom(diff+offset);
-                    relativeLayout.getChildAt(relativeLayout.getChildCount()-1).setAlpha(0f);
+            case MotionEvent.ACTION_MOVE:
+                if(!isFirst) {
+                    firstMoveY = ev.getY();
+                    isFirst=true;
                 }
-                return true;
+                break;
+            case MotionEvent.ACTION_CANCEL:
+                isFirst=false;
+                if (velocityTracker != null) {
+                    velocityTracker.recycle();
+                    velocityTracker = null;
+                }
+                break;
+            case MotionEvent.ACTION_UP:
+                isFirst=false;
+                isDownSlide=ev.getY()>firstMoveY;
+                String s=isDownSlide?"下滑":"上滑";
+                velocityTracker.computeCurrentVelocity(1000);
+                float yvel = velocityTracker.getYVelocity();
+                LogUtil.d(TAG, "onTouchEvent: yvel:" + yvel+"---diff:"+diff+"---offset:"+offset+s);
+                if(isDownSlide&&-2000<yvel&&yvel<2000){//下滑
+                    if(-diff*2/3<offset&&offset<0){
+                        setShow(false);
+                        //child.offsetTopAndBottom(-offset);
+                        setAppbarLayoutOffset(0);
+                        relativeLayout.offsetTopAndBottom(offset);
+                        relativeLayout.getChildAt(relativeLayout.getChildCount()-1).setAlpha(1f);
+                    }else if(-diff<offset&&offset<-diff*2/3){
+                        setShow(true);
+                        //child.offsetTopAndBottom(-diff-offset);
+                        setAppbarLayoutOffset(-diff);
+                        relativeLayout.offsetTopAndBottom(diff+offset);
+                        relativeLayout.getChildAt(relativeLayout.getChildCount()-1).setAlpha(0f);
+                    }
+                    return true;
+                }else if(!isDownSlide&&-2000<yvel&&yvel<2000){//上滑
+                    if(-diff/3<offset&&offset<0){
+                        setShow(false);
+                        //child.offsetTopAndBottom(-offset);
+                        setAppbarLayoutOffset(0);
+                        relativeLayout.offsetTopAndBottom(offset);
+                        relativeLayout.getChildAt(relativeLayout.getChildCount()-1).setAlpha(1f);
+                    }else if(-diff<offset&&offset<-diff/3){
+                        setShow(true);
+                        //child.offsetTopAndBottom(-diff-offset);
+                        setAppbarLayoutOffset(-diff);
+                        relativeLayout.offsetTopAndBottom(diff+offset);
+                        relativeLayout.getChildAt(relativeLayout.getChildCount()-1).setAlpha(0f);
+                    }
+                    return true;
+                }
         }
         return super.onTouchEvent(parent, child, ev);
     }
 
-    private boolean isShow=false;
-    private ValueAnimator offsetAnimator;
-    public void setAppbarLayoutOffset(int offset){
-        LogUtil.d(TAG, "isShow:" + isShow+"---offset"+offset);
-        offsetAnimator = new ValueAnimator();
-        offsetAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
-        offsetAnimator.addUpdateListener(
-                new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(@NonNull ValueAnimator animator) {
-                        AppBarLayoutFlingBehavior.this.setTopAndBottomOffset(offset);
-                    }
-                });
-        offsetAnimator.setDuration(500);
-        offsetAnimator.setIntValues(offset);
-        offsetAnimator.start();
-
+    public boolean setAppbarLayoutOffset(int offset){
+        LogUtil.d(TAG,"isshow="+isShow+"---offset:"+offset);
+        boolean success=AppBarLayoutFlingBehavior.this.setTopAndBottomOffset(offset);
+        return success;
     }
 
     public void setShow(boolean isShow){
@@ -98,6 +131,10 @@ public class AppBarLayoutFlingBehavior extends AppBarLayout.Behavior {
 
     public boolean isShow(){
        return isShow;
+    }
+
+    public boolean isDownSlide(){
+        return isDownSlide;
     }
     /**
      * 反射获取私有的flingRunnable 属性，考虑support 28以后变量名修改的问题

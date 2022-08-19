@@ -41,7 +41,7 @@ class HourWeatherAdapter (private val context: Context, private var hourList: Li
     }
 
     override fun onBindViewHolder(holder: HourWeatherAdapter.HourWeatherHolder, position: Int) {
-        holder.hourWeatherView.setData(tempList,position)
+        holder.hourWeatherView.setData(tempList,position,true)
         holder.textTv.text=hourList[position].text
         holder.timeTv.text= CommonUtils.dateTimeFormat(hourList[position].fxTime,"HH时")
     }
