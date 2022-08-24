@@ -3,7 +3,6 @@ package com.ma.lightweather.widget
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.ma.lightweather.R
@@ -37,7 +36,7 @@ class FrogHourWeatherView (context: Context, attrs: AttributeSet?) : View(contex
     private var yUnit = 0f //y轴单位长度
     private var textHigh = 0f //文字高度
     private var textSpace = 0f //文字间隔
-    private var ratio=0.4f//0.2-0.6比较好
+    private var ratio=0.6f//0.2-0.6比较好
     private var mLength= 0f
     private var mAnimatorValue= 0f
 
@@ -100,48 +99,57 @@ class FrogHourWeatherView (context: Context, attrs: AttributeSet?) : View(contex
     }
 
     private fun drawSingleTempCurve(canvas: Canvas){
-        if(i<2||i>=tempList.size-2) return
+        if(i<0||i>=tempList.size) return
         path.reset()
         shadowPath.reset()
 
-       //默认移动至中间
-        path.moveTo(viewWidth/2,getY(i, tempList))
-        val beforePoints=getControlPoint(-3*viewWidth/2,-getY(i-2,tempList),
-            -viewWidth/2, -getY(i-1,tempList),
-            viewWidth/2,-getY(i,tempList),canvas)
-        val nowPoints=getControlPoint(-viewWidth/2, -getY(i-1,tempList),
-            viewWidth/2,-getY(i,tempList),
-            3*viewWidth/2,-getY(i+1,tempList),canvas)
-        val nextPoints=getControlPoint(viewWidth/2,-getY(i,tempList),
-            3*viewWidth/2,-getY(i+1,tempList),
-            5*viewWidth/2,-getY(i+2,tempList),canvas)
-        path.cubicTo(beforePoints[1].x,-beforePoints[1].y,nowPoints[0].x,-nowPoints[0].y,viewWidth/2,getY(i,tempList))
-        path.cubicTo(nowPoints[1].x,-nowPoints[1].y,nextPoints[0].x,-nextPoints[0].y,3*viewWidth/2,getY(i+1,tempList))
-        canvas.drawText("${tempList[i]}°", (viewWidth/2).toFloat(), getY(i, tempList) -textSpace, textPaint)
+        val beforeTemp2=getPoint(i,-2)
+        val beforeTemp1=getPoint(i,-1)
+        val nowTemp=getPoint(i,0)
+        val nextTemp1=getPoint(i,1)
+        val nextTemp2=getPoint(i,2)
 
+        path.moveTo(beforeTemp1.x,beforeTemp1.y)
+        shadowPath.moveTo(beforeTemp1.x,beforeTemp1.y)
 
-        canvas.drawPoint(viewWidth/2,getY(i,tempList),pointPaint)
-        canvas.drawPoint(nowPoints[0].x,nowPoints[0].y,pointControlPaint)
-        canvas.drawPoint(nowPoints[1].x,nowPoints[1].y,pointControlPaint)
+        val beforeControls=getControlPoint(beforeTemp2.x,beforeTemp2.y,
+            beforeTemp1.x,beforeTemp1.y,
+            nowTemp.x,nowTemp.y,canvas)
+        val nowControls=getControlPoint(beforeTemp1.x,beforeTemp1.y,
+            nowTemp.x,nowTemp.y,
+            nextTemp1.x,nextTemp1.y,canvas)
+        val nextControls=getControlPoint( nowTemp.x,nowTemp.y,
+            nextTemp1.x,nextTemp1.y,
+            nextTemp2.x,nextTemp2.y,canvas)
+        path.cubicTo(beforeControls[1].x,beforeControls[1].y,nowControls[0].x,nowControls[0].y,nowTemp.x,nowTemp.y)
+        path.cubicTo(nowControls[1].x,nowControls[1].y,nextControls[0].x,nextControls[0].y,nextTemp1.x,nextTemp1.y)
 
-        temPathMeasureSpec.setPath(path, false)
-        mLength = temPathMeasureSpec.length
-        mDst.reset()
-        mDst.lineTo(0f,0f)
+        shadowPath.cubicTo(beforeControls[1].x,beforeControls[1].y,nowControls[0].x,nowControls[0].y,nowTemp.x,nowTemp.y)
+        shadowPath.cubicTo(nowControls[1].x,nowControls[1].y,nextControls[0].x,nextControls[0].y,nextTemp1.x,nextTemp1.y)
+        shadowPath.lineTo(nextTemp1.x,viewHigh)
+        shadowPath.lineTo(beforeTemp1.x,viewHigh)
+        shadowPath.lineTo(beforeTemp1.x,beforeTemp1.y)
+        canvas.drawText("${tempList[i]}°", getX(0), getY(i) -textSpace, textPaint)
+
+//        canvas.drawPoint(viewWidth/2,getY(i,tempList),pointPaint)
+//        canvas.drawPoint(nowPoints[0].x,nowPoints[0].y,pointControlPaint)
+//        canvas.drawPoint(nowPoints[1].x,nowPoints[1].y,pointControlPaint)
+
+//        temPathMeasureSpec.setPath(path, false)
+//        mLength = temPathMeasureSpec.length
+//        mDst.reset()
+//        mDst.lineTo(0f,0f)
 //        val stop = mLength * mAnimatorValue
-        val stop = mLength
-        temPathMeasureSpec.getSegment(0f,stop,mDst,true)
-        canvas.drawPath(mDst, tempPaint)
+//        val stop = mLength
+//        temPathMeasureSpec.getSegment(0f,stop,mDst,true)
+        canvas.drawPath(path, tempPaint)
 
-        shadowPaint.shader = LinearGradient(0f, 0f, 0f, (maxTemp - minTemp) * yUnit ,
-//                intArrayOf(
-//                        Color.argb(55, 255, 255, 255),
-//                        Color.argb(0, 255, 255, 255)),
-            intArrayOf(
-                Color.parseColor("#FF0000"),
-                Color.parseColor("#FFFF00")),
+        shadowPaint.shader = LinearGradient(0f, 0f, 0f, minTemp * yUnit ,
+                intArrayOf(
+                        Color.argb(55, 255, 255, 255),
+                        Color.argb(0, 255, 255, 255)),
                 null, Shader.TileMode.CLAMP)
-        //canvas.drawPath(shadowPath,shadowPaint)
+        canvas.drawPath(shadowPath,shadowPaint)
     }
 
 
@@ -168,60 +176,69 @@ class FrogHourWeatherView (context: Context, attrs: AttributeSet?) : View(contex
      * 与折线区别仅在于首点控制点需要通过尾节点生成，尾节点需要利过首节点生成
      */
 
-    private fun getControlPoint(beforeX: Float, beforeY: Float,nowX: Float, nowY: Float, nextX: Float, nextY: Float,canvas: Canvas): List<ControlPoint> {
-        val points= arrayListOf<ControlPoint>()
+    private fun getControlPoint(beforeX: Float, beforeY: Float,nowX: Float, nowY: Float, nextX: Float, nextY: Float,canvas: Canvas): List<TempPoint> {
+        val points= arrayListOf<TempPoint>()
 
         val beforeLength= sqrt((nowX-beforeX)*(nowX-beforeX)+(nowY-beforeY)*(nowY-beforeY))
         val nextLength= sqrt((nextX-nowX)*(nextX-nowX)+(nextY-nowY)*(nextY-nowY))
 
-        //等长点计算  等价于 y/x=k  x²+y²=length   x=√(length/(1+k²)) y=k*x
-        val lengthPoint=ControlPoint()
+        //等长点计算  等价于 y/x=k  x²+y²=length²   x=length/√(1+k²)   y=k*x
+        val lengthPoint=TempPoint()
 
         //控制点
-        val pointLeft=ControlPoint()
-        val pointRight=ControlPoint()
+        val pointLeft=TempPoint()
+        val pointRight=TempPoint()
+
+        var controlK=0f
+        var controlLength=0f
 
         when {
             beforeLength>nextLength -> {
                 val lengthK=(nowY-beforeY)/(nowX-beforeX)
-                lengthPoint.x=nowX- sqrt(nextLength/(1+lengthK*lengthK))
+                lengthPoint.x=nowX- nextLength/sqrt(1+lengthK*lengthK)
                 lengthPoint.y=nowY- lengthK*(nowX-lengthPoint.x)
-                canvas.drawPoint(lengthPoint.x,lengthPoint.y,lengthPaint)
+                //canvas.drawPoint(lengthPoint.x,lengthPoint.y,lengthPaint)
 
-                val controlK=(nextY-lengthPoint.y)/(nextX-lengthPoint.x)
-                val controlLength=sqrt((nextX-lengthPoint.x)*(nextX-lengthPoint.x)+(nextY-lengthPoint.y)*(nextY-lengthPoint.y))*ratio/2
+                controlK=(nextY-lengthPoint.y)/(nextX-lengthPoint.x)
+                controlLength=sqrt((nextX-lengthPoint.x)*(nextX-lengthPoint.x)+(nextY-lengthPoint.y)*(nextY-lengthPoint.y))*ratio/2
 
-                pointLeft.x=nowX- sqrt(controlLength/(1+controlK*controlK))
-                pointLeft.y=nowY- controlK*(nowX-pointLeft.x)
-
-                pointRight.x=nowX+ sqrt(controlLength/(1+controlK*controlK))
-                pointRight.y=nowY+ controlK*(pointRight.x-nowX)
             }
             beforeLength<nextLength -> {
                 val lengthK=(nextY-nowY)/(nextX-nowX)
-                lengthPoint.x=nowX+ sqrt(beforeLength/(1+lengthK*lengthK))
+                lengthPoint.x=nowX+ beforeLength/sqrt(1+lengthK*lengthK)
                 lengthPoint.y=nowY+ lengthK*(lengthPoint.x-nowX)
-                canvas.drawPoint(lengthPoint.x,lengthPoint.y,lengthPaint)
+                //canvas.drawPoint(lengthPoint.x,lengthPoint.y,lengthPaint)
 
-                val controlK=(lengthPoint.y-beforeY)/(lengthPoint.x-beforeX)
-                val controlLength=sqrt((lengthPoint.x-beforeX)*(lengthPoint.x-beforeX)+(lengthPoint.y-beforeY)*(lengthPoint.y-beforeY))*ratio/2
+                controlK=(lengthPoint.y-beforeY)/(lengthPoint.x-beforeX)
+                controlLength=sqrt((lengthPoint.x-beforeX)*(lengthPoint.x-beforeX)+(lengthPoint.y-beforeY)*(lengthPoint.y-beforeY))*ratio/2
 
-                pointLeft.x=nowX- sqrt(controlLength/(1+controlK*controlK))
-                pointLeft.y=nowY- controlK*(nowX-pointLeft.x)
-
-                pointRight.x=nowX+ sqrt(controlLength/(1+controlK*controlK))
-                pointRight.y=nowY+ controlK*(pointRight.x-nowX)
             }
             beforeLength==nextLength -> {
-                val controlK=(nextY-beforeY)/(nextX-beforeX)
-                val controlLength=sqrt((nextX-beforeX)*(nextX-beforeX)+(nextY-beforeY)*(nextY-beforeY))*ratio/2
+                controlK=(nextY-beforeY)/(nextX-beforeX)
+                controlLength=sqrt((nextX-beforeX)*(nextX-beforeX)+(nextY-beforeY)*(nextY-beforeY))*ratio/2
 
-                pointLeft.x=nowX- sqrt(controlLength/(1+controlK*controlK))
-                pointLeft.y=nowY- controlK*(nowX-beforeX)
-
-                pointRight.x=nowX+ sqrt(controlLength/(1+controlK*controlK))
-                pointRight.y=nowY+ controlK*(nextY-nowY)
             }
+        }
+
+        pointLeft.x=nowX- controlLength/sqrt(1+controlK*controlK)
+        pointLeft.y=nowY- controlK*(nowX-pointLeft.x)
+
+        pointRight.x=nowX+ controlLength/sqrt(1+controlK*controlK)
+        pointRight.y=nowY+ controlK*(pointRight.x-nowX)
+
+        if(beforeY==nowY){
+            pointLeft.x= nowX
+            pointLeft.y= nowY
+        }
+        if(nextY==nowY){
+            pointRight.x= nowX
+            pointRight.y= nowY
+        }
+        if(beforeY-nowY==nowY-nextY){
+            pointLeft.x= nowX
+            pointLeft.y= nowY
+            pointRight.x= nowX
+            pointRight.y= nowY
         }
 
         points.add(pointLeft)
@@ -230,8 +247,28 @@ class FrogHourWeatherView (context: Context, attrs: AttributeSet?) : View(contex
         return points
     }
 
-    private fun getY(i: Int, list: List<Int>): Float {
-        return (maxTemp - list[i]) * yUnit+(textHigh+textSpace)
+    private fun getPoint(i: Int,offset:Int): TempPoint {
+        val tempPoint=TempPoint()
+
+        tempPoint.x=getX(offset)
+
+        if((i==0||i==1)&&(offset<0)){
+            tempPoint.y=getY(0)
+        }else if((i==tempList.size-1||i==tempList.size-2)&&(offset>0)){
+            tempPoint.y=getY(tempList.size-1)
+        }else{
+            tempPoint.y=getY(i+offset)
+        }
+
+        return tempPoint
+    }
+
+    private fun getX(i: Int): Float {
+        return viewWidth/2*(1+i*2)
+    }
+
+    private fun getY(i: Int): Float {
+        return (maxTemp - tempList[i]) * yUnit+(textHigh+textSpace)
     }
 
     fun setData(tempList:List<Int>,position: Int,isSingle:Boolean) {
@@ -252,7 +289,7 @@ class FrogHourWeatherView (context: Context, attrs: AttributeSet?) : View(contex
         postInvalidate()
     }
 
-    class ControlPoint{
+    class TempPoint{
         var x = 0f
         var y = 0f
     }

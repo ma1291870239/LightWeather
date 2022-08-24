@@ -18,6 +18,7 @@
     <TextView
         android:id="@+id/item_time"
         android:layout_marginTop="@dimen/margin_8"
+        android:layout_marginBottom="@dimen/dp_16"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
