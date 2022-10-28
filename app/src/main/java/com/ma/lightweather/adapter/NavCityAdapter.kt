@@ -48,7 +48,7 @@ class NavCityAdapter (private val context: Context, private val weatherList: Lis
                 holder.tmpTv.setTextColor(ContextCompat.getColor(context, R.color.white))
                 holder.dateTv.setTextColor(ContextCompat.getColor(context, R.color.white))
                 holder.weatherIv.setImageResource(0)
-                holder.weatherLayout.setBackgroundColor(ContextCompat.getColor(context, WeatherUtils.getColorWeatherBack(weatherList[i].now.cond_txt)))
+                holder.weatherLayout.setBackgroundColor(ContextCompat.getColor(context, WeatherUtils.getFrogWeatherBack(weatherList[i].now.cond_txt)))
             }
             holder.weatherLayout.setOnClickListener {
                 if (context is MainActivity) {

@@ -1,10 +1,8 @@
 package com.ma.lightweather.utils
 
 import android.content.Context
-import androidx.annotation.ColorRes
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
-import androidx.annotation.ColorInt as ColorInt1
 
 object WeatherUtils {
 
@@ -83,7 +81,7 @@ object WeatherUtils {
         return R.drawable.ic_unknow
     }
 
-    fun getColorWeatherIcon(condTxt:String):Int {
+    fun getFrogWeatherIcon(condTxt:String):Int {
         if (condTxt.contains("云")) {
             return R.mipmap.ic_cloudy
         }
@@ -111,7 +109,7 @@ object WeatherUtils {
         return R.mipmap.ic_unknow
     }
 
-    fun getColorWeatherImg(condTxt:String):Int {
+    fun getFrogWeatherImg(condTxt:String):Int {
         if (condTxt.contains("云")) {
             return R.mipmap.ic_cloudy_back
         }
@@ -139,7 +137,7 @@ object WeatherUtils {
         return R.mipmap.ic_unknow_back
     }
 
-    fun getColorWeatherBack(condTxt:String): Int {
+    fun getFrogWeatherBack(condTxt:String): Int {
         if (condTxt.contains("云")) {
             return R.color.weather_back_cloud
         }
@@ -167,7 +165,7 @@ object WeatherUtils {
         return R.color.weather_back_unknow
     }
 
-    fun getColorWeatherTheme(condTxt:String):Int {
+    fun getFrogWeatherTheme(condTxt:String):Int {
         if (condTxt.contains("云")) {
             return R.color.weather_theme_cloud
         }
@@ -193,5 +191,27 @@ object WeatherUtils {
             return R.color.weather_theme_fog
         }
         return R.color.weather_theme_unknow
+    }
+
+    fun getUVDes(uv:Int):String {
+        var des=""
+        when (uv){
+            in 0..2->{
+                des="最弱，$uv"
+            }
+            in 3..4->{
+                des="弱，$uv"
+            }
+            in 5..6->{
+                des="中等，$uv"
+            }
+            in 7..9->{
+                des="强，$uv"
+            }
+            in 10..15->{
+                des="很强，$uv"
+            }
+        }
+        return des
     }
 }

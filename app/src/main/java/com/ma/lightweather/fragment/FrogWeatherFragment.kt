@@ -1,10 +1,7 @@
 package com.ma.lightweather.fragment
 
 import android.graphics.BitmapFactory
-import android.location.*
-import android.os.Build
 import android.os.Bundle
-import android.util.Log.e
 import android.view.*
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
@@ -21,9 +18,7 @@ import com.ma.lightweather.adapter.WindAdapter
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.behavior.AppBarLayoutFlingBehavior
 import com.ma.lightweather.databinding.FragFrogweatherBinding
-import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.HFWeather
-import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.*
 import kotlinx.android.synthetic.main.frag_frogweather.*
 
@@ -217,13 +212,13 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
 
         val backgroundColor = ContextCompat.getColor(
             requireContext(),
-            WeatherUtils.getColorWeatherBack(cond)
+            WeatherUtils.getFrogWeatherBack(cond)
         )
         var themeColor = ContextCompat.getColor(
             requireContext(),
-            WeatherUtils.getColorWeatherTheme(cond)
+            WeatherUtils.getFrogWeatherTheme(cond)
         )
-        val img=WeatherUtils.getColorWeatherImg(cond)
+        val img=WeatherUtils.getFrogWeatherImg(cond)
         val vibrantSwatch = Palette
             .from(BitmapFactory.decodeResource(resources, img))
             .setRegion(0,0,10,10)
@@ -233,7 +228,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
             themeColor = vibrantSwatch.rgb
         }
         mBinding.collapsingToolbarLayout.setBackgroundColor(backgroundColor)
-        mBinding.weatherIvTop.setImageResource(WeatherUtils.getColorWeatherIcon(cond))
+        mBinding.weatherIvTop.setImageResource(WeatherUtils.getFrogWeatherIcon(cond))
         mBinding.weatherIvBottom.setImageResource(img)
         setFragmentResult(
             "backgroundColor",
@@ -244,8 +239,13 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         mBinding.weatherHum.text = "${ hfWeather.now.humidity}%"
         mBinding.weatherDew.text = "${ hfWeather.now.dew}摄氏度"
         mBinding.weatherPres.text = "${ hfWeather.now.pressure}百帕"
-        mBinding.weatherCloud.text = "${ hfWeather.now.cloud}%"
+        mBinding.weatherCloud.text = WeatherUtils.getUVDes(hfWeather.daily[0].uvIndex.toInt())
         mBinding.weatherVis.text = "${ hfWeather.now.vis}公里"
+
+        mBinding.weatherPcpn.text="日降水总量 ${ hfWeather.daily[0].precip}毫米"
+        mBinding.windSpeed.text="${ hfWeather.now.windSpeed}"
+        mBinding.windDir.text="${ hfWeather.now.windDir}"
+        mBinding.sunWeatherView.setDate(hfWeather.daily[0].sunrise,hfWeather.daily[0].sunset)
 
         hourWeatherAdapter.setData(hfWeather.hourly)
         popAdapter.setData(hfWeather.hourly)

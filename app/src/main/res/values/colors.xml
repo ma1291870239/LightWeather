@@ -9,7 +9,6 @@
     <color name="FrogBlackTextHint">#38000000</color>
     <color name="FrogBlackDivide">#12000000</color>
 
-
     <color name="FrogBlack">#424242</color>
     <color name="FrogBlackPrimary">#303030</color>
     <color name="FrogBlackPrimaryDark">#212121</color>
@@ -22,11 +21,19 @@
     <color name="FrogBack">#0CB2F0</color>
     <color name="FrogIcon">#757575</color>
 
-    <color name="ColorPrimary">#F5F5F5</color>
-    <color name="ColorPrimaryDark">#FAFAFA</color>
-    <color name="ColorAccent">#616161</color>
-    <color name="TextColorPrimary">#616161</color>
-    <color name="TextColorSecondary">#757575</color>
+    <color name="FrogSunRise">#0CB2F0</color>
+    <color name="FrogSunSet">#757575</color>
+
+    <color name="ColorCard">#FFFFFF</color>
+    <color name="ColorPrimary">#FAFAFA</color>
+    <color name="ColorPrimaryDark">#F5F5F5</color>
+    <color name="ColorStatus">#E0E0E0</color>
+    <color name="TextColorPrimary">#DE000000</color> <!--87%透明度-->
+    <color name="TextColorSecondary">#8A000000</color> <!--54%透明度-->
+    <color name="TextColorHint">#61000000</color> <!--38%透明度-->
+    <color name="Divide">#1F000000</color> <!--12%透明度-->
+
+
 
     <color name="cyanColorPrimary">#00BCD4</color>
     <color name="cyanColorPrimaryDark">#0097A7</color>

@@ -40,8 +40,8 @@ class FutureDaysAdapter(private val context: Context, private val futureList: Li
         futerweWeatherTv?.text=futureList[p0].cond_txt_d
         futerweHighTv?.text=futureList[p0].tmp_max+"℃"
         futerweLowTv?.text=futureList[p0].tmp_min+"℃"
-        futerweImgIv?.setImageResource(WeatherUtils.getColorWeatherIcon(futureList[p0].cond_txt_d))
-        rlLayout?.setBackgroundColor(ContextCompat.getColor(context!!,WeatherUtils.getColorWeatherBack(futureList[p0].cond_txt_d)))
+        futerweImgIv?.setImageResource(WeatherUtils.getFrogWeatherIcon(futureList[p0].cond_txt_d))
+        rlLayout?.setBackgroundColor(ContextCompat.getColor(context!!,WeatherUtils.getFrogWeatherBack(futureList[p0].cond_txt_d)))
         return view
     }
 

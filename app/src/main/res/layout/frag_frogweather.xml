@@ -160,7 +160,7 @@
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/hourWeatherRv"
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
+                        android:layout_height="200dp"
                         android:layout_alignParentBottom="true"/>
                 </RelativeLayout>
 
@@ -203,7 +203,7 @@
                                 android:text="气压"/>
                             <TextView
                                 style="@style/FrogWeatherFragDetailText"
-                                android:text="云量"/>
+                                android:text="紫外线"/>
                             <TextView
                                 style="@style/FrogWeatherFragDetailText"
                                 android:text="能见度"/>
@@ -269,6 +269,7 @@
                             android:layout_height="wrap_content"
                             android:text="公里/小时"
                             android:textSize="@dimen/text_15"
+                            android:textColor="@color/TextColorSecondary"
                             android:layout_toRightOf="@id/wind_speed"
                             android:layout_alignBaseline="@id/wind_speed"/>
                         <TextView
@@ -278,6 +279,7 @@
                             android:layout_height="wrap_content"
                             android:text=""
                             android:textSize="@dimen/text_15"
+                            android:textColor="@color/TextColorSecondary"
                             android:layout_toRightOf="@id/wind_unit"
                             android:layout_alignBaseline="@id/wind_unit"/>
                         <TextView
@@ -301,109 +303,14 @@
                     <TextView
                         style="@style/WeatherFragDetailTextValue"
                         android:layout_margin="@dimen/margin_16"
-                        android:text="空气质量"/>
-                    <RelativeLayout
-                        android:layout_marginLeft="@dimen/margin_16"
-                        android:layout_marginRight="@dimen/margin_16"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/weather_aqi"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_67"
-                            android:textColor="@color/wind_text"
-                            android:layout_alignParentRight="true"/>
-                        <TextView
-                            android:id="@+id/weather_aqi_main"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_15"
-                            android:layout_alignBaseline="@id/weather_aqi"/>
-                        <TextView
-                            android:id="@+id/weather_aqi_level"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="bottom"
-                            android:text=""
-                            android:textSize="@dimen/text_24"
-                            android:layout_alignTop="@id/weather_aqi"
-                            android:layout_above="@id/weather_aqi_main"/>
-                    </RelativeLayout>
-                    <TextView
-                        style="@style/WeatherFragDetailTextValue"
-                        android:layout_marginTop="@dimen/margin_16"
-                        android:layout_marginLeft="@dimen/margin_16"
-                        android:text="健康提示"/>
-                    <TextView
-                        android:id="@+id/airTextView"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="@dimen/margin_16"
-                        android:text=""/>
-                    <include layout="@layout/item_horizontaldivider" />
-                    <TextView
-                        style="@style/WeatherFragDetailTextValue"
-                        android:layout_margin="@dimen/margin_16"
                         android:text="日出和日落"/>
-                    <RelativeLayout
-                        android:layout_marginLeft="@dimen/margin_16"
-                        android:layout_marginRight="@dimen/margin_16"
+                    <com.ma.lightweather.widget.SunFrogWeatherView
+                        android:id="@+id/sunWeatherView"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:id="@+id/weather_rise_text"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/text_24"
-                            android:layout_marginTop="@dimen/margin_24"
-                            android:text=""/>
-                        <TextView
-                            android:id="@+id/weather_rise"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignLeft="@id/weather_rise_text"
-                            android:layout_alignRight="@id/weather_rise_text"
-                            android:gravity="center"
-                            android:text="日出时间"/>
-
-                    <TextView
-                        android:id="@+id/weather_set_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:textSize="@dimen/text_24"
-                        android:layout_marginTop="@dimen/margin_24"
-                        android:text=""/>
-                    <TextView
-                        android:id="@+id/weather_set"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignLeft="@id/weather_set_text"
-                        android:layout_alignRight="@id/weather_set_text"
-                        android:gravity="center"
-                        android:text="日落时间"/>
-                    <TextView
-                        android:id="@+id/weather_sun_time"
-                        android:layout_marginTop="@dimen/margin_16"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/weather_rise_text"
-                        android:gravity="center"
-                        android:text=""/>
-                    <TextView
-                        android:id="@+id/weather_remain_time"
-                        android:layout_marginTop="@dimen/margin_16"
-                        android:layout_marginBottom="@dimen/margin_24"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/weather_sun_time"
-                        android:gravity="center"
-                        android:text=""/>
-                </RelativeLayout>
+                        android:layout_height="150dp"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:layout_marginRight="@dimen/dp_16"
+                        android:layout_marginBottom="20dp"/>
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

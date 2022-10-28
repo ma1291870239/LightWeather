@@ -30,7 +30,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), CompoundButton.O
 
         }else{
             val cond=SPUtils.getParam(this, Contants.TXT, "") as String
-            var color= WeatherUtils.getColorWeatherTheme(cond)
+            var color= WeatherUtils.getFrogWeatherTheme(cond)
             toolBar?.setBackgroundColor(ContextCompat.getColor(this,color))
             setStatusColor(color)
         }

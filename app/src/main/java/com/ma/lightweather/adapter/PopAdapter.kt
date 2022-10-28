@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ma.lightweather.R
 import com.ma.lightweather.model.HFWeather
@@ -25,29 +26,44 @@ class PopAdapter(private val context: Context, private var popList: List<HFWeath
     }
 
     override fun getItemCount(): Int {
-        return popList.size
+        return popList.size+1
     }
 
     override fun onBindViewHolder(holder: PopHolder, position: Int) {
         if(position==0){
             holder.popTv.text =  "降水概率"
-            holder.popTv.gravity=Gravity.CENTER_VERTICAL
-            holder.popCloudTv.text = "云量"
-            holder.popCloudTv.gravity=Gravity.CENTER_VERTICAL
             holder.popIv.setImageResource(0)
+            holder.popTv.textSize=11f
+            holder.popTv.setTextColor(ContextCompat.getColor(context, R.color.TextColorSecondary))
+            holder.popTv.gravity=Gravity.CENTER_VERTICAL
+            holder.popCloudTv.text = "降水量\n（毫米）"
+            holder.popCloudTv.textSize=11f
+            holder.popCloudTv.setTextColor(ContextCompat.getColor(context, R.color.TextColorSecondary))
+            holder.popCloudTv.gravity=Gravity.CENTER_VERTICAL
+            holder.popTimeTv.visibility=View.INVISIBLE
         }else {
-            holder.popTv.text = popList[position].pop + "%"
-            when(popList[position].pop.toInt()){
-                0->{ holder.popIv.setImageResource(R.mipmap.ic_droplet_clear)}
-                in 1..25->{holder.popIv.setImageResource(R.mipmap.ic_droplet_drizzle)}
-                in 26..50->{holder.popIv.setImageResource(R.mipmap.ic_droplet_light)}
-                in 51..75->{holder.popIv.setImageResource(R.mipmap.ic_droplet_moderate)}
-                in 76..100->{holder.popIv.setImageResource(R.mipmap.ic_droplet_heavy)}
-            }
+            holder.popTv.text = popList[position-1].pop + "%"
             holder.popTv.gravity=Gravity.CENTER
-            holder.popCloudTv.text = popList[position].cloud + "%"
+            holder.popTv.textSize=13f
+            holder.popTv.setTextColor(ContextCompat.getColor(context, R.color.TextColorPrimary))
+            val precip=popList[position-1].precip.toDouble()
+            if(precip == 0.0){
+                holder.popCloudTv.text = "-"
+                holder.popIv.setImageResource(R.mipmap.ic_droplet_clear)
+            }else{
+                holder.popCloudTv.text = "$precip"
+                when((popList[position-1].precip.toFloat()).toInt()*24){
+                    in 0 until 10->{holder.popIv.setImageResource(R.mipmap.ic_droplet_drizzle)}
+                    in 10 until 25->{holder.popIv.setImageResource(R.mipmap.ic_droplet_light)}
+                    in 25 until 100->{holder.popIv.setImageResource(R.mipmap.ic_droplet_moderate)}
+                    in 100 until 2000->{holder.popIv.setImageResource(R.mipmap.ic_droplet_heavy)}
+                }
+            }
             holder.popCloudTv.gravity=Gravity.CENTER
-            holder.popTimeTv.text = CommonUtils.dateTimeFormat(popList[position].fxTime,"HH时")
+            holder.popCloudTv.textSize=13f
+            holder.popCloudTv.setTextColor(ContextCompat.getColor(context, R.color.wind_text))
+            holder.popTimeTv.visibility=View.VISIBLE
+            holder.popTimeTv.text = CommonUtils.dateTimeFormat(popList[position-1].fxTime,"HH时")
         }
     }
 

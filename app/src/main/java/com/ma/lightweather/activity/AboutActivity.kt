@@ -25,7 +25,7 @@ class AboutActivity : BaseActivity<ActivityAboutBinding>() {
             versionTv?.text="旧版："+CommonUtils.getVersion(this)
         }else{
             val cond=SPUtils.getParam(this, Contants.TXT, "") as String
-            var color= WeatherUtils.getColorWeatherTheme(cond)
+            var color= WeatherUtils.getFrogWeatherTheme(cond)
             toolBar?.setBackgroundColor(ContextCompat.getColor(this,color))
             setStatusColor(color)
             versionTv?.text="新版："+CommonUtils.getVersion(this)

@@ -1,6 +1,8 @@
 package com.ma.lightweather.activity
 
 import android.app.ActivityManager
+import android.app.Fragment
+import android.app.FragmentManager
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
@@ -177,11 +179,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     fun setWeatherBack(cond:String) {
-        var color= WeatherUtils.getColorWeatherTheme(cond)
+        var color= WeatherUtils.getFrogWeatherTheme(cond)
         toolBar?.setBackgroundColor(ContextCompat.getColor(this,color))
         tabLayout?.setBackgroundColor(ContextCompat.getColor(this,color))
-        navHeaderLayout?.setBackgroundColor(ContextCompat.getColor(this,WeatherUtils.getColorWeatherBack(cond)))
-        navImgView?.setImageResource(WeatherUtils.getColorWeatherIcon(cond))
+        navHeaderLayout?.setBackgroundColor(ContextCompat.getColor(this,WeatherUtils.getFrogWeatherBack(cond)))
+        navImgView?.setImageResource(WeatherUtils.getFrogWeatherIcon(cond))
         navTextView?.text=cond
 
         if (Build.VERSION.SDK_INT >= 21) {
