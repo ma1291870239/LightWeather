@@ -1,8 +1,6 @@
 package com.ma.lightweather.activity
 
 import android.app.ActivityManager
-import android.app.Fragment
-import android.app.FragmentManager
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build

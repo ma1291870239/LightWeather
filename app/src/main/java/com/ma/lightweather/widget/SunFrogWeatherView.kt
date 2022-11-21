@@ -22,7 +22,7 @@ class SunFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context,
     private var xUnit = 0f //x轴单位长度
     private var textHigh = 0f //文字高度
     private var textSpace = 0f //文字间隔
-    private var ratio=0.6f//0.2-0.6比较好
+    private var ratio=0.4f//0.2-0.6比较好
 
     private var sunRiseStr="05:35"
     private var sunSetStr="15:34"
@@ -69,7 +69,7 @@ class SunFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context,
         path.lineTo(viewWidth,viewHigh*2/3)
 
         canvas.drawPath(path, sunPaint)
-        for(i in 0 until list.size){
+        for(i in list.indices){
 
             val beforeSun1=getPoint(i,-1)
             val nowSun=getPoint(i,0)
@@ -86,16 +86,39 @@ class SunFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context,
             path.reset()
             path.moveTo(nowSun.x,nowSun.y)
             path.cubicTo(nowControls[1].x,nowControls[1].y,nextControls[0].x,nextControls[0].y,nextSun1.x,nextSun1.y)
+            canvas.drawPath(path, sunPaint)
 
+            when (i) {
+                0 -> {
+                    shadowPaint.color =
+                        ContextCompat.getColor(context, R.color.weather_back_cloud)
+                }
+                1 -> {
+                    shadowPaint.shader = LinearGradient(nowSun.x, viewHigh*2/3, nextSun1.x, nextSun1.y ,
+                        intArrayOf(
+                            ContextCompat.getColor(context, R.color.weather_back_cloud),
+                            ContextCompat.getColor(context, R.color.white)),
+                        null, Shader.TileMode.CLAMP)
+                }
+                2 -> {
+                    nowSun.x=nowSun.x-1 //抵消阴影中间线条
+                    shadowPaint.shader = LinearGradient(nowSun.x, nowSun.y, nextSun1.x, viewHigh*2/3 ,
+                        intArrayOf(
+                            ContextCompat.getColor(context, R.color.white),
+                            ContextCompat.getColor(context, R.color.weather_back_cloud)),
+                        null, Shader.TileMode.CLAMP)
+                }
+                3 -> {
+                    shadowPaint.color =
+                        ContextCompat.getColor(context, R.color.weather_back_cloud)
+                }
+            }
             shadowPath.reset()
             shadowPath.moveTo(nowSun.x,nowSun.y)
             shadowPath.cubicTo(nowControls[1].x,nowControls[1].y,nextControls[0].x,nextControls[0].y,nextSun1.x,nextSun1.y)
             shadowPath.lineTo(nextSun1.x,viewHigh*2/3)
             shadowPath.lineTo(nowSun.x,viewHigh*2/3)
             shadowPath.lineTo(nowSun.x,nowSun.y)
-
-
-            canvas.drawPath(path, sunPaint)
             canvas.drawPath(shadowPath, shadowPaint)
         }
 
@@ -209,7 +232,7 @@ class SunFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context,
 
 
     fun setDate(sunRiseStr:String,sunSetStr:String){
-        this.sunRiseStr=sunRiseStr;
+        this.sunRiseStr=sunRiseStr
         this.sunSetStr=sunSetStr
         sunRise=changeTime(sunRiseStr)
         sunSet=changeTime(sunSetStr)
