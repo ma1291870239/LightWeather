@@ -3,6 +3,7 @@ package com.ma.lightweather.widget
 import android.content.Context
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.ma.lightweather.R
@@ -99,6 +100,12 @@ class SunFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context,
                             ContextCompat.getColor(context, R.color.weather_back_cloud),
                             ContextCompat.getColor(context, R.color.white)),
                         null, Shader.TileMode.CLAMP)
+
+//                    shadowPaint.shader =RadialGradient(nextSun1.x, nextSun1.y+(viewHigh*2/3-nextSun1.y)/2, 100f,
+//                        intArrayOf(
+//                            ContextCompat.getColor(context, R.color.white),
+//                            ContextCompat.getColor(context, R.color.weather_back_cloud)),
+//                        null, Shader.TileMode.CLAMP)
                 }
                 2 -> {
                     nowSun.x=nowSun.x-1 //抵消阴影中间线条

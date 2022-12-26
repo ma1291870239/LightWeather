@@ -45,6 +45,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
             },
             {
                 LogUtils.e("getBingImg: error ${it.message}", )
+                toMain()
             })
         requestQueue.add(stringRequest)
     }
