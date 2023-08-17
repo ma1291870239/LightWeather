@@ -2,7 +2,9 @@ package com.ma.lightweather.fragment
 
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
@@ -10,8 +12,8 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
-
 import com.google.android.material.appbar.AppBarLayout
+import com.google.gson.Gson
 import com.ma.lightweather.adapter.HourWeatherAdapter
 import com.ma.lightweather.adapter.PopAdapter
 import com.ma.lightweather.adapter.WindAdapter
@@ -142,7 +144,7 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
     }
 
     private fun getNow() {
-        hfWeather.now= HFWeather.WeatherNow()
+        hfWeather.now= HFWeather.HFWeatherNow()
         hfWeather.hourly.clear()
         hfWeather.daily.clear()
         VolleyUtils.requestGetHFWearher(requireContext(),Contants.HF_WEATHER_NOW + cityCode,
@@ -180,7 +182,8 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
             {hfWeatherBean,code,msg->
                 if (hfWeatherBean!=null&&!hfWeatherBean.daily.isNullOrEmpty()){
                     hfWeather.daily=hfWeatherBean.daily
-                    setData()
+                    SPUtils.setParam(context, Contants.WEATHER_JSON, Gson().toJson(hfWeather))
+                    setHFData()
                 }else{
                     setMsg(msg)
                 }
@@ -196,7 +199,9 @@ class FrogWeatherFragment: BaseFragment<FragFrogweatherBinding>() {
         }
     }
 
-    private fun setData(){
+    private fun setCYData(){}
+
+    private fun setHFData(){
         setFragmentResult(
                 "hfWeather",
                 bundleOf("hfWeather" to hfWeather)

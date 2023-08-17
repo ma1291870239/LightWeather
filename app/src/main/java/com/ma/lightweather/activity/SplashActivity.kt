@@ -5,7 +5,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.WindowManager
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
@@ -18,6 +17,7 @@ import com.bumptech.glide.request.target.Target
 import com.ma.lightweather.R
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.databinding.ActivitySplashBinding
+import com.ma.lightweather.old.MainActivity
 import com.ma.lightweather.utils.LogUtils
 import com.ma.lightweather.utils.PhotoUtils
 import com.ma.lightweather.utils.SPUtils
@@ -44,6 +44,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
                 setData(response)
             },
             {
+                toMain()
                 LogUtils.e("getBingImg: error ${it.message}", )
             })
         requestQueue.add(stringRequest)
@@ -74,15 +75,15 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(){
         val bing=SPUtils.getParam(this, Contants.BING, "") as String
         val bingPath=SPUtils.getString(this, Contants.BINGPATH)
         if(response==bing && !bingPath.isNullOrEmpty()){
-            Glide.with(this)
-                .load(bingPath)
-                .error(R.mipmap.splash)
-                .into(mBinding.backIv)
+//            Glide.with(this)
+//                .load(bingPath)
+//                .error(R.mipmap.splash)
+//                .into(mBinding.backIv)
         }else{
             SPUtils.setParam(this, Contants.BING, response)
             Glide.with(this)
                 .load(response)
-                .error(R.mipmap.splash)
+                //.error(R.mipmap.splash)
                 .addListener(object : RequestListener<Drawable> {
                     override fun onLoadFailed(
                         e: GlideException?,

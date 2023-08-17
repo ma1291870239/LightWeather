@@ -4,14 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.ma.lightweather.R
 import com.ma.lightweather.model.HFWeather
 import com.ma.lightweather.utils.LogUtils
 
-class SearchAdapter (private val context: Context, private var searchList: List<HFWeather.WeatherLocation>) :
+class SearchAdapter (private val context: Context, private var searchList: List<HFWeather.HFLocation>) :
     RecyclerView.Adapter<SearchAdapter.SearchHolder>() {
 
     private lateinit var onItemClickListener: (position: Int)->Unit
@@ -20,7 +19,7 @@ class SearchAdapter (private val context: Context, private var searchList: List<
         this.onItemClickListener = onItemClickListener
     }
 
-    fun setData(searchList: List<HFWeather.WeatherLocation>){
+    fun setData(searchList: List<HFWeather.HFLocation>){
         this.searchList=searchList
     }
 

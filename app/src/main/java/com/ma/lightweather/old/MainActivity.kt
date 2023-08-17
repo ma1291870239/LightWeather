@@ -1,4 +1,4 @@
-package com.ma.lightweather.activity
+package com.ma.lightweather.old
 
 import android.app.ActivityManager
 import android.content.Context
@@ -6,9 +6,14 @@ import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.view.*
+import android.view.KeyEvent
+import android.view.MotionEvent
+import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.*
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
@@ -22,10 +27,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.ma.lightweather.R
-import com.ma.lightweather.adapter.NavCityAdapter
+import com.ma.lightweather.activity.BaseActivity
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.databinding.ActivityMainBinding
-import com.ma.lightweather.fragment.*
+import com.ma.lightweather.fragment.FrogFutureFragment
+import com.ma.lightweather.fragment.FrogWeatherFragment
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.DbUtils
@@ -40,7 +46,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
 
     private var frogWeatherFrag: FrogWeatherFragment? = null
-    private var futureDaysFrag: FutureDaysFragment? = null
+    private var futureDaysFrag: FrogFutureFragment? = null
     private var weatherFrag: WeatherFragment? = null
     private var cityFrag: CityFrgment? = null
     private var photoFrag: PhotoFragment? = null
@@ -57,7 +63,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     private val fragmentList = ArrayList<Fragment>()
     private val titleList = ArrayList<String>()
     private val weatherList = ArrayList<Weather>()
-    private var navCityAdapter:NavCityAdapter? = null
+    private var navCityAdapter: NavCityAdapter? = null
     private var clickTime: Long = 0
     private val backTime: Long = 2000
 
@@ -106,7 +112,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun initNewData() {
         frogWeatherFrag= FrogWeatherFragment()
-        futureDaysFrag= FutureDaysFragment()
+        futureDaysFrag= FrogFutureFragment()
         fragmentList.add(frogWeatherFrag!!)
         fragmentList.add(futureDaysFrag!!)
         titleList.add(getString(R.string.main_weather_text))

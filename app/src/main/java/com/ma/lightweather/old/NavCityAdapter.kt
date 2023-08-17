@@ -1,4 +1,4 @@
-package com.ma.lightweather.adapter
+package com.ma.lightweather.old
 
 import android.content.Context
 import android.content.Intent
@@ -12,9 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ma.lightweather.R
-import com.ma.lightweather.activity.AboutActivity
-import com.ma.lightweather.activity.MainActivity
-import com.ma.lightweather.activity.SettingActivity
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
@@ -81,7 +78,7 @@ class NavCityAdapter (private val context: Context, private val weatherList: Lis
     }
 
 
-    private fun showActionSheet(holder: CityHolder,i: Int) {
+    private fun showActionSheet(holder: CityHolder, i: Int) {
         ActionSheetDialog(context).builder().setCancelable(true).setCanceledOnTouchOutside(true)
                 .setTitle("选择项目")
                 .addSheetItem("删除", null, object : ActionSheetDialog.OnSheetItemClickListener {

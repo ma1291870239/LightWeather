@@ -5,18 +5,18 @@ import android.content.Context
 import android.content.Intent
 import android.os.*
 import android.provider.Settings
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import android.widget.RemoteViews
 import android.widget.Toast
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
+import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ma.lightweather.R
-import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
+import com.ma.lightweather.old.MainActivity
 import com.ma.lightweather.utils.Parse
 import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.utils.WeatherUtils
@@ -125,7 +125,7 @@ class WeatherService : Service() {
                 .setSmallIcon(R.drawable.ic_app_launcher)
         setWeatherMsg(notificationBuilder)
         val notification=notificationBuilder.build()
-        val intent=Intent(this,MainActivity::class.java)
+        val intent=Intent(this, MainActivity::class.java)
         val pendingIntent=PendingIntent.getActivity(applicationContext,1,intent,PendingIntent.FLAG_CANCEL_CURRENT)
         notification.contentIntent=pendingIntent
         startForeground(111, notification)

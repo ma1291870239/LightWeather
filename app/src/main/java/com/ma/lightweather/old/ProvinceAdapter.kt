@@ -1,4 +1,4 @@
-package com.ma.lightweather.adapter
+package com.ma.lightweather.old
 
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView

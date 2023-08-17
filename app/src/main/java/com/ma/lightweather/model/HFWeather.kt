@@ -1,18 +1,17 @@
 package com.ma.lightweather.model
 
-import android.os.Parcelable
 import java.io.Serializable
 
 data class HFWeather(
-        var code: String="",
-        var updateTime:String="",
-        var location: ArrayList<HFWeather.WeatherLocation> = arrayListOf(),
-        var now: HFWeather.WeatherNow =WeatherNow(),
-        var daily: ArrayList<HFWeather.WeatherFuture> =arrayListOf(),
-        var hourly:ArrayList<HFWeather.WeatherHour> =arrayListOf()
+    var code: String="",
+    var updateTime:String="",
+    var location: ArrayList<HFLocation> = arrayListOf(),
+    var now: HFWeatherNow =HFWeatherNow(),
+    var daily: ArrayList<HFWeatherFuture> =arrayListOf(),
+    var hourly:ArrayList<HFWeatherHour> =arrayListOf()
 ) :Serializable{
 
-    data class WeatherLocation(
+    data class HFLocation(
         var name:String="",
         var id:String="",
         var lat:String="",
@@ -28,7 +27,7 @@ data class HFWeather(
         var fxLink:String="",
     ):Serializable
 
-    data class WeatherNow(
+    data class HFWeatherNow(
         var obsTime:String="",
         var temp:String="",
         var feelsLike :String="",
@@ -46,7 +45,7 @@ data class HFWeather(
         var dew: String="",
     ):Serializable
 
-    data class WeatherFuture(
+    data class HFWeatherFuture(
         var fxDate: String="",
         var sunrise: String="",
         var sunset: String="",
@@ -76,7 +75,7 @@ data class HFWeather(
         var uvIndex: String="",
     ):Serializable
 
-    data class WeatherHour(
+    data class HFWeatherHour(
         var fxTime: String="",
         var temp: String="",
         var icon: String="",

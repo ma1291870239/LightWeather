@@ -1,4 +1,4 @@
-package com.ma.lightweather.fragment
+package com.ma.lightweather.old
 
 import android.Manifest
 import android.app.AlertDialog
@@ -9,22 +9,22 @@ import android.location.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Message
-import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.ma.lightweather.R
-import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.app.WeatherService
 import com.ma.lightweather.databinding.FragWeatherBinding
+import com.ma.lightweather.fragment.BaseFragment
 import com.ma.lightweather.model.Air
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
@@ -153,7 +153,7 @@ class WeatherFragment : BaseFragment<FragWeatherBinding>() {
             WEATHER_NOMORE -> CommonUtils.showShortSnackBar(swipeRefreshLayout, "请求超过每天次数")
             WEATHER_NOLOCATION -> CommonUtils.showShortSnackBar(swipeRefreshLayout, "未找到该城市")
             WEATHER_ERROR -> CommonUtils.showShortSnackBar(swipeRefreshLayout, "服务器错误")
-            WEATHER_CHANGECITY->{
+            WEATHER_CHANGECITY ->{
                 val builder=AlertDialog.Builder(activity)
                         .setTitle("提示")
                         .setMessage("")

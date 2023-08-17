@@ -1,17 +1,16 @@
-package com.ma.lightweather.adapter
+package com.ma.lightweather.old
 
 
 import android.content.Context
-import com.google.android.material.snackbar.Snackbar
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.ma.lightweather.R
-import com.ma.lightweather.activity.MainActivity
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils

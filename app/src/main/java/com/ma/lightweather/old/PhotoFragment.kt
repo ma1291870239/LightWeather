@@ -1,4 +1,4 @@
-package com.ma.lightweather.fragment
+package com.ma.lightweather.old
 
 
 import android.Manifest
@@ -21,16 +21,12 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.ma.lightweather.R
-import com.ma.lightweather.activity.AboutActivity
-import com.ma.lightweather.activity.SettingActivity
-import com.ma.lightweather.adapter.SelectColorAdapter
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.databinding.FragPhotoBinding
+import com.ma.lightweather.fragment.BaseFragment
 import com.ma.lightweather.utils.CommonUtils
-import com.ma.lightweather.utils.PhotoUtils
 import com.ma.lightweather.utils.SPUtils
 import com.ma.lightweather.widget.ActionSheetDialog
 import java.io.ByteArrayOutputStream
@@ -38,7 +34,6 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 import java.util.*
-import kotlin.text.Typography.degree
 
 /**
  * Created by Ma-PC on 2016/12/5.

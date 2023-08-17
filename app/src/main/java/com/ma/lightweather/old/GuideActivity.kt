@@ -1,8 +1,9 @@
-package com.ma.lightweather.activity
+package com.ma.lightweather.old
 
 import android.os.Bundle
 
 import com.ma.lightweather.R
+import com.ma.lightweather.activity.BaseActivity
 import com.ma.lightweather.databinding.ActivityGuideBinding
 
 class GuideActivity : BaseActivity<ActivityGuideBinding>() {

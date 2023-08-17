@@ -41,19 +41,22 @@ object Parse {
 
     fun parseWeather(resource: String, weatherView: WeatherView?, hourWeatherView: HourFrogWeatherView?, context: Context): List<Weather>? {
         weatherList.clear()
-        val jsonObject = JsonParser().parse(resource).asJsonObject
-        //再转JsonArray 加上数据头
-        val jsonArray = jsonObject.getAsJsonArray("HeWeather6")
-        val gson=Gson()
-        for (weather in jsonArray) {
-            val weatherBean:Weather = gson.fromJson(weather, object : TypeToken<Weather>(){}.type)
-            (weatherList as ArrayList<Weather>).add(weatherBean)
-            if(weatherBean.status== "ok") {
-                if(weatherList.size== airList.size) {
-                    DbUtils.writeDb(context, weatherList, airList)
+        if(!resource.isNullOrEmpty()) {
+            val jsonObject = JsonParser().parse(resource).asJsonObject
+            //再转JsonArray 加上数据头
+            val jsonArray = jsonObject.getAsJsonArray("HeWeather6")
+            val gson = Gson()
+            for (weather in jsonArray) {
+                val weatherBean: Weather =
+                    gson.fromJson(weather, object : TypeToken<Weather>() {}.type)
+                (weatherList as ArrayList<Weather>).add(weatherBean)
+                if (weatherBean.status == "ok") {
+                    if (weatherList.size == airList.size) {
+                        DbUtils.writeDb(context, weatherList, airList)
+                    }
+                    weatherView?.loadViewData(weatherBean.daily_forecast)
+                    //hourWeatherView?.loadViewData(weatherBean.hourly)
                 }
-                weatherView?.loadViewData(weatherBean.daily_forecast)
-                //hourWeatherView?.loadViewData(weatherBean.hourly)
             }
         }
         return weatherList

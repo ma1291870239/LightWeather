@@ -1,10 +1,11 @@
-package com.ma.lightweather.activity
+package com.ma.lightweather.old
 
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.ma.lightweather.R
+import com.ma.lightweather.activity.BaseActivity
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.databinding.ActivityAboutBinding
 import com.ma.lightweather.utils.CommonUtils

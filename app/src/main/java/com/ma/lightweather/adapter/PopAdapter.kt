@@ -11,12 +11,11 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ma.lightweather.R
 import com.ma.lightweather.model.HFWeather
-import com.ma.lightweather.model.Weather
 import com.ma.lightweather.utils.CommonUtils
 
-class PopAdapter(private val context: Context, private var popList: List<HFWeather.WeatherHour>) :RecyclerView.Adapter<PopAdapter.PopHolder>() {
+class PopAdapter(private val context: Context, private var popList: List<HFWeather.HFWeatherHour>) :RecyclerView.Adapter<PopAdapter.PopHolder>() {
 
-    fun setData(popList: List<HFWeather.WeatherHour>){
+    fun setData(popList: List<HFWeather.HFWeatherHour>){
         this.popList=popList
     }
 

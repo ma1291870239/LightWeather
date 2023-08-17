@@ -1,19 +1,18 @@
-package com.ma.lightweather.fragment
+package com.ma.lightweather.old
 
 
 import android.os.Bundle
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ma.lightweather.R
-import com.ma.lightweather.adapter.CityWeatherAdapter
 import com.ma.lightweather.databinding.FragCityBinding
+import com.ma.lightweather.fragment.BaseFragment
 import com.ma.lightweather.model.Weather
-import com.ma.lightweather.utils.CommonUtils
 import com.ma.lightweather.utils.DbUtils
 import com.ma.lightweather.utils.WeatherUtils
 import java.util.*

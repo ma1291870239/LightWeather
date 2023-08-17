@@ -9,19 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ma.lightweather.R
 import com.ma.lightweather.model.HFWeather
 import com.ma.lightweather.utils.CommonUtils
-import com.ma.lightweather.utils.LogUtils
 import com.ma.lightweather.widget.FrogHourWeatherView
-import com.ma.lightweather.widget.HourWeatherView
 import java.util.*
 
-class HourWeatherAdapter (private val context: Context, private var hourList: List<HFWeather.WeatherHour>): RecyclerView.Adapter<HourWeatherAdapter.HourWeatherHolder>() {
+class HourWeatherAdapter (private val context: Context, private var hourList: List<HFWeather.HFWeatherHour>): RecyclerView.Adapter<HourWeatherAdapter.HourWeatherHolder>() {
 
     private var tempList: MutableList<Int> = ArrayList()
     private var maxTemp=0
     private var minTemp=0
     private var space=0f
 
-    fun setData(hourList: List<HFWeather.WeatherHour>){
+    fun setData(hourList: List<HFWeather.HFWeatherHour>){
         this.hourList=hourList
         for (i in hourList.indices ){
             tempList.add(hourList[i].temp.toInt())

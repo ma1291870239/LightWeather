@@ -1,4 +1,4 @@
-package com.ma.lightweather.activity
+package com.ma.lightweather.old
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.widget.Switch
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.ma.lightweather.R
+import com.ma.lightweather.activity.BaseActivity
 import com.ma.lightweather.app.Contants
 import com.ma.lightweather.app.WeatherService
 import com.ma.lightweather.databinding.ActivitySettingBinding

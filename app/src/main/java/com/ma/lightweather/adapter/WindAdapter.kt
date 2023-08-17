@@ -11,14 +11,14 @@ import com.ma.lightweather.model.HFWeather
 import com.ma.lightweather.utils.CommonUtils
 import java.util.*
 
-class WindAdapter (private val context: Context, private var windList: List<HFWeather.WeatherHour>): RecyclerView.Adapter<WindAdapter.WindHolder>() {
+class WindAdapter (private val context: Context, private var windList: List<HFWeather.HFWeatherHour>): RecyclerView.Adapter<WindAdapter.WindHolder>() {
 
     private var speedList: MutableList<Int> = ArrayList()
     private var maxSpeed=0
     private var minSpeed=0
     private var space=0f
 
-    fun setData(windList: List<HFWeather.WeatherHour>){
+    fun setData(windList: List<HFWeather.HFWeatherHour>){
         this.windList=windList
 
         for (i in windList.indices ){

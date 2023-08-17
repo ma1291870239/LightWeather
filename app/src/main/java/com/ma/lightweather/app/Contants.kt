@@ -46,4 +46,8 @@ object Contants {
     const val HF_WEATHER_FUTURE = "https://devapi.qweather.com/v7/weather/7d?key=$HF_WEATHER_KEY&location="
     //和风  24小时
     const val HF_WEATHER_HOUR = "https://devapi.qweather.com/v7/weather/24h?key=$HF_WEATHER_KEY&location="
+    //彩云 KEY
+    const val CY_WEATHER_KEY ="7iuyQv4ve1RAEBpS"
+    //彩云 全部天气
+    const val CY_WEATHER_AREA ="https://api.caiyunapp.com/v2.6/$CY_WEATHER_KEY/116.3176,39.9760/weather?alert=true&dailysteps=1&hourlysteps=24"
 }

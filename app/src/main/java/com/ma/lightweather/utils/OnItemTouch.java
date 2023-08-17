@@ -9,7 +9,7 @@ import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ma.lightweather.adapter.CityWeatherAdapter;
+import com.ma.lightweather.old.CityWeatherAdapter;
 
 public class OnItemTouch implements RecyclerView.OnItemTouchListener {
     private VelocityTracker velocityTracker = VelocityTracker.obtain();

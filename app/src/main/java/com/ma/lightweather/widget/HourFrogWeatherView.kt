@@ -235,7 +235,7 @@ class HourFrogWeatherView(context: Context, attrs: AttributeSet?) : View(context
 //        canvas.drawPath(mDst, tmpPaint)
 //    }
 
-    fun loadViewData(hourlyList: List<HFWeather.WeatherHour>?) {
+    fun loadViewData(hourlyList: List<HFWeather.HFWeatherHour>?) {
         if (hourlyList != null) {
             tempList.clear()
             popList.clear()
