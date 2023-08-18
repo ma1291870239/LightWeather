@@ -1,6 +1,7 @@
 package com.ma.lightweather.old
 
 import android.app.ActivityManager
+
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.os.Build
